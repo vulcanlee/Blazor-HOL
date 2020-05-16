@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using EFCoreModel.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Components;
@@ -13,6 +14,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Syncfusion.Blazor;
 using SyncfusionLab.Data;
+using SyncfusionLab.Helpers;
 
 namespace SyncfusionLab
 {
@@ -38,6 +40,7 @@ namespace SyncfusionLab
             options.UseSqlServer(Configuration.GetConnectionString("SchoolContext")));
 
             RegisterInspectionService(services);
+            services.AddAutoMapper(c => c.AddProfile<AutoMapping>(), typeof(Startup));
         }
 
         private static void RegisterInspectionService(IServiceCollection services)

@@ -1,0 +1,113 @@
+﻿@using System.Threading
+@using Syncfusion.Blazor
+@using Syncfusion.Blazor.Buttons
+@using Syncfusion.Blazor.Data
+@using Syncfusion.Blazor.Grids
+@using Syncfusion.Blazor.Popups
+@using Syncfusion.Blazor.Inputs
+@using Syncfusion.Blazor.Calendars
+@using SyncfusionLab.Adaptors
+@using SyncfusionLab.Services
+@using EFCoreModel.Models
+@using AutoMapper
+@using SyncfusionLab.AdaptorModels
+@using SyncfusionLab.RazorModels
+@using SyncfusionLab.Interfaces
+@using SyncfusionLab.Components.Commons
+@inject PersonRazorModel RazorModel
+@implements IRazorPage
+
+<SfGrid @ref="Grid" TValue="PersonAdaptorModel"
+        AllowPaging="true" AllowSorting="true"
+        Toolbar="@(new List<string>() { "新增","Search" })">
+    <SfDataManager Adaptor="Adaptors.CustomAdaptor">
+        <PersonAdaptor></PersonAdaptor>
+    </SfDataManager>
+    <GridEvents CommandClicked="RazorModel.OnCommandClicked" TValue="PersonAdaptorModel"
+                OnToolbarClick="RazorModel.ToolbarClickHandler"></GridEvents>
+    <GridPageSettings PageSize="8"></GridPageSettings>
+    <GridSearchSettings Fields=@RazorModel.InitSearch Operator=Syncfusion.Blazor.Operator.Contains IgnoreCase="true"></GridSearchSettings>
+    <GridColumns>
+        <GridColumn Field=@nameof(PersonAdaptorModel.FirstName) HeaderText="名" Width="100"></GridColumn>
+        <GridColumn Field=@nameof(PersonAdaptorModel.LastName) HeaderText="姓" Width="100"></GridColumn>
+        <GridColumn HeaderText="命令" Width="150" TextAlign="@TextAlign.Center">
+            <GridCommandColumns>
+                <GridCommandColumn ButtonOption="@(new CommandButtonOptions() { Content = "修改", CssClass = "e-flat" })"></GridCommandColumn>
+                <GridCommandColumn ButtonOption="@(new CommandButtonOptions() { Content = "刪除", CssClass = "e-flat e-danger" })"></GridCommandColumn>
+            </GridCommandColumns>
+        </GridColumn>
+    </GridColumns>
+</SfGrid>
+
+<SfDialog @bind-Visible="@RazorModel.isVisibleRecord" IsModal="true"
+          Width="400px" Height="300px">
+    <DialogTemplates>
+        <Header>@RazorModel.DialogTitle</Header>
+        <Content>
+            <EditForm Model="@RazorModel.CurrentRecord" OnValidSubmit="RazorModel.HandleValidSubmit">
+                <DataAnnotationsValidator />
+                <ValidationSummary />
+
+                <div>
+                    <div class="form-row">
+                        <div class="form-group col">
+                            <label class="control-label">名</label>
+                            <SfTextBox @bind-Value="RazorModel.CurrentRecord.LastName"></SfTextBox>
+                            <ValidationMessage For="@(() => RazorModel.CurrentRecord.LastName)" />
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group col">
+                            <label class="control-label">姓</label>
+                            <SfTextBox @bind-Value="RazorModel.CurrentRecord.FirstName"></SfTextBox>
+                            <ValidationMessage For="@(() => RazorModel.CurrentRecord.FirstName)" />
+                        </div>
+                    </div>
+
+                </div>
+                <div>
+                    <button type="submit" class="btn btn-primary">儲存</button>
+                    <button class="btn btn-secondary" @onclick="RazorModel.OnCancel">取消</button>
+                </div>
+            </EditForm>
+        </Content>
+    </DialogTemplates>
+    <DialogPositionData X="center" Y="center"></DialogPositionData>
+</SfDialog>
+
+<MessageBox Height="@RazorModel.MessageBox.Height" Width="@RazorModel.MessageBox.Width"
+            IsVisible="@RazorModel.MessageBox.IsVisible"
+            Title="@RazorModel.MessageBox.Title" Message="@RazorModel.MessageBox.Body"
+            Callback="x=>RazorModel.MessageBox.Hidden()" />
+
+<ConfirmBox Height="@RazorModel.ConfirmMessageBox.Height" Width="@RazorModel.ConfirmMessageBox.Width"
+            IsVisible="@RazorModel.ConfirmMessageBox.IsVisible"
+            Title="@RazorModel.ConfirmMessageBox.Title" Message="@RazorModel.ConfirmMessageBox.Body"
+            Callback="x=>RazorModel.RemoveThisRecord(x)" />
+
+<DialogBackground />
+
+@code{
+    SfGrid<PersonAdaptorModel> Grid;
+
+    protected override void OnInitialized()
+    {
+        RazorModel.Setup(this, Grid);
+    }
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if (firstRender == true)
+        {
+            RazorModel.Setup(this, Grid);
+        }
+    }
+    public void NeedRefresh()
+    {
+        StateHasChanged();
+    }
+    public async Task NeedInvokeAsync(System.Action action)
+    {
+        await InvokeAsync(action);
+    }
+}

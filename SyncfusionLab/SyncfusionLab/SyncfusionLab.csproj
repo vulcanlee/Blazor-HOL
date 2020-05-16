@@ -6,12 +6,11 @@
 
 <ItemGroup>
       <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="7.0.0" />
-      <PackageReference Include="Syncfusion.Blazor" Version="18.1.0.52" />
+      <PackageReference Include="Syncfusion.Blazor" Version="18.1.0.44" />
 </ItemGroup>
 
 <ItemGroup>
   <Folder Include="Components\Pickers\" />
-  <Folder Include="Components\Views\" />
 </ItemGroup>
 
 <ItemGroup>

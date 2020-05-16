@@ -14,7 +14,7 @@ namespace SyncfusionLab.RazorModels
     public class PersonRazorModel
     {
         #region Constructor
-        public PersonRazorModel(PersonService CurrentService,
+        public PersonRazorModel(IPersonService CurrentService,
            SchoolContext SchoolContext,
            IMapper Mapper)
         {
@@ -43,7 +43,7 @@ namespace SyncfusionLab.RazorModels
         #region Field
         public bool ShowPicker { get; set; } = false;
         bool newRecordMode;
-        private readonly PersonService CurrentService;
+        private readonly IPersonService CurrentService;
         private readonly SchoolContext SchoolContext;
         private readonly IMapper mapper;
         IRazorPage thisRazorComponent;

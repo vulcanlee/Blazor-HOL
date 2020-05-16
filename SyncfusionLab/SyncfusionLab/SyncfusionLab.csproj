@@ -10,7 +10,6 @@
 </ItemGroup>
 
 <ItemGroup>
-  <Folder Include="Adaptors\" />
   <Folder Include="Components\Pickers\" />
   <Folder Include="Components\Views\" />
   <Folder Include="Interfaces\" />

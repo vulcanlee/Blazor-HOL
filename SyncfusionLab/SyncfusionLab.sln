@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30011.22
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SyncfusionLab", "SyncfusionLab\SyncfusionLab.csproj", "{F257FACD-6D64-4D03-A299-856CD4473F00}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SyncfusionLab", "SyncfusionLab\SyncfusionLab.csproj", "{F257FACD-6D64-4D03-A299-856CD4473F00}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatabaseInit", "DatabaseInit\DatabaseInit.csproj", "{33884F96-54E4-4460-BA88-335EB3448DDF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DatabaseInit", "DatabaseInit\DatabaseInit.csproj", "{33884F96-54E4-4460-BA88-335EB3448DDF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EFCoreModel", "EFCoreModel\EFCoreModel.csproj", "{85AFDD28-3B81-46A3-988F-4EEC6161343A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EFCoreModel", "EFCoreModel\EFCoreModel.csproj", "{85AFDD28-3B81-46A3-988F-4EEC6161343A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

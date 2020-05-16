@@ -11,12 +11,15 @@
 <ItemGroup>
   <Folder Include="AdaptorModels\" />
   <Folder Include="Adaptors\" />
-  <Folder Include="Components\Commons\" />
   <Folder Include="Components\Pickers\" />
   <Folder Include="Components\Views\" />
   <Folder Include="Helpers\" />
   <Folder Include="Interfaces\" />
   <Folder Include="Services\" />
   <Folder Include="RazorModels\" />
+</ItemGroup>
+
+<ItemGroup>
+  <ProjectReference Include="..\EFCoreModel\EFCoreModel.csproj" />
 </ItemGroup>
 </Project>

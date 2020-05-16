@@ -1,0 +1,18 @@
+﻿@using Syncfusion.Blazor.Popups
+
+@inherits ConfirmBoxBase
+
+<SfDialog @bind-Visible="@IsVisible" Height="@Height" Width="@Width" ShowCloseIcon="false" IsModal="true">
+    <DialogTemplates>
+        <Header>@Title</Header>
+        <Content>@Message</Content>
+        <FooterTemplate>
+            <div>
+                <button @onclick="@OnOKBtnclick" class='btn btn-primary'>確定</button>
+                <button @onclick="@OnCancelBtnclick" class='btn btn-primary'>取消</button>
+            </div>
+        </FooterTemplate>
+    </DialogTemplates>
+</SfDialog>
+
+<DialogBackground />

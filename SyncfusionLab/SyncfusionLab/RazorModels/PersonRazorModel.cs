@@ -11,6 +11,8 @@ namespace SyncfusionLab.RazorModels
     using SyncfusionLab.Interfaces;
     using SyncfusionLab.Services;
     using Syncfusion.Blazor.Grids;
+    using Microsoft.AspNetCore.Components.Forms;
+
     public class PersonRazorModel
     {
         #region Constructor
@@ -26,10 +28,10 @@ namespace SyncfusionLab.RazorModels
 
         #region Property
         public SfGrid<PersonAdaptorModel> Grid { get; set; }
-        public string[] InitSearch = (new string[] { "Name" });
-        public bool isVisibleRecord { get; set; } = false;
+        public bool IsShowEditRecord { get; set; } = false;
         public PersonAdaptorModel CurrentRecord { get; set; } = new PersonAdaptorModel();
         public PersonAdaptorModel CurrentNeedDeleteRecord { get; set; } = new PersonAdaptorModel();
+        public EditContext LocalEditContext { get; set; }
 
 
         #region 訊息說明之對話窗使用的變數
@@ -37,17 +39,17 @@ namespace SyncfusionLab.RazorModels
         public MessageBoxModel MessageBox { get; set; } = new MessageBoxModel();
         #endregion
 
-        public string DialogTitle { get; set; } = "";
+        public string EditRecordDialogTitle { get; set; } = "";
         #endregion
 
         #region Field
-        public bool ShowPicker { get; set; } = false;
-        bool newRecordMode;
+        public bool ShowAontherRecordPicker { get; set; } = false;
+        bool isNewRecordMode;
         private readonly IPersonService CurrentService;
         private readonly SchoolContext SchoolContext;
         private readonly IMapper mapper;
         IRazorPage thisRazorComponent;
-        private bool isVisibleConfirm { get; set; } = false;
+        private bool isShowConfirm { get; set; } = false;
         #endregion
 
         #region Method
@@ -60,7 +62,7 @@ namespace SyncfusionLab.RazorModels
         }
         public void OnOpenPicker()
         {
-            ShowPicker = true;
+            ShowAontherRecordPicker = true;
         }
 
         public void ToolbarClickHandler(Syncfusion.Blazor.Navigations.ClickEventArgs args)
@@ -68,9 +70,9 @@ namespace SyncfusionLab.RazorModels
             if (args.Item.Text == "新增")
             {
                 CurrentRecord = new PersonAdaptorModel();
-                DialogTitle = "新增紀錄";
-                newRecordMode = true;
-                isVisibleRecord = true;
+                EditRecordDialogTitle = "新增紀錄";
+                isNewRecordMode = true;
+                IsShowEditRecord = true;
             }
         }
         public void OnCommandClicked(CommandClickEventArgs<PersonAdaptorModel> args)
@@ -79,9 +81,9 @@ namespace SyncfusionLab.RazorModels
             if (args.CommandColumn.ButtonOption.Content == "修改")
             {
                 CurrentRecord = item;
-                DialogTitle = "修改紀錄";
-                isVisibleRecord = true;
-                newRecordMode = false;
+                EditRecordDialogTitle = "修改紀錄";
+                IsShowEditRecord = true;
+                isNewRecordMode = false;
 
             }
             else if (args.CommandColumn.ButtonOption.Content == "刪除")
@@ -105,14 +107,18 @@ namespace SyncfusionLab.RazorModels
 
         public void OnCancel()
         {
-            isVisibleRecord = false;
+            IsShowEditRecord = false;
         }
 
         public async Task HandleValidSubmit()
         {
-            if (isVisibleRecord == true)
+            if (LocalEditContext.Validate() == false)
             {
-                if (newRecordMode == true)
+                return;
+            }
+            if (IsShowEditRecord == true)
+            {
+                if (isNewRecordMode == true)
                 {
                     await CurrentService.AddAsync(mapper.Map<Person>(CurrentRecord));
                     Grid.Refresh();
@@ -121,12 +127,14 @@ namespace SyncfusionLab.RazorModels
                 {
                     await CurrentService.UpdateAsync(mapper.Map<Person>(CurrentRecord));
                     Grid.Refresh();
-                    //thisRazorComponent.NeedRefresh();
                 }
-                isVisibleRecord = false;
+                IsShowEditRecord = false;
             }
         }
-
+        public void OnEditContestChanged(EditContext context)
+        {
+            LocalEditContext = context;
+        }
         #endregion
     }
 }

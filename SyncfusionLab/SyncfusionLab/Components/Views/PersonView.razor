@@ -18,18 +18,23 @@
 @implements IRazorPage
 
 <SfGrid @ref="Grid" TValue="PersonAdaptorModel"
-        AllowPaging="true" AllowSorting="true"
-        Toolbar="@(new List<string>() { "新增","Search" })">
+        AllowPaging="true" 
+        Toolbar="@(new List<string>() { "新增","Search" })"
+        >
     <SfDataManager Adaptor="Adaptors.CustomAdaptor">
         <PersonAdaptor></PersonAdaptor>
     </SfDataManager>
     <GridEvents CommandClicked="RazorModel.OnCommandClicked" TValue="PersonAdaptorModel"
-                OnToolbarClick="RazorModel.ToolbarClickHandler"></GridEvents>
-    <GridPageSettings PageSize="8"></GridPageSettings>
-    <GridSearchSettings Fields=@RazorModel.InitSearch Operator=Syncfusion.Blazor.Operator.Contains IgnoreCase="true"></GridSearchSettings>
+                OnToolbarClick="RazorModel.ToolbarClickHandler"
+                />
+    <GridPageSettings PageSize="15"/>
+    <GridSearchSettings Fields="@(new string[] { "FirstName","LastName" })" 
+                        Operator=Syncfusion.Blazor.Operator.Contains IgnoreCase="true"/>
     <GridColumns>
         <GridColumn Field=@nameof(PersonAdaptorModel.FirstName) HeaderText="名" Width="100"></GridColumn>
         <GridColumn Field=@nameof(PersonAdaptorModel.LastName) HeaderText="姓" Width="100"></GridColumn>
+        <GridColumn Field=@nameof(PersonAdaptorModel.EnrollmentDate) HeaderText="註冊日期" Width="100" Format="yyyy-MM-dd"></GridColumn>
+        <GridColumn Field=@nameof(PersonAdaptorModel.HireDate) HeaderText="雇用日期" Width="100" Format="yyyy-MM-dd"></GridColumn>
         <GridColumn HeaderText="命令" Width="150" TextAlign="@TextAlign.Center">
             <GridCommandColumns>
                 <GridCommandColumn ButtonOption="@(new CommandButtonOptions() { Content = "修改", CssClass = "e-flat" })"></GridCommandColumn>
@@ -39,14 +44,15 @@
     </GridColumns>
 </SfGrid>
 
-<SfDialog @bind-Visible="@RazorModel.isVisibleRecord" IsModal="true"
-          Width="400px" Height="300px">
+<SfDialog @bind-Visible="@RazorModel.IsShowEditRecord" IsModal="true"
+          Width="600px" Height="600px">
     <DialogTemplates>
-        <Header>@RazorModel.DialogTitle</Header>
+        <Header>@RazorModel.EditRecordDialogTitle</Header>
         <Content>
-            <EditForm Model="@RazorModel.CurrentRecord" OnValidSubmit="RazorModel.HandleValidSubmit">
+            <EditForm Model="@RazorModel.CurrentRecord">
                 <DataAnnotationsValidator />
                 <ValidationSummary />
+                <InputWatcher EditContextActionChanged="@RazorModel.OnEditContestChanged" />
 
                 <div>
                     <div class="form-row">
@@ -65,13 +71,31 @@
                         </div>
                     </div>
 
-                </div>
-                <div>
-                    <button type="submit" class="btn btn-primary">儲存</button>
-                    <button class="btn btn-secondary" @onclick="RazorModel.OnCancel">取消</button>
+                    <div class="form-row">
+                        <div class="form-group col">
+                            <label class="control-label">註冊日期</label>
+                            <SfDatePicker @bind-Value="RazorModel.CurrentRecord.EnrollmentDate"></SfDatePicker>
+                            <ValidationMessage For="@(() => RazorModel.CurrentRecord.EnrollmentDate)" />
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group col">
+                            <label class="control-label">雇用日期</label>
+                            <SfDatePicker @bind-Value="RazorModel.CurrentRecord.HireDate"></SfDatePicker>
+                            <ValidationMessage For="@(() => RazorModel.CurrentRecord.HireDate)" />
+                        </div>
+                    </div>
+
                 </div>
             </EditForm>
         </Content>
+        <FooterTemplate>
+            <div>
+                <button type="submit" class="btn btn-primary" @onclick="RazorModel.HandleValidSubmit">儲存</button>
+                <button class="btn btn-secondary" @onclick="RazorModel.OnCancel">取消</button>
+            </div>
+        </FooterTemplate>
     </DialogTemplates>
     <DialogPositionData X="center" Y="center"></DialogPositionData>
 </SfDialog>

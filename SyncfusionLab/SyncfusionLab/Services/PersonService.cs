@@ -48,8 +48,23 @@ namespace SyncfusionLab.Services
             else
             {
                 #region 在這裡需要設定需要更新的紀錄欄位值
-                context.Entry(item).State = EntityState.Modified;
+                //context.Entry(paraObject).State = EntityState.Modified;
                 #endregion
+                // 
+                var local = context.Set<Person>()
+                    .Local
+                    .FirstOrDefault(entry => entry.PersonId.Equals(paraObject.PersonId));
+
+                // check if local is not null 
+                if (local != null)
+                {
+                    // detach
+                    context.Entry(local).State = EntityState.Detached;
+                }
+                // set Modified flag in your entry
+                context.Entry(paraObject).State = EntityState.Modified;
+
+                // save 
                 await context.SaveChangesAsync();
                 return true;
             }

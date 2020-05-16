@@ -15,6 +15,7 @@ using Microsoft.Extensions.Hosting;
 using Syncfusion.Blazor;
 using SyncfusionLab.Data;
 using SyncfusionLab.Helpers;
+using SyncfusionLab.RazorModels;
 using SyncfusionLab.Services;
 
 namespace SyncfusionLab
@@ -51,6 +52,7 @@ namespace SyncfusionLab
             #endregion
 
             #region µù¥U Razor Model
+            services.AddScoped<PersonRazorModel>();
             #endregion
         }
 

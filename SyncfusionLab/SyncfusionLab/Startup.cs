@@ -15,6 +15,7 @@ using Microsoft.Extensions.Hosting;
 using Syncfusion.Blazor;
 using SyncfusionLab.Data;
 using SyncfusionLab.Helpers;
+using SyncfusionLab.Services;
 
 namespace SyncfusionLab
 {
@@ -46,6 +47,7 @@ namespace SyncfusionLab
         private static void RegisterInspectionService(IServiceCollection services)
         {
             #region µù¥UªA°È
+            services.AddScoped<IPersonService,PersonService>();
             #endregion
 
             #region µù¥U Razor Model

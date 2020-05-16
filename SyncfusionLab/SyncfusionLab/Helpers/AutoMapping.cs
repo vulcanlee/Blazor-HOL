@@ -14,6 +14,8 @@ namespace SyncfusionLab.Helpers
     {
         public AutoMapping()
         {
+            CreateMap<Person, PersonAdaptorModel>();
+            CreateMap<PersonAdaptorModel, Person>();
         }
     }
 }

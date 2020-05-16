@@ -8,7 +8,7 @@ namespace SyncfusionLab.Services
     using EFCoreModel.Models;
     using Microsoft.EntityFrameworkCore;
 
-    public class PersonService
+    public class PersonService : IPersonService
     {
         private readonly SchoolContext context;
 

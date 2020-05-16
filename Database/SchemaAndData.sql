@@ -1,487 +1,671 @@
-/****** Object:  StoredProcedure [dbo].[Department_Update]    Script Date: 10/21/2016 3:17:28 PM ******/
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Department_Update]') AND type in (N'P', N'PC'))
-DROP PROCEDURE [dbo].[Department_Update]
-GO
-/****** Object:  StoredProcedure [dbo].[Department_Insert]    Script Date: 10/21/2016 3:17:28 PM ******/
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Department_Insert]') AND type in (N'P', N'PC'))
-DROP PROCEDURE [dbo].[Department_Insert]
-GO
-/****** Object:  StoredProcedure [dbo].[Department_Delete]    Script Date: 10/21/2016 3:17:28 PM ******/
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Department_Delete]') AND type in (N'P', N'PC'))
-DROP PROCEDURE [dbo].[Department_Delete]
-GO
-IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_dbo.OfficeAssignment_dbo.Instructor_InstructorID]') AND parent_object_id = OBJECT_ID(N'[dbo].[OfficeAssignment]'))
-ALTER TABLE [dbo].[OfficeAssignment] DROP CONSTRAINT [FK_dbo.OfficeAssignment_dbo.Instructor_InstructorID]
-GO
-IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_dbo.Enrollment_dbo.Person_StudentID]') AND parent_object_id = OBJECT_ID(N'[dbo].[Enrollment]'))
-ALTER TABLE [dbo].[Enrollment] DROP CONSTRAINT [FK_dbo.Enrollment_dbo.Person_StudentID]
-GO
-IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_dbo.Enrollment_dbo.Course_CourseID]') AND parent_object_id = OBJECT_ID(N'[dbo].[Enrollment]'))
-ALTER TABLE [dbo].[Enrollment] DROP CONSTRAINT [FK_dbo.Enrollment_dbo.Course_CourseID]
-GO
-IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_dbo.Department_dbo.Instructor_InstructorID]') AND parent_object_id = OBJECT_ID(N'[dbo].[Department]'))
-ALTER TABLE [dbo].[Department] DROP CONSTRAINT [FK_dbo.Department_dbo.Instructor_InstructorID]
-GO
-IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_dbo.CourseInstructor_dbo.Instructor_InstructorID]') AND parent_object_id = OBJECT_ID(N'[dbo].[CourseInstructor]'))
-ALTER TABLE [dbo].[CourseInstructor] DROP CONSTRAINT [FK_dbo.CourseInstructor_dbo.Instructor_InstructorID]
-GO
-IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_dbo.CourseInstructor_dbo.Course_CourseID]') AND parent_object_id = OBJECT_ID(N'[dbo].[CourseInstructor]'))
-ALTER TABLE [dbo].[CourseInstructor] DROP CONSTRAINT [FK_dbo.CourseInstructor_dbo.Course_CourseID]
-GO
-IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_dbo.Course_dbo.Department_DepartmentID]') AND parent_object_id = OBJECT_ID(N'[dbo].[Course]'))
-ALTER TABLE [dbo].[Course] DROP CONSTRAINT [FK_dbo.Course_dbo.Department_DepartmentID]
-GO
-/****** Object:  Index [IX_InstructorID]    Script Date: 10/21/2016 3:17:28 PM ******/
-IF  EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'[dbo].[OfficeAssignment]') AND name = N'IX_InstructorID')
-DROP INDEX [IX_InstructorID] ON [dbo].[OfficeAssignment]
-GO
-/****** Object:  Index [IX_StudentID]    Script Date: 10/21/2016 3:17:28 PM ******/
-IF  EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'[dbo].[Enrollment]') AND name = N'IX_StudentID')
-DROP INDEX [IX_StudentID] ON [dbo].[Enrollment]
-GO
-/****** Object:  Index [IX_CourseID]    Script Date: 10/21/2016 3:17:28 PM ******/
-IF  EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'[dbo].[Enrollment]') AND name = N'IX_CourseID')
-DROP INDEX [IX_CourseID] ON [dbo].[Enrollment]
-GO
-/****** Object:  Index [IX_InstructorID]    Script Date: 10/21/2016 3:17:28 PM ******/
-IF  EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'[dbo].[Department]') AND name = N'IX_InstructorID')
-DROP INDEX [IX_InstructorID] ON [dbo].[Department]
-GO
-/****** Object:  Index [IX_InstructorID]    Script Date: 10/21/2016 3:17:28 PM ******/
-IF  EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'[dbo].[CourseInstructor]') AND name = N'IX_InstructorID')
-DROP INDEX [IX_InstructorID] ON [dbo].[CourseInstructor]
-GO
-/****** Object:  Index [IX_CourseID]    Script Date: 10/21/2016 3:17:28 PM ******/
-IF  EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'[dbo].[CourseInstructor]') AND name = N'IX_CourseID')
-DROP INDEX [IX_CourseID] ON [dbo].[CourseInstructor]
-GO
-/****** Object:  Index [IX_DepartmentID]    Script Date: 10/21/2016 3:17:28 PM ******/
-IF  EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'[dbo].[Course]') AND name = N'IX_DepartmentID')
-DROP INDEX [IX_DepartmentID] ON [dbo].[Course]
-GO
-/****** Object:  Table [dbo].[Person]    Script Date: 10/21/2016 3:17:28 PM ******/
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Person]') AND type in (N'U'))
-DROP TABLE [dbo].[Person]
-GO
-/****** Object:  Table [dbo].[OfficeAssignment]    Script Date: 10/21/2016 3:17:28 PM ******/
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[OfficeAssignment]') AND type in (N'U'))
-DROP TABLE [dbo].[OfficeAssignment]
-GO
-/****** Object:  Table [dbo].[Enrollment]    Script Date: 10/21/2016 3:17:28 PM ******/
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Enrollment]') AND type in (N'U'))
-DROP TABLE [dbo].[Enrollment]
-GO
-/****** Object:  Table [dbo].[Department]    Script Date: 10/21/2016 3:17:28 PM ******/
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Department]') AND type in (N'U'))
-DROP TABLE [dbo].[Department]
-GO
-/****** Object:  Table [dbo].[CourseInstructor]    Script Date: 10/21/2016 3:17:28 PM ******/
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[CourseInstructor]') AND type in (N'U'))
-DROP TABLE [dbo].[CourseInstructor]
-GO
-/****** Object:  Table [dbo].[Course]    Script Date: 10/21/2016 3:17:28 PM ******/
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Course]') AND type in (N'U'))
-DROP TABLE [dbo].[Course]
-GO
-/****** Object:  Table [dbo].[Course]    Script Date: 10/21/2016 3:17:28 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
-IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Course]') AND type in (N'U'))
-BEGIN
-CREATE TABLE [dbo].[Course](
-	[CourseID] [int] NOT NULL,
-	[Title] [nvarchar](50) NULL,
-	[Credits] [int] NOT NULL,
-	[DepartmentID] [int] NOT NULL DEFAULT ((1)),
- CONSTRAINT [PK_dbo.Course] PRIMARY KEY CLUSTERED 
-(
-	[CourseID] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
-) ON [PRIMARY]
-END
+
+USE [master];
 GO
-/****** Object:  Table [dbo].[CourseInstructor]    Script Date: 10/21/2016 3:17:28 PM ******/
-SET ANSI_NULLS ON
+
+IF EXISTS (SELECT * FROM sys.databases WHERE name = 'School')
+    DROP DATABASE School;
 GO
-SET QUOTED_IDENTIFIER ON
+
+-- Create the School database.
+CREATE DATABASE School;
 GO
-IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[CourseInstructor]') AND type in (N'U'))
-BEGIN
-CREATE TABLE [dbo].[CourseInstructor](
-	[CourseID] [int] NOT NULL,
-	[InstructorID] [int] NOT NULL,
- CONSTRAINT [PK_dbo.CourseInstructor] PRIMARY KEY CLUSTERED 
-(
-	[CourseID] ASC,
-	[InstructorID] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
-) ON [PRIMARY]
-END
+
+-- Specify a simple recovery model 
+-- to keep the log growth to a minimum.
+ALTER DATABASE School 
+    SET RECOVERY SIMPLE;
 GO
-/****** Object:  Table [dbo].[Department]    Script Date: 10/21/2016 3:17:28 PM ******/
-SET ANSI_NULLS ON
+
+USE School;
 GO
-SET QUOTED_IDENTIFIER ON
-GO
-IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Department]') AND type in (N'U'))
+
+-- Create the Department table.
+IF NOT EXISTS (SELECT * FROM sys.objects 
+        WHERE object_id = OBJECT_ID(N'[dbo].[Department]') 
+        AND type in (N'U'))
 BEGIN
 CREATE TABLE [dbo].[Department](
-	[DepartmentID] [int] IDENTITY(1,1) NOT NULL,
-	[Name] [nvarchar](50) NULL,
-	[Budget] [money] NOT NULL,
-	[StartDate] [datetime] NOT NULL,
-	[InstructorID] [int] NULL,
-	[RowVersion] [timestamp] NOT NULL,
- CONSTRAINT [PK_dbo.Department] PRIMARY KEY CLUSTERED 
+    [DepartmentID] [int] NOT NULL,
+    [Name] [nvarchar](50) NOT NULL,
+    [Budget] [money] NOT NULL,
+    [StartDate] [datetime] NOT NULL,
+    [Administrator] [int] NULL,
+ CONSTRAINT [PK_Department] PRIMARY KEY CLUSTERED 
 (
-	[DepartmentID] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+    [DepartmentID] ASC
+)WITH (IGNORE_DUP_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 END
 GO
-/****** Object:  Table [dbo].[Enrollment]    Script Date: 10/21/2016 3:17:28 PM ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Enrollment]') AND type in (N'U'))
-BEGIN
-CREATE TABLE [dbo].[Enrollment](
-	[EnrollmentID] [int] IDENTITY(1,1) NOT NULL,
-	[CourseID] [int] NOT NULL,
-	[StudentID] [int] NOT NULL,
-	[Grade] [int] NULL,
- CONSTRAINT [PK_dbo.Enrollment] PRIMARY KEY CLUSTERED 
-(
-	[EnrollmentID] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
-) ON [PRIMARY]
-END
-GO
-/****** Object:  Table [dbo].[OfficeAssignment]    Script Date: 10/21/2016 3:17:28 PM ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[OfficeAssignment]') AND type in (N'U'))
-BEGIN
-CREATE TABLE [dbo].[OfficeAssignment](
-	[InstructorID] [int] NOT NULL,
-	[Location] [nvarchar](50) NULL,
- CONSTRAINT [PK_dbo.OfficeAssignment] PRIMARY KEY CLUSTERED 
-(
-	[InstructorID] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
-) ON [PRIMARY]
-END
-GO
-/****** Object:  Table [dbo].[Person]    Script Date: 10/21/2016 3:17:28 PM ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Person]') AND type in (N'U'))
+
+-- Create the Person table.
+IF NOT EXISTS (SELECT * FROM sys.objects 
+        WHERE object_id = OBJECT_ID(N'[dbo].[Person]') 
+        AND type in (N'U'))
 BEGIN
 CREATE TABLE [dbo].[Person](
-	[ID] [int] IDENTITY(1,1) NOT NULL,
-	[LastName] [nvarchar](50) NOT NULL,
-	[FirstName] [nvarchar](50) NOT NULL,
-	[HireDate] [datetime] NULL,
-	[EnrollmentDate] [datetime] NULL,
-	[Discriminator] [nvarchar](128) NOT NULL DEFAULT ('Instructor'),
- CONSTRAINT [PK_dbo.Person] PRIMARY KEY CLUSTERED 
+    [PersonID] [int] IDENTITY(1,1) NOT NULL,
+    [LastName] [nvarchar](50) NOT NULL,
+    [FirstName] [nvarchar](50) NOT NULL,
+    [HireDate] [datetime] NULL,
+    [EnrollmentDate] [datetime] NULL,
+ CONSTRAINT [PK_School.Student] PRIMARY KEY CLUSTERED 
 (
-	[ID] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+    [PersonID] ASC
+)WITH (IGNORE_DUP_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 END
 GO
-INSERT [dbo].[Course] ([CourseID], [Title], [Credits], [DepartmentID]) VALUES (1045, N'Calculus', 3, 3)
-GO
-INSERT [dbo].[Course] ([CourseID], [Title], [Credits], [DepartmentID]) VALUES (1050, N'Chemistry', 3, 4)
-GO
-INSERT [dbo].[Course] ([CourseID], [Title], [Credits], [DepartmentID]) VALUES (2021, N'Composition', 3, 2)
-GO
-INSERT [dbo].[Course] ([CourseID], [Title], [Credits], [DepartmentID]) VALUES (2042, N'Literature', 4, 2)
-GO
-INSERT [dbo].[Course] ([CourseID], [Title], [Credits], [DepartmentID]) VALUES (3141, N'Trigonometry', 4, 3)
-GO
-INSERT [dbo].[Course] ([CourseID], [Title], [Credits], [DepartmentID]) VALUES (4022, N'Microeconomics', 3, 5)
-GO
-INSERT [dbo].[Course] ([CourseID], [Title], [Credits], [DepartmentID]) VALUES (4041, N'Macroeconomics', 3, 5)
-GO
-INSERT [dbo].[CourseInstructor] ([CourseID], [InstructorID]) VALUES (2021, 9)
-GO
-INSERT [dbo].[CourseInstructor] ([CourseID], [InstructorID]) VALUES (2042, 9)
-GO
-INSERT [dbo].[CourseInstructor] ([CourseID], [InstructorID]) VALUES (3141, 9)
-GO
-INSERT [dbo].[CourseInstructor] ([CourseID], [InstructorID]) VALUES (1045, 10)
-GO
-INSERT [dbo].[CourseInstructor] ([CourseID], [InstructorID]) VALUES (1050, 11)
-GO
-INSERT [dbo].[CourseInstructor] ([CourseID], [InstructorID]) VALUES (3141, 11)
-GO
-INSERT [dbo].[CourseInstructor] ([CourseID], [InstructorID]) VALUES (1050, 12)
-GO
-INSERT [dbo].[CourseInstructor] ([CourseID], [InstructorID]) VALUES (4022, 13)
-GO
-INSERT [dbo].[CourseInstructor] ([CourseID], [InstructorID]) VALUES (4041, 13)
-GO
-SET IDENTITY_INSERT [dbo].[Department] ON 
 
+-- Create the OnsiteCourse table.
+IF NOT EXISTS (SELECT * FROM sys.objects 
+        WHERE object_id = OBJECT_ID(N'[dbo].[OnsiteCourse]') 
+        AND type in (N'U'))
+BEGIN
+CREATE TABLE [dbo].[OnsiteCourse](
+    [CourseID] [int] NOT NULL,
+    [Location] [nvarchar](50) NOT NULL,
+    [Days] [nvarchar](50) NOT NULL,
+    [Time] [smalldatetime] NOT NULL,
+ CONSTRAINT [PK_OnsiteCourse] PRIMARY KEY CLUSTERED 
+(
+    [CourseID] ASC
+)WITH (IGNORE_DUP_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+END
 GO
-INSERT [dbo].[Department] ([DepartmentID], [Name], [Budget], [StartDate], [InstructorID]) VALUES (2, N'English', 350000.0000, CAST(N'2007-09-01 00:00:00.000' AS DateTime), 9)
-GO
-INSERT [dbo].[Department] ([DepartmentID], [Name], [Budget], [StartDate], [InstructorID]) VALUES (3, N'Mathematics', 100000.0000, CAST(N'2007-09-01 00:00:00.000' AS DateTime), 10)
-GO
-INSERT [dbo].[Department] ([DepartmentID], [Name], [Budget], [StartDate], [InstructorID]) VALUES (4, N'Engineering', 350000.0000, CAST(N'2007-09-01 00:00:00.000' AS DateTime), 11)
-GO
-INSERT [dbo].[Department] ([DepartmentID], [Name], [Budget], [StartDate], [InstructorID]) VALUES (5, N'Economics', 100000.0000, CAST(N'2007-09-01 00:00:00.000' AS DateTime), 12)
-GO
-SET IDENTITY_INSERT [dbo].[Department] OFF
-GO
-SET IDENTITY_INSERT [dbo].[Enrollment] ON 
 
+-- Create the OnlineCourse table.
+IF NOT EXISTS (SELECT * FROM sys.objects 
+        WHERE object_id = OBJECT_ID(N'[dbo].[OnlineCourse]') 
+        AND type in (N'U'))
+BEGIN
+CREATE TABLE [dbo].[OnlineCourse](
+    [CourseID] [int] NOT NULL,
+    [URL] [nvarchar](100) NOT NULL,
+ CONSTRAINT [PK_OnlineCourse] PRIMARY KEY CLUSTERED 
+(
+    [CourseID] ASC
+)WITH (IGNORE_DUP_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+END
 GO
-INSERT [dbo].[Enrollment] ([EnrollmentID], [CourseID], [StudentID], [Grade]) VALUES (1, 1050, 1, 0)
-GO
-INSERT [dbo].[Enrollment] ([EnrollmentID], [CourseID], [StudentID], [Grade]) VALUES (2, 4022, 1, 2)
-GO
-INSERT [dbo].[Enrollment] ([EnrollmentID], [CourseID], [StudentID], [Grade]) VALUES (3, 4041, 1, 1)
-GO
-INSERT [dbo].[Enrollment] ([EnrollmentID], [CourseID], [StudentID], [Grade]) VALUES (4, 1045, 2, 1)
-GO
-INSERT [dbo].[Enrollment] ([EnrollmentID], [CourseID], [StudentID], [Grade]) VALUES (5, 3141, 2, 1)
-GO
-INSERT [dbo].[Enrollment] ([EnrollmentID], [CourseID], [StudentID], [Grade]) VALUES (6, 2021, 2, 1)
-GO
-INSERT [dbo].[Enrollment] ([EnrollmentID], [CourseID], [StudentID], [Grade]) VALUES (7, 1050, 3, NULL)
-GO
-INSERT [dbo].[Enrollment] ([EnrollmentID], [CourseID], [StudentID], [Grade]) VALUES (8, 4022, 3, 1)
-GO
-INSERT [dbo].[Enrollment] ([EnrollmentID], [CourseID], [StudentID], [Grade]) VALUES (9, 1050, 4, 1)
-GO
-INSERT [dbo].[Enrollment] ([EnrollmentID], [CourseID], [StudentID], [Grade]) VALUES (10, 2021, 5, 1)
-GO
-INSERT [dbo].[Enrollment] ([EnrollmentID], [CourseID], [StudentID], [Grade]) VALUES (11, 2042, 6, 1)
-GO
-SET IDENTITY_INSERT [dbo].[Enrollment] OFF
-GO
-INSERT [dbo].[OfficeAssignment] ([InstructorID], [Location]) VALUES (10, N'Smith 17')
-GO
-INSERT [dbo].[OfficeAssignment] ([InstructorID], [Location]) VALUES (11, N'Gowan 27')
-GO
-INSERT [dbo].[OfficeAssignment] ([InstructorID], [Location]) VALUES (12, N'Thompson 304')
-GO
-SET IDENTITY_INSERT [dbo].[Person] ON 
 
-GO
-INSERT [dbo].[Person] ([ID], [LastName], [FirstName], [HireDate], [EnrollmentDate], [Discriminator]) VALUES (1, N'Anderson', N'Carson', NULL, CAST(N'2010-09-01 00:00:00.000' AS DateTime), N'Student')
-GO
-INSERT [dbo].[Person] ([ID], [LastName], [FirstName], [HireDate], [EnrollmentDate], [Discriminator]) VALUES (2, N'Alonso', N'Meredith', NULL, CAST(N'2012-09-01 00:00:00.000' AS DateTime), N'Student')
-GO
-INSERT [dbo].[Person] ([ID], [LastName], [FirstName], [HireDate], [EnrollmentDate], [Discriminator]) VALUES (3, N'Anand', N'Arturo', NULL, CAST(N'2013-09-01 00:00:00.000' AS DateTime), N'Student')
-GO
-INSERT [dbo].[Person] ([ID], [LastName], [FirstName], [HireDate], [EnrollmentDate], [Discriminator]) VALUES (4, N'Barzdukas', N'Gytis', NULL, CAST(N'2012-09-01 00:00:00.000' AS DateTime), N'Student')
-GO
-INSERT [dbo].[Person] ([ID], [LastName], [FirstName], [HireDate], [EnrollmentDate], [Discriminator]) VALUES (5, N'Li', N'Yan', NULL, CAST(N'2012-09-01 00:00:00.000' AS DateTime), N'Student')
-GO
-INSERT [dbo].[Person] ([ID], [LastName], [FirstName], [HireDate], [EnrollmentDate], [Discriminator]) VALUES (6, N'Justice', N'Peggy', NULL, CAST(N'2011-09-01 00:00:00.000' AS DateTime), N'Student')
-GO
-INSERT [dbo].[Person] ([ID], [LastName], [FirstName], [HireDate], [EnrollmentDate], [Discriminator]) VALUES (7, N'Norman', N'Laura', NULL, CAST(N'2013-09-01 00:00:00.000' AS DateTime), N'Student')
-GO
-INSERT [dbo].[Person] ([ID], [LastName], [FirstName], [HireDate], [EnrollmentDate], [Discriminator]) VALUES (9, N'Abercrombie', N'Kim', CAST(N'1995-03-11 00:00:00.000' AS DateTime), NULL, N'Instructor')
-GO
-INSERT [dbo].[Person] ([ID], [LastName], [FirstName], [HireDate], [EnrollmentDate], [Discriminator]) VALUES (10, N'Fakhouri', N'Fadi', CAST(N'2002-07-06 00:00:00.000' AS DateTime), NULL, N'Instructor')
-GO
-INSERT [dbo].[Person] ([ID], [LastName], [FirstName], [HireDate], [EnrollmentDate], [Discriminator]) VALUES (11, N'Harui', N'Roger', CAST(N'1998-07-01 00:00:00.000' AS DateTime), NULL, N'Instructor')
-GO
-INSERT [dbo].[Person] ([ID], [LastName], [FirstName], [HireDate], [EnrollmentDate], [Discriminator]) VALUES (12, N'Kapoor', N'Candace', CAST(N'2001-01-15 00:00:00.000' AS DateTime), NULL, N'Instructor')
-GO
-INSERT [dbo].[Person] ([ID], [LastName], [FirstName], [HireDate], [EnrollmentDate], [Discriminator]) VALUES (13, N'Zheng', N'Roger', CAST(N'2004-02-12 00:00:00.000' AS DateTime), NULL, N'Instructor')
-GO
-SET IDENTITY_INSERT [dbo].[Person] OFF
-GO
-/****** Object:  Index [IX_DepartmentID]    Script Date: 10/21/2016 3:17:28 PM ******/
-IF NOT EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'[dbo].[Course]') AND name = N'IX_DepartmentID')
-CREATE NONCLUSTERED INDEX [IX_DepartmentID] ON [dbo].[Course]
+--Create the StudentGrade table.
+IF NOT EXISTS (SELECT * FROM sys.objects 
+        WHERE object_id = OBJECT_ID(N'[dbo].[StudentGrade]') 
+        AND type in (N'U'))
+BEGIN
+CREATE TABLE [dbo].[StudentGrade](
+    [EnrollmentID] [int] IDENTITY(1,1) NOT NULL,
+    [CourseID] [int] NOT NULL,
+    [StudentID] [int] NOT NULL,
+    [Grade] [decimal](3, 2) NULL,
+ CONSTRAINT [PK_StudentGrade] PRIMARY KEY CLUSTERED 
 (
-	[DepartmentID] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+    [EnrollmentID] ASC
+)WITH (IGNORE_DUP_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+END
 GO
-/****** Object:  Index [IX_CourseID]    Script Date: 10/21/2016 3:17:28 PM ******/
-IF NOT EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'[dbo].[CourseInstructor]') AND name = N'IX_CourseID')
-CREATE NONCLUSTERED INDEX [IX_CourseID] ON [dbo].[CourseInstructor]
+
+-- Create the CourseInstructor table.
+IF NOT EXISTS (SELECT * FROM sys.objects 
+        WHERE object_id = OBJECT_ID(N'[dbo].[CourseInstructor]') 
+        AND type in (N'U'))
+BEGIN
+CREATE TABLE [dbo].[CourseInstructor](
+    [CourseID] [int] NOT NULL,
+    [PersonID] [int] NOT NULL,
+ CONSTRAINT [PK_CourseInstructor] PRIMARY KEY CLUSTERED 
 (
-	[CourseID] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+    [CourseID] ASC,
+    [PersonID] ASC
+)WITH (IGNORE_DUP_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+END
 GO
-/****** Object:  Index [IX_InstructorID]    Script Date: 10/21/2016 3:17:28 PM ******/
-IF NOT EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'[dbo].[CourseInstructor]') AND name = N'IX_InstructorID')
-CREATE NONCLUSTERED INDEX [IX_InstructorID] ON [dbo].[CourseInstructor]
+
+-- Create the Course table.
+IF NOT EXISTS (SELECT * FROM sys.objects 
+        WHERE object_id = OBJECT_ID(N'[dbo].[Course]') 
+        AND type in (N'U'))
+BEGIN
+CREATE TABLE [dbo].[Course](
+    [CourseID] [int] NOT NULL,
+    [Title] [nvarchar](100) NOT NULL,
+    [Credits] [int] NOT NULL,
+    [DepartmentID] [int] NOT NULL,
+ CONSTRAINT [PK_School.Course] PRIMARY KEY CLUSTERED 
 (
-	[InstructorID] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+    [CourseID] ASC
+)WITH (IGNORE_DUP_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+END
 GO
-/****** Object:  Index [IX_InstructorID]    Script Date: 10/21/2016 3:17:28 PM ******/
-IF NOT EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'[dbo].[Department]') AND name = N'IX_InstructorID')
-CREATE NONCLUSTERED INDEX [IX_InstructorID] ON [dbo].[Department]
+
+-- Create the OfficeAssignment table.
+IF NOT EXISTS (SELECT * FROM sys.objects 
+        WHERE object_id = OBJECT_ID(N'[dbo].[OfficeAssignment]')
+        AND type in (N'U'))
+BEGIN
+CREATE TABLE [dbo].[OfficeAssignment](
+    [InstructorID] [int] NOT NULL,
+    [Location] [nvarchar](50) NOT NULL,
+    [Timestamp] [timestamp] NOT NULL,
+ CONSTRAINT [PK_OfficeAssignment] PRIMARY KEY CLUSTERED 
 (
-	[InstructorID] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+    [InstructorID] ASC
+)WITH (IGNORE_DUP_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+END
 GO
-/****** Object:  Index [IX_CourseID]    Script Date: 10/21/2016 3:17:28 PM ******/
-IF NOT EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'[dbo].[Enrollment]') AND name = N'IX_CourseID')
-CREATE NONCLUSTERED INDEX [IX_CourseID] ON [dbo].[Enrollment]
-(
-	[CourseID] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+
+-- Define the relationship between OnsiteCourse and Course.
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys 
+       WHERE object_id = OBJECT_ID(N'[dbo].[FK_OnsiteCourse_Course]')
+       AND parent_object_id = OBJECT_ID(N'[dbo].[OnsiteCourse]'))
+ALTER TABLE [dbo].[OnsiteCourse]  WITH CHECK ADD  
+       CONSTRAINT [FK_OnsiteCourse_Course] FOREIGN KEY([CourseID])
+REFERENCES [dbo].[Course] ([CourseID])
 GO
-/****** Object:  Index [IX_StudentID]    Script Date: 10/21/2016 3:17:28 PM ******/
-IF NOT EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'[dbo].[Enrollment]') AND name = N'IX_StudentID')
-CREATE NONCLUSTERED INDEX [IX_StudentID] ON [dbo].[Enrollment]
-(
-	[StudentID] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+ALTER TABLE [dbo].[OnsiteCourse] CHECK 
+       CONSTRAINT [FK_OnsiteCourse_Course]
 GO
-/****** Object:  Index [IX_InstructorID]    Script Date: 10/21/2016 3:17:28 PM ******/
-IF NOT EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'[dbo].[OfficeAssignment]') AND name = N'IX_InstructorID')
-CREATE NONCLUSTERED INDEX [IX_InstructorID] ON [dbo].[OfficeAssignment]
-(
-	[InstructorID] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+
+-- Define the relationship between OnlineCourse and Course.
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys 
+       WHERE object_id = OBJECT_ID(N'[dbo].[FK_OnlineCourse_Course]')
+       AND parent_object_id = OBJECT_ID(N'[dbo].[OnlineCourse]'))
+ALTER TABLE [dbo].[OnlineCourse]  WITH CHECK ADD  
+       CONSTRAINT [FK_OnlineCourse_Course] FOREIGN KEY([CourseID])
+REFERENCES [dbo].[Course] ([CourseID])
 GO
-IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_dbo.Course_dbo.Department_DepartmentID]') AND parent_object_id = OBJECT_ID(N'[dbo].[Course]'))
-ALTER TABLE [dbo].[Course]  WITH CHECK ADD  CONSTRAINT [FK_dbo.Course_dbo.Department_DepartmentID] FOREIGN KEY([DepartmentID])
+ALTER TABLE [dbo].[OnlineCourse] CHECK 
+       CONSTRAINT [FK_OnlineCourse_Course]
+GO
+
+-- Define the relationship between StudentGrade and Course.
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys 
+       WHERE object_id = OBJECT_ID(N'[dbo].[FK_StudentGrade_Course]')
+       AND parent_object_id = OBJECT_ID(N'[dbo].[StudentGrade]'))
+ALTER TABLE [dbo].[StudentGrade]  WITH CHECK ADD  
+       CONSTRAINT [FK_StudentGrade_Course] FOREIGN KEY([CourseID])
+REFERENCES [dbo].[Course] ([CourseID])
+GO
+ALTER TABLE [dbo].[StudentGrade] CHECK 
+       CONSTRAINT [FK_StudentGrade_Course]
+GO
+
+--Define the relationship between StudentGrade and Student.
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys 
+       WHERE object_id = OBJECT_ID(N'[dbo].[FK_StudentGrade_Student]')
+       AND parent_object_id = OBJECT_ID(N'[dbo].[StudentGrade]'))
+ALTER TABLE [dbo].[StudentGrade]  WITH CHECK ADD  
+       CONSTRAINT [FK_StudentGrade_Student] FOREIGN KEY([StudentID])
+REFERENCES [dbo].[Person] ([PersonID])
+GO
+ALTER TABLE [dbo].[StudentGrade] CHECK 
+       CONSTRAINT [FK_StudentGrade_Student]
+GO
+
+-- Define the relationship between CourseInstructor and Course.
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys 
+   WHERE object_id = OBJECT_ID(N'[dbo].[FK_CourseInstructor_Course]')
+   AND parent_object_id = OBJECT_ID(N'[dbo].[CourseInstructor]'))
+ALTER TABLE [dbo].[CourseInstructor]  WITH CHECK ADD  
+   CONSTRAINT [FK_CourseInstructor_Course] FOREIGN KEY([CourseID])
+REFERENCES [dbo].[Course] ([CourseID])
+GO
+ALTER TABLE [dbo].[CourseInstructor] CHECK 
+   CONSTRAINT [FK_CourseInstructor_Course]
+GO
+
+-- Define the relationship between CourseInstructor and Person.
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys 
+   WHERE object_id = OBJECT_ID(N'[dbo].[FK_CourseInstructor_Person]')
+   AND parent_object_id = OBJECT_ID(N'[dbo].[CourseInstructor]'))
+ALTER TABLE [dbo].[CourseInstructor]  WITH CHECK ADD  
+   CONSTRAINT [FK_CourseInstructor_Person] FOREIGN KEY([PersonID])
+REFERENCES [dbo].[Person] ([PersonID])
+GO
+ALTER TABLE [dbo].[CourseInstructor] CHECK 
+   CONSTRAINT [FK_CourseInstructor_Person]
+GO
+
+-- Define the relationship between Course and Department.
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys 
+       WHERE object_id = OBJECT_ID(N'[dbo].[FK_Course_Department]')
+       AND parent_object_id = OBJECT_ID(N'[dbo].[Course]'))
+ALTER TABLE [dbo].[Course]  WITH CHECK ADD  
+       CONSTRAINT [FK_Course_Department] FOREIGN KEY([DepartmentID])
 REFERENCES [dbo].[Department] ([DepartmentID])
-ON DELETE CASCADE
 GO
-IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_dbo.Course_dbo.Department_DepartmentID]') AND parent_object_id = OBJECT_ID(N'[dbo].[Course]'))
-ALTER TABLE [dbo].[Course] CHECK CONSTRAINT [FK_dbo.Course_dbo.Department_DepartmentID]
+ALTER TABLE [dbo].[Course] CHECK CONSTRAINT [FK_Course_Department]
 GO
-IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_dbo.CourseInstructor_dbo.Course_CourseID]') AND parent_object_id = OBJECT_ID(N'[dbo].[CourseInstructor]'))
-ALTER TABLE [dbo].[CourseInstructor]  WITH CHECK ADD  CONSTRAINT [FK_dbo.CourseInstructor_dbo.Course_CourseID] FOREIGN KEY([CourseID])
-REFERENCES [dbo].[Course] ([CourseID])
-ON DELETE CASCADE
+
+--Define the relationship between OfficeAssignment and Person.
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys 
+   WHERE object_id = OBJECT_ID(N'[dbo].[FK_OfficeAssignment_Person]')
+   AND parent_object_id = OBJECT_ID(N'[dbo].[OfficeAssignment]'))
+ALTER TABLE [dbo].[OfficeAssignment]  WITH CHECK ADD  
+   CONSTRAINT [FK_OfficeAssignment_Person] FOREIGN KEY([InstructorID])
+REFERENCES [dbo].[Person] ([PersonID])
 GO
-IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_dbo.CourseInstructor_dbo.Course_CourseID]') AND parent_object_id = OBJECT_ID(N'[dbo].[CourseInstructor]'))
-ALTER TABLE [dbo].[CourseInstructor] CHECK CONSTRAINT [FK_dbo.CourseInstructor_dbo.Course_CourseID]
+ALTER TABLE [dbo].[OfficeAssignment] CHECK 
+   CONSTRAINT [FK_OfficeAssignment_Person]
 GO
-IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_dbo.CourseInstructor_dbo.Instructor_InstructorID]') AND parent_object_id = OBJECT_ID(N'[dbo].[CourseInstructor]'))
-ALTER TABLE [dbo].[CourseInstructor]  WITH CHECK ADD  CONSTRAINT [FK_dbo.CourseInstructor_dbo.Instructor_InstructorID] FOREIGN KEY([InstructorID])
-REFERENCES [dbo].[Person] ([ID])
-ON DELETE CASCADE
-GO
-IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_dbo.CourseInstructor_dbo.Instructor_InstructorID]') AND parent_object_id = OBJECT_ID(N'[dbo].[CourseInstructor]'))
-ALTER TABLE [dbo].[CourseInstructor] CHECK CONSTRAINT [FK_dbo.CourseInstructor_dbo.Instructor_InstructorID]
-GO
-IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_dbo.Department_dbo.Instructor_InstructorID]') AND parent_object_id = OBJECT_ID(N'[dbo].[Department]'))
-ALTER TABLE [dbo].[Department]  WITH CHECK ADD  CONSTRAINT [FK_dbo.Department_dbo.Instructor_InstructorID] FOREIGN KEY([InstructorID])
-REFERENCES [dbo].[Person] ([ID])
-GO
-IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_dbo.Department_dbo.Instructor_InstructorID]') AND parent_object_id = OBJECT_ID(N'[dbo].[Department]'))
-ALTER TABLE [dbo].[Department] CHECK CONSTRAINT [FK_dbo.Department_dbo.Instructor_InstructorID]
-GO
-IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_dbo.Enrollment_dbo.Course_CourseID]') AND parent_object_id = OBJECT_ID(N'[dbo].[Enrollment]'))
-ALTER TABLE [dbo].[Enrollment]  WITH CHECK ADD  CONSTRAINT [FK_dbo.Enrollment_dbo.Course_CourseID] FOREIGN KEY([CourseID])
-REFERENCES [dbo].[Course] ([CourseID])
-ON DELETE CASCADE
-GO
-IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_dbo.Enrollment_dbo.Course_CourseID]') AND parent_object_id = OBJECT_ID(N'[dbo].[Enrollment]'))
-ALTER TABLE [dbo].[Enrollment] CHECK CONSTRAINT [FK_dbo.Enrollment_dbo.Course_CourseID]
-GO
-IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_dbo.Enrollment_dbo.Person_StudentID]') AND parent_object_id = OBJECT_ID(N'[dbo].[Enrollment]'))
-ALTER TABLE [dbo].[Enrollment]  WITH CHECK ADD  CONSTRAINT [FK_dbo.Enrollment_dbo.Person_StudentID] FOREIGN KEY([StudentID])
-REFERENCES [dbo].[Person] ([ID])
-ON DELETE CASCADE
-GO
-IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_dbo.Enrollment_dbo.Person_StudentID]') AND parent_object_id = OBJECT_ID(N'[dbo].[Enrollment]'))
-ALTER TABLE [dbo].[Enrollment] CHECK CONSTRAINT [FK_dbo.Enrollment_dbo.Person_StudentID]
-GO
-IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_dbo.OfficeAssignment_dbo.Instructor_InstructorID]') AND parent_object_id = OBJECT_ID(N'[dbo].[OfficeAssignment]'))
-ALTER TABLE [dbo].[OfficeAssignment]  WITH CHECK ADD  CONSTRAINT [FK_dbo.OfficeAssignment_dbo.Instructor_InstructorID] FOREIGN KEY([InstructorID])
-REFERENCES [dbo].[Person] ([ID])
-GO
-IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_dbo.OfficeAssignment_dbo.Instructor_InstructorID]') AND parent_object_id = OBJECT_ID(N'[dbo].[OfficeAssignment]'))
-ALTER TABLE [dbo].[OfficeAssignment] CHECK CONSTRAINT [FK_dbo.OfficeAssignment_dbo.Instructor_InstructorID]
-GO
-/****** Object:  StoredProcedure [dbo].[Department_Delete]    Script Date: 10/21/2016 3:17:28 PM ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Department_Delete]') AND type in (N'P', N'PC'))
+
+-- Create InsertOfficeAssignment stored procedure.
+IF NOT EXISTS (SELECT * FROM sys.objects 
+        WHERE object_id = OBJECT_ID(N'[dbo].[InsertOfficeAssignment]') 
+        AND type in (N'P', N'PC'))
 BEGIN
-EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[Department_Delete] AS' 
+EXEC dbo.sp_executesql @statement = N'
+CREATE PROCEDURE [dbo].[InsertOfficeAssignment]
+        @InstructorID int,
+        @Location nvarchar(50)
+        AS
+        INSERT INTO dbo.OfficeAssignment (InstructorID, Location)
+        VALUES (@InstructorID, @Location);
+        IF @@ROWCOUNT > 0
+        BEGIN
+            SELECT [Timestamp] FROM OfficeAssignment 
+                WHERE InstructorID=@InstructorID;
+        END
+' 
 END
 GO
-ALTER PROCEDURE [dbo].[Department_Delete]
-    @DepartmentID [int],
-    @RowVersion_Original [rowversion]
-AS
+
+--Create the UpdateOfficeAssignment stored procedure.
+IF NOT EXISTS (SELECT * FROM sys.objects 
+        WHERE object_id = OBJECT_ID(N'[dbo].[UpdateOfficeAssignment]') 
+        AND type in (N'P', N'PC'))
 BEGIN
-    DELETE [dbo].[Department]
-    WHERE (([DepartmentID] = @DepartmentID) AND (([RowVersion] = @RowVersion_Original) OR ([RowVersion] IS NULL AND @RowVersion_Original IS NULL)))
+EXEC dbo.sp_executesql @statement = N'
+CREATE PROCEDURE [dbo].[UpdateOfficeAssignment]
+        @InstructorID int,
+        @Location nvarchar(50),
+        @OrigTimestamp timestamp
+        AS
+        UPDATE OfficeAssignment SET Location=@Location 
+        WHERE InstructorID=@InstructorID AND [Timestamp]=@OrigTimestamp;
+        IF @@ROWCOUNT > 0
+        BEGIN
+            SELECT [Timestamp] FROM OfficeAssignment 
+                WHERE InstructorID=@InstructorID;
+        END
+' 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[Department_Insert]    Script Date: 10/21/2016 3:17:28 PM ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Department_Insert]') AND type in (N'P', N'PC'))
+
+-- Create the DeleteOfficeAssignment stored procedure.
+IF NOT EXISTS (SELECT * FROM sys.objects 
+        WHERE object_id = OBJECT_ID(N'[dbo].[DeleteOfficeAssignment]') 
+        AND type in (N'P', N'PC'))
 BEGIN
-EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[Department_Insert] AS' 
+EXEC dbo.sp_executesql @statement = N'
+CREATE PROCEDURE [dbo].[DeleteOfficeAssignment]
+        @InstructorID int
+        AS
+        DELETE FROM OfficeAssignment
+        WHERE InstructorID=@InstructorID;
+' 
 END
 GO
-ALTER PROCEDURE [dbo].[Department_Insert]
-    @Name [nvarchar](50),
-    @Budget [money],
-    @StartDate [datetime],
-    @InstructorID [int]
-AS
+
+-- Create the DeletePerson stored procedure.
+IF NOT EXISTS (SELECT * FROM sys.objects 
+        WHERE object_id = OBJECT_ID(N'[dbo].[DeletePerson]') 
+        AND type in (N'P', N'PC'))
 BEGIN
-    INSERT [dbo].[Department]([Name], [Budget], [StartDate], [InstructorID])
-    VALUES (@Name, @Budget, @StartDate, @InstructorID)
-    
-    DECLARE @DepartmentID int
-    SELECT @DepartmentID = [DepartmentID]
-    FROM [dbo].[Department]
-    WHERE @@ROWCOUNT > 0 AND [DepartmentID] = scope_identity()
-    
-    SELECT t0.[DepartmentID], t0.[RowVersion]
-    FROM [dbo].[Department] AS t0
-    WHERE @@ROWCOUNT > 0 AND t0.[DepartmentID] = @DepartmentID
+EXEC dbo.sp_executesql @statement = N'
+CREATE PROCEDURE [dbo].[DeletePerson]
+        @PersonID int
+        AS
+        DELETE FROM Person WHERE PersonID = @PersonID;
+' 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[Department_Update]    Script Date: 10/21/2016 3:17:28 PM ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Department_Update]') AND type in (N'P', N'PC'))
+
+-- Create the UpdatePerson stored procedure.
+IF NOT EXISTS (SELECT * FROM sys.objects 
+        WHERE object_id = OBJECT_ID(N'[dbo].[UpdatePerson]') 
+        AND type in (N'P', N'PC'))
 BEGIN
-EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[Department_Update] AS' 
+EXEC dbo.sp_executesql @statement = N'
+CREATE PROCEDURE [dbo].[UpdatePerson]
+        @PersonID int,
+        @LastName nvarchar(50),
+        @FirstName nvarchar(50),
+        @HireDate datetime,
+        @EnrollmentDate datetime
+        AS
+        UPDATE Person SET LastName=@LastName, 
+                FirstName=@FirstName,
+                HireDate=@HireDate,
+                EnrollmentDate=@EnrollmentDate
+        WHERE PersonID=@PersonID;
+' 
 END
 GO
-ALTER PROCEDURE [dbo].[Department_Update]
-    @DepartmentID [int],
-    @Name [nvarchar](50),
-    @Budget [money],
-    @StartDate [datetime],
-    @InstructorID [int],
-    @RowVersion_Original [rowversion]
-AS
+
+-- Create the InsertPerson stored procedure.
+IF NOT EXISTS (SELECT * FROM sys.objects 
+        WHERE object_id = OBJECT_ID(N'[dbo].[InsertPerson]') 
+        AND type in (N'P', N'PC'))
 BEGIN
-    UPDATE [dbo].[Department]
-    SET [Name] = @Name, [Budget] = @Budget, [StartDate] = @StartDate, [InstructorID] = @InstructorID
-    WHERE (([DepartmentID] = @DepartmentID) AND (([RowVersion] = @RowVersion_Original) OR ([RowVersion] IS NULL AND @RowVersion_Original IS NULL)))
-    
-    SELECT t0.[RowVersion]
-    FROM [dbo].[Department] AS t0
-    WHERE @@ROWCOUNT > 0 AND t0.[DepartmentID] = @DepartmentID
+EXEC dbo.sp_executesql @statement = N'
+CREATE PROCEDURE [dbo].[InsertPerson]
+        @LastName nvarchar(50),
+        @FirstName nvarchar(50),
+        @HireDate datetime,
+        @EnrollmentDate datetime
+        AS
+        INSERT INTO dbo.Person (LastName, 
+                    FirstName, 
+                    HireDate, 
+                    EnrollmentDate)
+        VALUES (@LastName, 
+            @FirstName, 
+            @HireDate, 
+            @EnrollmentDate);
+        SELECT SCOPE_IDENTITY() as NewPersonID;
+' 
 END
+GO
+
+-- Create GetStudentGrades stored procedure.
+IF NOT EXISTS (SELECT * FROM sys.objects 
+            WHERE object_id = OBJECT_ID(N'[dbo].[GetStudentGrades]') 
+            AND type in (N'P', N'PC'))
+BEGIN
+EXEC dbo.sp_executesql @statement = N'
+CREATE PROCEDURE [dbo].[GetStudentGrades]
+            @StudentID int
+            AS
+            SELECT EnrollmentID, Grade, CourseID, StudentID FROM dbo.StudentGrade
+            WHERE StudentID = @StudentID
+' 
+END
+GO
+
+-- Create GetDepartmentName stored procedure.
+IF NOT EXISTS (SELECT * FROM sys.objects 
+            WHERE object_id = OBJECT_ID(N'[dbo].[GetDepartmentName]') 
+            AND type in (N'P', N'PC'))
+BEGIN
+EXEC dbo.sp_executesql @statement = N'
+CREATE PROCEDURE [dbo].[GetDepartmentName]
+      @ID int,
+      @Name nvarchar(50) OUTPUT
+      AS
+      SELECT @Name = Name FROM Department
+      WHERE DepartmentID = @ID
+'
+END
+GO
+
+-- Insert data into the Person table.
+USE School
+GO
+SET IDENTITY_INSERT dbo.Person ON
+GO
+INSERT INTO dbo.Person (PersonID, LastName, FirstName, HireDate, EnrollmentDate)
+VALUES (1, 'Abercrombie', 'Kim', '1995-03-11', null);
+INSERT INTO dbo.Person (PersonID, LastName, FirstName, HireDate, EnrollmentDate)
+VALUES (2, 'Barzdukas', 'Gytis', null, '2005-09-01');
+INSERT INTO dbo.Person (PersonID, LastName, FirstName, HireDate, EnrollmentDate)
+VALUES (3, 'Justice', 'Peggy', null, '2001-09-01');
+INSERT INTO dbo.Person (PersonID, LastName, FirstName, HireDate, EnrollmentDate)
+VALUES (4, 'Fakhouri', 'Fadi', '2002-08-06', null);
+INSERT INTO dbo.Person (PersonID, LastName, FirstName, HireDate, EnrollmentDate)
+VALUES (5, 'Harui', 'Roger', '1998-07-01', null);
+INSERT INTO dbo.Person (PersonID, LastName, FirstName, HireDate, EnrollmentDate)
+VALUES (6, 'Li', 'Yan', null, '2002-09-01');
+INSERT INTO dbo.Person (PersonID, LastName, FirstName, HireDate, EnrollmentDate)
+VALUES (7, 'Norman', 'Laura', null, '2003-09-01');
+INSERT INTO dbo.Person (PersonID, LastName, FirstName, HireDate, EnrollmentDate)
+VALUES (8, 'Olivotto', 'Nino', null, '2005-09-01');
+INSERT INTO dbo.Person (PersonID, LastName, FirstName, HireDate, EnrollmentDate)
+VALUES (9, 'Tang', 'Wayne', null, '2005-09-01');
+INSERT INTO dbo.Person (PersonID, LastName, FirstName, HireDate, EnrollmentDate)
+VALUES (10, 'Alonso', 'Meredith', null, '2002-09-01');
+INSERT INTO dbo.Person (PersonID, LastName, FirstName, HireDate, EnrollmentDate)
+VALUES (11, 'Lopez', 'Sophia', null, '2004-09-01');
+INSERT INTO dbo.Person (PersonID, LastName, FirstName, HireDate, EnrollmentDate)
+VALUES (12, 'Browning', 'Meredith', null, '2000-09-01');
+INSERT INTO dbo.Person (PersonID, LastName, FirstName, HireDate, EnrollmentDate)
+VALUES (13, 'Anand', 'Arturo', null, '2003-09-01');
+INSERT INTO dbo.Person (PersonID, LastName, FirstName, HireDate, EnrollmentDate)
+VALUES (14, 'Walker', 'Alexandra', null, '2000-09-01');
+INSERT INTO dbo.Person (PersonID, LastName, FirstName, HireDate, EnrollmentDate)
+VALUES (15, 'Powell', 'Carson', null, '2004-09-01');
+INSERT INTO dbo.Person (PersonID, LastName, FirstName, HireDate, EnrollmentDate)
+VALUES (16, 'Jai', 'Damien', null, '2001-09-01');
+INSERT INTO dbo.Person (PersonID, LastName, FirstName, HireDate, EnrollmentDate)
+VALUES (17, 'Carlson', 'Robyn', null, '2005-09-01');
+INSERT INTO dbo.Person (PersonID, LastName, FirstName, HireDate, EnrollmentDate)
+VALUES (18, 'Zheng', 'Roger', '2004-02-12', null);
+INSERT INTO dbo.Person (PersonID, LastName, FirstName, HireDate, EnrollmentDate)
+VALUES (19, 'Bryant', 'Carson', null, '2001-09-01');
+INSERT INTO dbo.Person (PersonID, LastName, FirstName, HireDate, EnrollmentDate)
+VALUES (20, 'Suarez', 'Robyn', null, '2004-09-01');
+INSERT INTO dbo.Person (PersonID, LastName, FirstName, HireDate, EnrollmentDate)
+VALUES (21, 'Holt', 'Roger', null, '2004-09-01');
+INSERT INTO dbo.Person (PersonID, LastName, FirstName, HireDate, EnrollmentDate)
+VALUES (22, 'Alexander', 'Carson', null, '2005-09-01');
+INSERT INTO dbo.Person (PersonID, LastName, FirstName, HireDate, EnrollmentDate)
+VALUES (23, 'Morgan', 'Isaiah', null, '2001-09-01');
+INSERT INTO dbo.Person (PersonID, LastName, FirstName, HireDate, EnrollmentDate)
+VALUES (24, 'Martin', 'Randall', null, '2005-09-01');
+INSERT INTO dbo.Person (PersonID, LastName, FirstName, HireDate, EnrollmentDate)
+VALUES (25, 'Kapoor', 'Candace', '2001-01-15', null);
+INSERT INTO dbo.Person (PersonID, LastName, FirstName, HireDate, EnrollmentDate)
+VALUES (26, 'Rogers', 'Cody', null, '2002-09-01');
+INSERT INTO dbo.Person (PersonID, LastName, FirstName, HireDate, EnrollmentDate)
+VALUES (27, 'Serrano', 'Stacy', '1999-06-01', null);
+INSERT INTO dbo.Person (PersonID, LastName, FirstName, HireDate, EnrollmentDate)
+VALUES (28, 'White', 'Anthony', null, '2001-09-01');
+INSERT INTO dbo.Person (PersonID, LastName, FirstName, HireDate, EnrollmentDate)
+VALUES (29, 'Griffin', 'Rachel', null, '2004-09-01');
+INSERT INTO dbo.Person (PersonID, LastName, FirstName, HireDate, EnrollmentDate)
+VALUES (30, 'Shan', 'Alicia', null, '2003-09-01');
+INSERT INTO dbo.Person (PersonID, LastName, FirstName, HireDate, EnrollmentDate)
+VALUES (31, 'Stewart', 'Jasmine', '1997-10-12', null);
+INSERT INTO dbo.Person (PersonID, LastName, FirstName, HireDate, EnrollmentDate)
+VALUES (32, 'Xu', 'Kristen', '2001-7-23', null);
+INSERT INTO dbo.Person (PersonID, LastName, FirstName, HireDate, EnrollmentDate)
+VALUES (33, 'Gao', 'Erica', null, '2003-01-30');
+INSERT INTO dbo.Person (PersonID, LastName, FirstName, HireDate, EnrollmentDate)
+VALUES (34, 'Van Houten', 'Roger', '2000-12-07', null);
+GO
+SET IDENTITY_INSERT dbo.Person OFF
+GO
+
+-- Insert data into the Department table.
+INSERT INTO dbo.Department (DepartmentID, [Name], Budget, StartDate, Administrator)
+VALUES (1, 'Engineering', 350000.00, '2007-09-01', 2);
+INSERT INTO dbo.Department (DepartmentID, [Name], Budget, StartDate, Administrator)
+VALUES (2, 'English', 120000.00, '2007-09-01', 6);
+INSERT INTO dbo.Department (DepartmentID, [Name], Budget, StartDate, Administrator)
+VALUES (4, 'Economics', 200000.00, '2007-09-01', 4);
+INSERT INTO dbo.Department (DepartmentID, [Name], Budget, StartDate, Administrator)
+VALUES (7, 'Mathematics', 250000.00, '2007-09-01', 3);
+GO
+
+
+-- Insert data into the Course table.
+INSERT INTO dbo.Course (CourseID, Title, Credits, DepartmentID)
+VALUES (1050, 'Chemistry', 4, 1);
+INSERT INTO dbo.Course (CourseID, Title, Credits, DepartmentID)
+VALUES (1061, 'Physics', 4, 1);
+INSERT INTO dbo.Course (CourseID, Title, Credits, DepartmentID)
+VALUES (1045, 'Calculus', 4, 7);
+INSERT INTO dbo.Course (CourseID, Title, Credits, DepartmentID)
+VALUES (2030, 'Poetry', 2, 2);
+INSERT INTO dbo.Course (CourseID, Title, Credits, DepartmentID)
+VALUES (2021, 'Composition', 3, 2);
+INSERT INTO dbo.Course (CourseID, Title, Credits, DepartmentID)
+VALUES (2042, 'Literature', 4, 2);
+INSERT INTO dbo.Course (CourseID, Title, Credits, DepartmentID)
+VALUES (4022, 'Microeconomics', 3, 4);
+INSERT INTO dbo.Course (CourseID, Title, Credits, DepartmentID)
+VALUES (4041, 'Macroeconomics', 3, 4);
+INSERT INTO dbo.Course (CourseID, Title, Credits, DepartmentID)
+VALUES (4061, 'Quantitative', 2, 4);
+INSERT INTO dbo.Course (CourseID, Title, Credits, DepartmentID)
+VALUES (3141, 'Trigonometry', 4, 7);
+GO
+
+-- Insert data into the OnlineCourse table.
+INSERT INTO dbo.OnlineCourse (CourseID, URL)
+VALUES (2030, 'http://www.fineartschool.net/Poetry');
+INSERT INTO dbo.OnlineCourse (CourseID, URL)
+VALUES (2021, 'http://www.fineartschool.net/Composition');
+INSERT INTO dbo.OnlineCourse (CourseID, URL)
+VALUES (4041, 'http://www.fineartschool.net/Macroeconomics');
+INSERT INTO dbo.OnlineCourse (CourseID, URL)
+VALUES (3141, 'http://www.fineartschool.net/Trigonometry');
+
+--Insert data into OnsiteCourse table.
+INSERT INTO dbo.OnsiteCourse (CourseID, Location, Days, [Time])
+VALUES (1050, '123 Smith', 'MTWH', '11:30');
+INSERT INTO dbo.OnsiteCourse (CourseID, Location, Days, [Time])
+VALUES (1061, '234 Smith', 'TWHF', '13:15');
+INSERT INTO dbo.OnsiteCourse (CourseID, Location, Days, [Time])
+VALUES (1045, '121 Smith','MWHF', '15:30');
+INSERT INTO dbo.OnsiteCourse (CourseID, Location, Days, [Time])
+VALUES (4061, '22 Williams', 'TH', '11:15');
+INSERT INTO dbo.OnsiteCourse (CourseID, Location, Days, [Time])
+VALUES (2042, '225 Adams', 'MTWH', '11:00');
+INSERT INTO dbo.OnsiteCourse (CourseID, Location, Days, [Time])
+VALUES (4022, '23 Williams', 'MWF', '9:00');
+
+-- Insert data into the CourseInstructor table.
+INSERT INTO dbo.CourseInstructor(CourseID, PersonID)
+VALUES (1050, 1);
+INSERT INTO dbo.CourseInstructor(CourseID, PersonID)
+VALUES (1061, 31);
+INSERT INTO dbo.CourseInstructor(CourseID, PersonID)
+VALUES (1045, 5);
+INSERT INTO dbo.CourseInstructor(CourseID, PersonID)
+VALUES (2030, 4);
+INSERT INTO dbo.CourseInstructor(CourseID, PersonID)
+VALUES (2021, 27);
+INSERT INTO dbo.CourseInstructor(CourseID, PersonID)
+VALUES (2042, 25);
+INSERT INTO dbo.CourseInstructor(CourseID, PersonID)
+VALUES (4022, 18);
+INSERT INTO dbo.CourseInstructor(CourseID, PersonID)
+VALUES (4041, 32);
+INSERT INTO dbo.CourseInstructor(CourseID, PersonID)
+VALUES (4061, 34);
+GO
+
+--Insert data into the OfficeAssignment table.
+INSERT INTO dbo.OfficeAssignment(InstructorID, Location)
+VALUES (1, '17 Smith');
+INSERT INTO dbo.OfficeAssignment(InstructorID, Location)
+VALUES (4, '29 Adams');
+INSERT INTO dbo.OfficeAssignment(InstructorID, Location)
+VALUES (5, '37 Williams');
+INSERT INTO dbo.OfficeAssignment(InstructorID, Location)
+VALUES (18, '143 Smith');
+INSERT INTO dbo.OfficeAssignment(InstructorID, Location)
+VALUES (25, '57 Adams');
+INSERT INTO dbo.OfficeAssignment(InstructorID, Location)
+VALUES (27, '271 Williams');
+INSERT INTO dbo.OfficeAssignment(InstructorID, Location)
+VALUES (31, '131 Smith');
+INSERT INTO dbo.OfficeAssignment(InstructorID, Location)
+VALUES (32, '203 Williams');
+INSERT INTO dbo.OfficeAssignment(InstructorID, Location)
+VALUES (34, '213 Smith');
+
+-- Insert data into the StudentGrade table.
+INSERT INTO dbo.StudentGrade (CourseID, StudentID, Grade)
+VALUES (2021, 2, 4);
+INSERT INTO dbo.StudentGrade (CourseID, StudentID, Grade)
+VALUES (2030, 2, 3.5);
+INSERT INTO dbo.StudentGrade (CourseID, StudentID, Grade)
+VALUES (2021, 3, 3);
+INSERT INTO dbo.StudentGrade (CourseID, StudentID, Grade)
+VALUES (2030, 3, 4);
+INSERT INTO dbo.StudentGrade (CourseID, StudentID, Grade)
+VALUES (2021, 6, 2.5);
+INSERT INTO dbo.StudentGrade (CourseID, StudentID, Grade)
+VALUES (2042, 6, 3.5);
+INSERT INTO dbo.StudentGrade (CourseID, StudentID, Grade)
+VALUES (2021, 7, 3.5);
+INSERT INTO dbo.StudentGrade (CourseID, StudentID, Grade)
+VALUES (2042, 7, 4);
+INSERT INTO dbo.StudentGrade (CourseID, StudentID, Grade)
+VALUES (2021, 8, 3);
+INSERT INTO dbo.StudentGrade (CourseID, StudentID, Grade)
+VALUES (2042, 8, 3);
+INSERT INTO dbo.StudentGrade (CourseID, StudentID, Grade)
+VALUES (4041, 9, 3.5);
+INSERT INTO dbo.StudentGrade (CourseID, StudentID, Grade)
+VALUES (4041, 10, null);
+INSERT INTO dbo.StudentGrade (CourseID, StudentID, Grade)
+VALUES (4041, 11, 2.5);
+INSERT INTO dbo.StudentGrade (CourseID, StudentID, Grade)
+VALUES (4041, 12, null);
+INSERT INTO dbo.StudentGrade (CourseID, StudentID, Grade)
+VALUES (4061, 12, null);
+INSERT INTO dbo.StudentGrade (CourseID, StudentID, Grade)
+VALUES (4022, 14, 3);
+INSERT INTO dbo.StudentGrade (CourseID, StudentID, Grade)
+VALUES (4022, 13, 4);
+INSERT INTO dbo.StudentGrade (CourseID, StudentID, Grade)
+VALUES (4061, 13, 4);
+INSERT INTO dbo.StudentGrade (CourseID, StudentID, Grade)
+VALUES (4041, 14, 3);
+INSERT INTO dbo.StudentGrade (CourseID, StudentID, Grade)
+VALUES (4022, 15, 2.5);
+INSERT INTO dbo.StudentGrade (CourseID, StudentID, Grade)
+VALUES (4022, 16, 2);
+INSERT INTO dbo.StudentGrade (CourseID, StudentID, Grade)
+VALUES (4022, 17, null);
+INSERT INTO dbo.StudentGrade (CourseID, StudentID, Grade)
+VALUES (4022, 19, 3.5);
+INSERT INTO dbo.StudentGrade (CourseID, StudentID, Grade)
+VALUES (4061, 20, 4);
+INSERT INTO dbo.StudentGrade (CourseID, StudentID, Grade)
+VALUES (4061, 21, 2);
+INSERT INTO dbo.StudentGrade (CourseID, StudentID, Grade)
+VALUES (4022, 22, 3);
+INSERT INTO dbo.StudentGrade (CourseID, StudentID, Grade)
+VALUES (4041, 22, 3.5);
+INSERT INTO dbo.StudentGrade (CourseID, StudentID, Grade)
+VALUES (4061, 22, 2.5);
+INSERT INTO dbo.StudentGrade (CourseID, StudentID, Grade)
+VALUES (4022, 23, 3);
+INSERT INTO dbo.StudentGrade (CourseID, StudentID, Grade)
+VALUES (1045, 23, 1.5);
+INSERT INTO dbo.StudentGrade (CourseID, StudentID, Grade)
+VALUES (1061, 24, 4);
+INSERT INTO dbo.StudentGrade (CourseID, StudentID, Grade)
+VALUES (1061, 25, 3);
+INSERT INTO dbo.StudentGrade (CourseID, StudentID, Grade)
+VALUES (1050, 26, 3.5);
+INSERT INTO dbo.StudentGrade (CourseID, StudentID, Grade)
+VALUES (1061, 26, 3);
+INSERT INTO dbo.StudentGrade (CourseID, StudentID, Grade)
+VALUES (1061, 27, 3);
+INSERT INTO dbo.StudentGrade (CourseID, StudentID, Grade)
+VALUES (1045, 28, 2.5);
+INSERT INTO dbo.StudentGrade (CourseID, StudentID, Grade)
+VALUES (1050, 28, 3.5);
+INSERT INTO dbo.StudentGrade (CourseID, StudentID, Grade)
+VALUES (1061, 29, 4);
+INSERT INTO dbo.StudentGrade (CourseID, StudentID, Grade)
+VALUES (1050, 30, 3.5);
+INSERT INTO dbo.StudentGrade (CourseID, StudentID, Grade)
+VALUES (1061, 30, 4);
 GO

@@ -7,4 +7,16 @@
 <ItemGroup>
       <PackageReference Include="Syncfusion.Blazor" Version="18.1.0.52" />
 </ItemGroup>
+
+<ItemGroup>
+  <Folder Include="AdaptorModels\" />
+  <Folder Include="Adaptors\" />
+  <Folder Include="Components\Commons\" />
+  <Folder Include="Components\Pickers\" />
+  <Folder Include="Components\Views\" />
+  <Folder Include="Helpers\" />
+  <Folder Include="Interfaces\" />
+  <Folder Include="Services\" />
+  <Folder Include="RazorModels\" />
+</ItemGroup>
 </Project>

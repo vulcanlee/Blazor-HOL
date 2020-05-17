@@ -14,5 +14,6 @@ namespace SyncfusionLab.AdaptorModels
         public decimal Budget { get; set; }
         public DateTime StartDate { get; set; }
         public int? Administrator { get; set; }
+        public string FullName { get; set; } = "";
     }
 }

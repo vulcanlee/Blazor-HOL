@@ -8,6 +8,7 @@
 @using SyncfusionLab.AdaptorModels
 @inherits DataAdaptor<IDepartmentService>
 @inject IMapper Mapper
+@inject IPersonService PersonService
 
 <CascadingValue Value="@this">
     @ChildContent
@@ -74,6 +75,14 @@
         #region 在這裡進行 轉接器 資料模型 的額外屬性初始化
         foreach (var adaptorModelItem in adaptorModelObjects)
         {
+            if (adaptorModelItem.Administrator.HasValue)
+            {
+                var itemReference = await PersonService.GetAsync(adaptorModelItem.Administrator.Value);
+                if (itemReference != null)
+                {
+                    adaptorModelItem.FullName = $"{itemReference.FirstName} {itemReference.LastName}";
+                }
+            }
         }
         #endregion
 

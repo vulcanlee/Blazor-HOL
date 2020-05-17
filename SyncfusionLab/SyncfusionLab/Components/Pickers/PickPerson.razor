@@ -1,0 +1,95 @@
+﻿@using System.Threading
+@using Syncfusion.Blazor
+@using Syncfusion.Blazor.Buttons
+@using Syncfusion.Blazor.Data
+@using Syncfusion.Blazor.Grids
+@using Syncfusion.Blazor.Popups
+@using Syncfusion.Blazor.Inputs
+@using Syncfusion.Blazor.Calendars
+@using SyncfusionLab.Adaptors
+@using SyncfusionLab.Services
+@using SyncfusionLab.Components.Commons
+@using SyncfusionLab.AdaptorModels
+@using EFCoreModel.Models
+@inject IPersonService CurrentService
+@inject SchoolContext SchoolContext
+
+<SfDialog @bind-Visible="@OpenPicker" Width="800px" Height="600" IsModal="true">
+    <DialogTemplates>
+        <Header>@DialogTitle</Header>
+        <Content>
+            <SfGrid @ref="GridDialog" TValue="PersonAdaptorModel"
+                    AllowPaging="true"
+                    Toolbar="@(new List<string>() { "Search" })">
+                <SfDataManager Adaptor="Adaptors.CustomAdaptor">
+                    <PersonAdaptor></PersonAdaptor>
+                </SfDataManager>
+                <GridSelectionSettings Type="SelectionType.Single"></GridSelectionSettings>
+                <GridEvents RowSelected="GetSelectedRecords" TValue="PersonAdaptorModel"></GridEvents>
+                <GridPageSettings PageSize="8"></GridPageSettings>
+                <GridSearchSettings Fields="@(new string[] { "FirstName", "LastName" })" Operator=Syncfusion.Blazor.Operator.Contains IgnoreCase="true"></GridSearchSettings>
+                <GridColumns>
+                    <GridColumn Field=@nameof(PersonAdaptorModel.FullName) HeaderText="姓名" Width="150"></GridColumn>
+                    <GridColumn Field=@nameof(PersonAdaptorModel.Kind) HeaderText="類型" Width="70" Format="yyyy-MM-dd"></GridColumn>
+                    <GridColumn Field=@nameof(PersonAdaptorModel.EnrollmentDate) HeaderText="註冊日期" Width="100" Format="yyyy-MM-dd"></GridColumn>
+                    <GridColumn Field=@nameof(PersonAdaptorModel.HireDate) HeaderText="雇用日期" Width="100" Format="yyyy-MM-dd"></GridColumn>
+                </GridColumns>
+            </SfGrid>
+        </Content>
+        <FooterTemplate>
+            <button @onclick="@OnPickerOK" class='btn btn-primary'>確認</button>
+            <button @onclick="@OnPickerCancel" class='btn btn-secondary'>取消</button>
+        </FooterTemplate>
+    </DialogTemplates>
+    <DialogPositionData X="center" Y="center"></DialogPositionData>
+</SfDialog>
+
+<MessageBox Height="400" Width="600" IsVisible="@ShowMessageBox"
+            Title="@MessageBoxTitle" Message="@MessageBoxBody"
+            Callback="x=>ShowMessageBox =false" />
+
+<DialogBackground />
+
+@code{
+    SfGrid<PersonAdaptorModel> GridDialog;
+    [Parameter]
+    public bool OpenPicker { get; set; } = false;
+    string DialogTitle = "請選取人員紀錄";
+    PersonAdaptorModel CurrentRecord;
+    [Parameter]
+    public EventCallback<PersonAdaptorModel> OnConfirmCallback { get; set; }
+    public bool ShowMessageBox { get; set; } = false;
+    public string MessageBoxBody { get; set; } = "";
+    public string MessageBoxTitle { get; set; } = "";
+
+    protected override void OnInitialized()
+    {
+    }
+
+    public void ShowDialog()
+    {
+        OpenPicker = true;
+    }
+
+    async Task OnPickerOK()
+    {
+        if (CurrentRecord != null)
+        {
+            await OnConfirmCallback.InvokeAsync(CurrentRecord);
+        }
+        else
+        {
+            MessageBoxTitle = "通知訊息";
+            MessageBoxBody = "請選取一筆紀錄";
+            ShowMessageBox = true;
+        }
+    }
+    async Task OnPickerCancel()
+    {
+        await OnConfirmCallback.InvokeAsync(null);
+    }
+    public void GetSelectedRecords(RowSelectEventArgs<PersonAdaptorModel> args)
+    {
+        CurrentRecord = args.Data as PersonAdaptorModel;
+    }
+}

@@ -32,6 +32,7 @@ namespace SyncfusionLab.RazorModels
         public DepartmentAdaptorModel CurrentRecord { get; set; } = new DepartmentAdaptorModel();
         public DepartmentAdaptorModel CurrentNeedDeleteRecord { get; set; } = new DepartmentAdaptorModel();
         public EditContext LocalEditContext { get; set; }
+        public bool ShowAontherRecordPicker { get; set; } = false;
 
 
         #region 訊息說明之對話窗使用的變數
@@ -43,7 +44,6 @@ namespace SyncfusionLab.RazorModels
         #endregion
 
         #region Field
-        public bool ShowAontherRecordPicker { get; set; } = false;
         bool isNewRecordMode;
         private readonly IDepartmentService CurrentService;
         private readonly SchoolContext SchoolContext;
@@ -141,6 +141,19 @@ namespace SyncfusionLab.RazorModels
         {
             LocalEditContext = context;
         }
+
+        #region 開窗選取紀錄使用到的方法
+        public void OnPickerCompletion(PersonAdaptorModel e)
+        {
+            if (e != null)
+            {
+                CurrentRecord.Administrator = e.PersonId;
+                CurrentRecord.FullName = e.FullName;
+            }
+            ShowAontherRecordPicker = false;
+        }
+
+        #endregion
         #endregion
     }
 }

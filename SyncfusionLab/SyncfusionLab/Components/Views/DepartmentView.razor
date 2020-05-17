@@ -14,11 +14,12 @@
 @using SyncfusionLab.RazorModels
 @using SyncfusionLab.Interfaces
 @using SyncfusionLab.Components.Commons
+@using SyncfusionLab.Components.Pickers
 @inject DepartmentRazorModel RazorModel
 @implements IRazorPage
 
 <SfGrid @ref="Grid" TValue="DepartmentAdaptorModel"
-        AllowPaging="true" 
+        AllowPaging="true"
         Toolbar="@(new List<string>() { "新增","Search" })">
     <SfDataManager Adaptor="Adaptors.CustomAdaptor">
         <DepartmentAdaptor></DepartmentAdaptor>
@@ -26,12 +27,13 @@
     <GridEvents CommandClicked="RazorModel.OnCommandClicked" TValue="DepartmentAdaptorModel"
                 OnToolbarClick="RazorModel.ToolbarClickHandler" />
     <GridPageSettings PageSize="15" />
-    <GridSearchSettings Fields="@(new string[] { "FirstName","LastName" })"
+    <GridSearchSettings Fields="@(new string[] { "Name"})"
                         Operator=Syncfusion.Blazor.Operator.Contains IgnoreCase="true" />
     <GridColumns>
         <GridColumn Field=@nameof(DepartmentAdaptorModel.Name) HeaderText="名稱" Width="150"></GridColumn>
         <GridColumn Field=@nameof(DepartmentAdaptorModel.Budget) HeaderText="預算" Width="70"></GridColumn>
         <GridColumn Field=@nameof(DepartmentAdaptorModel.StartDate) HeaderText="開始時間" Width="100" Format="yyyy-MM-dd"></GridColumn>
+        <GridColumn Field=@nameof(DepartmentAdaptorModel.FullName) HeaderText="管理者" Width="100" Format="yyyy-MM-dd"></GridColumn>
         <GridColumn HeaderText="命令" Width="150" TextAlign="@TextAlign.Center">
             <GridCommandColumns>
                 <GridCommandColumn ButtonOption="@(new CommandButtonOptions() { Content = "修改", CssClass = "e-flat" })"></GridCommandColumn>
@@ -79,6 +81,12 @@
                         </div>
                     </div>
 
+                    <div class="form-row">
+                        <div class="form-group col">
+                            <label for="MPersonName" class="control-label">管理者 <span class="oi oi-question-mark" @onclick="RazorModel.OnOpenPicker"></span></label>
+                            <SfTextBox Value="@RazorModel.CurrentRecord.FullName" Enabled="false"></SfTextBox>
+                        </div>
+                    </div>
                 </div>
             </EditForm>
         </Content>
@@ -91,6 +99,9 @@
     </DialogTemplates>
     <DialogPositionData X="center" Y="center"></DialogPositionData>
 </SfDialog>
+
+<PickPerson OpenPicker="RazorModel.ShowAontherRecordPicker" OnConfirmCallback="x=>RazorModel.OnPickerCompletion(x)"></PickPerson>
+
 
 <MessageBox Height="@RazorModel.MessageBox.Height" Width="@RazorModel.MessageBox.Width"
             IsVisible="@RazorModel.MessageBox.IsVisible"

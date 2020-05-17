@@ -54,6 +54,7 @@ namespace SyncfusionLab
 
             #region µù¥U Razor Model
             services.AddScoped<PersonRazorModel>();
+            services.AddScoped<DepartmentRazorModel>();
             #endregion
         }
 

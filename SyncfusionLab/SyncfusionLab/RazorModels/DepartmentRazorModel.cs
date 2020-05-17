@@ -141,17 +141,6 @@ namespace SyncfusionLab.RazorModels
         {
             LocalEditContext = context;
         }
-
-        public void SortTest()
-        {
-            Grid.SortSettings.Columns = new List<GridSortColumn>();
-            Grid.SortSettings.Columns.Add(new GridSortColumn()
-            {
-                Field = "LastName",
-                Direction = SortDirection.Ascending
-            });
-            Grid.Refresh();
-        }
         #endregion
     }
 }

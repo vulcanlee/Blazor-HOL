@@ -71,10 +71,10 @@
                     <div class="form-row">
                         <div class="form-group col">
                             <label class="control-label">開始日期</label>
-                            <SfDatePicker @bind-Value="RazorModel.CurrentRecord.StartDate"></SfDatePicker>
+                            <SfDatePicker @bind-Value="RazorModel.CurrentRecord.StartDate" Format="yyyy-MM-dd"></SfDatePicker>
                             <ValidationMessage For="@(() => RazorModel.CurrentRecord.StartDate)" />
                             <label class="control-label">開始時間</label>
-                            <SfTimePicker @bind-Value="RazorModel.CurrentRecord.StartDate"></SfTimePicker>
+                            <SfTimePicker @bind-Value="RazorModel.CurrentRecord.StartDate" Format="HH:mm:ss"></SfTimePicker>
                             <ValidationMessage For="@(() => RazorModel.CurrentRecord.StartDate)" />
                         </div>
                     </div>

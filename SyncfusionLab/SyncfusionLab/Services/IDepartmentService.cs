@@ -6,10 +6,10 @@ namespace SyncfusionLab.Services
 {
     public interface IDepartmentService
     {
-        Task<bool> AddAsync(Person paraObject);
-        Task<bool> DeleteAsync(Person paraObject);
-        Task<IQueryable<Person>> GetAsync();
-        Task<Person> GetAsync(int id);
-        Task<bool> UpdateAsync(Person paraObject);
+        Task<bool> AddAsync(Department paraObject);
+        Task<bool> DeleteAsync(Department paraObject);
+        Task<IQueryable<Department>> GetAsync();
+        Task<Department> GetAsync(int id);
+        Task<bool> UpdateAsync(Department paraObject);
     }
 }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 namespace SyncfusionLab.AdaptorModels
 {
     using System.ComponentModel.DataAnnotations;
-    public class DepartmentAdapterModel
+    public class DepartmentAdaptorModel
     {
         public int DepartmentId { get; set; }
         [Required(ErrorMessage = "名稱 欄位必須要輸入值")]

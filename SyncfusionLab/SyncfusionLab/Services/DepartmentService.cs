@@ -17,30 +17,30 @@ namespace SyncfusionLab.Services
             this.context = context;
         }
 
-        public Task<IQueryable<Person>> GetAsync()
+        public Task<IQueryable<Department>> GetAsync()
         {
-            return Task.FromResult(context.Person
+            return Task.FromResult(context.Department
                 .AsNoTracking().AsQueryable());
         }
 
-        public async Task<Person> GetAsync(int id)
+        public async Task<Department> GetAsync(int id)
         {
-            Person item = await context.Person
-                .FirstOrDefaultAsync(x => x.PersonId == id);
+            Department item = await context.Department
+                .FirstOrDefaultAsync(x => x.DepartmentId == id);
             return item;
         }
 
-        public async Task<bool> AddAsync(Person paraObject)
+        public async Task<bool> AddAsync(Department paraObject)
         {
-            await context.Person.AddAsync(paraObject);
+            await context.Department.AddAsync(paraObject);
             await context.SaveChangesAsync();
             return true;
         }
 
-        public async Task<bool> UpdateAsync(Person paraObject)
+        public async Task<bool> UpdateAsync(Department paraObject)
         {
-            Person item = await context.Person
-                .FirstOrDefaultAsync(x => x.PersonId == paraObject.PersonId);
+            Department item = await context.Department
+                .FirstOrDefaultAsync(x => x.DepartmentId == paraObject.DepartmentId);
             if (item == null)
             {
                 return false;
@@ -51,9 +51,9 @@ namespace SyncfusionLab.Services
                 //context.Entry(paraObject).State = EntityState.Modified;
                 #endregion
                 // 
-                var local = context.Set<Person>()
+                var local = context.Set<Department>()
                     .Local
-                    .FirstOrDefault(entry => entry.PersonId.Equals(paraObject.PersonId));
+                    .FirstOrDefault(entry => entry.DepartmentId.Equals(paraObject.DepartmentId));
 
                 // check if local is not null 
                 if (local != null)
@@ -71,17 +71,17 @@ namespace SyncfusionLab.Services
 
         }
 
-        public async Task<bool> DeleteAsync(Person paraObject)
+        public async Task<bool> DeleteAsync(Department paraObject)
         {
-            Person item = await context.Person
-                .FirstOrDefaultAsync(x => x.PersonId == paraObject.PersonId);
+            Department item = await context.Department
+                .FirstOrDefaultAsync(x => x.DepartmentId == paraObject.DepartmentId);
             if (item == null)
             {
                 return false;
             }
             else
             {
-                context.Person.Remove(item);
+                context.Department.Remove(item);
                 await context.SaveChangesAsync();
                 return true;
             }

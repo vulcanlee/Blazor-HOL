@@ -26,16 +26,16 @@ Scaffold-DbContext "Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=School;In
 
 * Department
 * DepartmentService
-* DepartmentAdapterModel
-* DepartmentAdapter
+* DepartmentAdaptorModel
+* DepartmentAdaptor
 * DepartmentRazorModel
 * DepartmentView
 * DepartmentPage
 
 * 建立 Department 的服務
-* 建立 Department 轉接器 Adapter Data Model 資料模型
-* 建立 Department 服務與 Grid 元件要用到的 Adapter Component 轉接器元件
-* 建立 Department 頁面要用到的 Razor Data Model 資料模型
+* 建立 Department 轉接器 資料模型 Adaptor Data Model
+* 建立 Department 服務與 Grid 元件要用到的 轉接器元件 Adaptor Component
+* 建立 Department 頁面要用到的 Razor 資料模型 Razor Data Model
 * 建立 Department CRUD 的 View 元件
 * 建立 Department CRUD 的 Page 頁面
 

@@ -18,41 +18,52 @@
     [JsonIgnore]
     public RenderFragment ChildContent { get; set; }
 
+    /// <summary>
+    /// 透過 Service 使用 Entity Framework Core 來讀取資料庫內的紀錄出來
+    /// </summary>
+    /// <param name="dataManagerRequest"></param>
+    /// <param name="key"></param>
+    /// <returns></returns>
     public override async Task<object> ReadAsync(DataManagerRequest dataManagerRequest, string key = null)
     {
         IQueryable<Person> DataSource = await Service.GetAsync();
         if (dataManagerRequest.Search != null && dataManagerRequest.Search.Count > 0)
         {
-            // Searching
+            // 進行搜尋動作
             DataSource = DataOperations.PerformSearching(DataSource, dataManagerRequest.Search);
         }
         if (dataManagerRequest.Sorted != null && dataManagerRequest.Sorted.Count > 0)
         {
-            // Sorting
+            // 進行排序動作
             DataSource = DataOperations.PerformSorting(DataSource, dataManagerRequest.Sorted);
         }
         if (dataManagerRequest.Where != null && dataManagerRequest.Where.Count > 0)
         {
-            // Filtering
+            // 進行過濾動作
             DataSource = DataOperations.PerformFiltering(DataSource, dataManagerRequest.Where, dataManagerRequest.Where[0].Operator);
         }
+
+        // 取得記錄總數量，將要用於分頁元件面板使用
         int count = DataSource.Cast<Person>().Count();
+
+        #region 進行分頁處理
         if (dataManagerRequest.Skip != 0)
         {
-            //Paging
+            //分頁
             DataSource = DataOperations.PerformSkip(DataSource, dataManagerRequest.Skip);
         }
         if (dataManagerRequest.Take != 0)
         {
             DataSource = DataOperations.PerformTake(DataSource, dataManagerRequest.Take);
         }
+        #endregion
 
         #region 想要做 Table Join 的查詢，也可以在這裡進行呼叫
 
         #endregion
 
         List<PersonAdaptorModel> adaptorModelObjects =
-            Mapper.Map<List<PersonAdaptorModel>>(DataSource);
+        Mapper.Map<List<PersonAdaptorModel>>(DataSource);
 
 
         #region 在這裡進行 轉接器 資料模型 的額外屬性初始化

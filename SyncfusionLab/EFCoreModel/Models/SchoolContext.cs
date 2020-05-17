@@ -116,20 +116,17 @@ namespace EFCoreModel.Models
 
             modelBuilder.Entity<OnlineCourse>(entity =>
             {
-                entity.HasKey(e => e.CourseId);
+                entity.Property(e => e.OnlineCourseId).HasColumnName("OnlineCourseID");
 
-                entity.Property(e => e.CourseId)
-                    .HasColumnName("CourseID")
-                    .ValueGeneratedNever();
+                entity.Property(e => e.CourseId).HasColumnName("CourseID");
 
-                entity.Property(e => e.Url)
+                entity.Property(e => e.Title)
                     .IsRequired()
-                    .HasColumnName("URL")
                     .HasMaxLength(100);
 
                 entity.HasOne(d => d.Course)
-                    .WithOne(p => p.OnlineCourse)
-                    .HasForeignKey<OnlineCourse>(d => d.CourseId)
+                    .WithMany(p => p.OnlineCourse)
+                    .HasForeignKey(d => d.CourseId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_OnlineCourse_Course");
             });

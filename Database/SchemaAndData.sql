@@ -85,11 +85,12 @@ IF NOT EXISTS (SELECT * FROM sys.objects
         AND type in (N'U'))
 BEGIN
 CREATE TABLE [dbo].[OnlineCourse](
+    [OnlineCourseID] [int] IDENTITY(1,1) NOT NULL,
     [CourseID] [int] NOT NULL,
-    [URL] [nvarchar](100) NOT NULL,
+    [Title] [nvarchar](100) NOT NULL,
  CONSTRAINT [PK_OnlineCourse] PRIMARY KEY CLUSTERED 
 (
-    [CourseID] ASC
+    [OnlineCourseID] ASC
 )WITH (IGNORE_DUP_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 END
@@ -523,14 +524,34 @@ VALUES (3141, 'Trigonometry', 4, 7);
 GO
 
 -- Insert data into the OnlineCourse table.
-INSERT INTO dbo.OnlineCourse (CourseID, URL)
-VALUES (2030, 'http://www.fineartschool.net/Poetry');
-INSERT INTO dbo.OnlineCourse (CourseID, URL)
-VALUES (2021, 'http://www.fineartschool.net/Composition');
-INSERT INTO dbo.OnlineCourse (CourseID, URL)
-VALUES (4041, 'http://www.fineartschool.net/Macroeconomics');
-INSERT INTO dbo.OnlineCourse (CourseID, URL)
-VALUES (3141, 'http://www.fineartschool.net/Trigonometry');
+INSERT INTO dbo.OnlineCourse (CourseID, Title)
+VALUES (2030, 'http://www.fineartschool.net/Poetry1');
+INSERT INTO dbo.OnlineCourse (CourseID, Title)
+VALUES (2030, 'http://www.fineartschool.net/Poetry2');
+INSERT INTO dbo.OnlineCourse (CourseID, Title)
+VALUES (2030, 'http://www.fineartschool.net/Poetry3');
+INSERT INTO dbo.OnlineCourse (CourseID, Title)
+VALUES (2021, 'http://www.fineartschool.net/Composition1');
+INSERT INTO dbo.OnlineCourse (CourseID, Title)
+VALUES (2021, 'http://www.fineartschool.net/Composition2');
+INSERT INTO dbo.OnlineCourse (CourseID, Title)
+VALUES (2021, 'http://www.fineartschool.net/Composition3');
+INSERT INTO dbo.OnlineCourse (CourseID, Title)
+VALUES (2021, 'http://www.fineartschool.net/Composition4');
+INSERT INTO dbo.OnlineCourse (CourseID, Title)
+VALUES (2021, 'http://www.fineartschool.net/Composition5');
+INSERT INTO dbo.OnlineCourse (CourseID, Title)
+VALUES (4041, 'http://www.fineartschool.net/Macroeconomics1');
+INSERT INTO dbo.OnlineCourse (CourseID, Title)
+VALUES (4041, 'http://www.fineartschool.net/Macroeconomics2');
+INSERT INTO dbo.OnlineCourse (CourseID, Title)
+VALUES (4041, 'http://www.fineartschool.net/Macroeconomics3');
+INSERT INTO dbo.OnlineCourse (CourseID, Title)
+VALUES (4041, 'http://www.fineartschool.net/Macroeconomics4');
+INSERT INTO dbo.OnlineCourse (CourseID, Title)
+VALUES (3141, 'http://www.fineartschool.net/Trigonometry1');
+INSERT INTO dbo.OnlineCourse (CourseID, Title)
+VALUES (3141, 'http://www.fineartschool.net/Trigonometry2');
 
 --Insert data into OnsiteCourse table.
 INSERT INTO dbo.OnsiteCourse (CourseID, Location, Days, [Time])

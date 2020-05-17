@@ -51,19 +51,19 @@
 
         #endregion
 
-        List<PersonAdaptorModel> pageModelObject =
+        List<PersonAdaptorModel> adaptorModelObjects =
             Mapper.Map<List<PersonAdaptorModel>>(DataSource);
 
 
         #region 在這裡進行 轉接器 資料模型 的額外屬性初始化
-        foreach (var itemPageModelObject in pageModelObject)
+        foreach (var adaptorModelItem in adaptorModelObjects)
         {
         }
         #endregion
 
         var item = dataManagerRequest.RequiresCounts
-        ? new DataResult() { Result = pageModelObject, Count = count }
-        : (object)pageModelObject;
+        ? new DataResult() { Result = adaptorModelObjects, Count = count }
+        : (object)adaptorModelObjects;
         await Task.Yield();
         return item;
     }

@@ -18,21 +18,19 @@
 @implements IRazorPage
 
 <SfGrid @ref="Grid" TValue="PersonAdaptorModel"
-        AllowPaging="true" 
-        Toolbar="@(new List<string>() { "新增","Search" })"
-        >
+        AllowPaging="true"
+        Toolbar="@(new List<string>() { "新增","Search" })">
     <SfDataManager Adaptor="Adaptors.CustomAdaptor">
         <PersonAdaptor></PersonAdaptor>
     </SfDataManager>
     <GridEvents CommandClicked="RazorModel.OnCommandClicked" TValue="PersonAdaptorModel"
-                OnToolbarClick="RazorModel.ToolbarClickHandler"
-                />
-    <GridPageSettings PageSize="15"/>
-    <GridSearchSettings Fields="@(new string[] { "FirstName","LastName" })" 
-                        Operator=Syncfusion.Blazor.Operator.Contains IgnoreCase="true"/>
+                OnToolbarClick="RazorModel.ToolbarClickHandler" />
+    <GridPageSettings PageSize="15" />
+    <GridSearchSettings Fields="@(new string[] { "FirstName","LastName" })"
+                        Operator=Syncfusion.Blazor.Operator.Contains IgnoreCase="true" />
     <GridColumns>
-        <GridColumn Field=@nameof(PersonAdaptorModel.FirstName) HeaderText="名" Width="100"></GridColumn>
-        <GridColumn Field=@nameof(PersonAdaptorModel.LastName) HeaderText="姓" Width="100"></GridColumn>
+        <GridColumn Field=@nameof(PersonAdaptorModel.FullName) HeaderText="姓名" Width="150"></GridColumn>
+        <GridColumn Field=@nameof(PersonAdaptorModel.Kind) HeaderText="類型" Width="70" Format="yyyy-MM-dd"></GridColumn>
         <GridColumn Field=@nameof(PersonAdaptorModel.EnrollmentDate) HeaderText="註冊日期" Width="100" Format="yyyy-MM-dd"></GridColumn>
         <GridColumn Field=@nameof(PersonAdaptorModel.HireDate) HeaderText="雇用日期" Width="100" Format="yyyy-MM-dd"></GridColumn>
         <GridColumn HeaderText="命令" Width="150" TextAlign="@TextAlign.Center">

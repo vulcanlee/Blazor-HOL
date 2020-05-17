@@ -112,10 +112,22 @@ namespace SyncfusionLab.RazorModels
 
         public async Task HandleValidSubmit()
         {
+            #region 進行 Form Validation 檢查驗證作業
             if (LocalEditContext.Validate() == false)
             {
                 return;
             }
+            #endregion
+
+            #region 檢查資料完整性
+            var checkKindDateResult = CurrentRecord.CheckKindDate();
+            if (string.IsNullOrEmpty(checkKindDateResult) == false)
+            {
+                MessageBox.Show("400px", "200px", "警告", checkKindDateResult);
+                return;
+            }
+            #endregion
+
             if (IsShowEditRecord == true)
             {
                 if (isNewRecordMode == true)

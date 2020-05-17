@@ -19,7 +19,7 @@ namespace SyncfusionLab.AdaptorModels
         {
             get
             {
-                return $"{LastName} {LastName}";
+                return $"{LastName} {FirstName}";
             }
         }
         public string Kind

@@ -17,8 +17,12 @@
 @inject PersonRazorModel RazorModel
 @implements IRazorPage
 
+<div>
+    <button class="btn btn-primary" @onclick="RazorModel.SortTest">排序測試</button>
+</div>
+
 <SfGrid @ref="Grid" TValue="PersonAdaptorModel"
-        AllowPaging="true"
+        AllowPaging="true" 
         Toolbar="@(new List<string>() { "新增","Search" })">
     <SfDataManager Adaptor="Adaptors.CustomAdaptor">
         <PersonAdaptor></PersonAdaptor>

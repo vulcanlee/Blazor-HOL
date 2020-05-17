@@ -16,6 +16,8 @@ namespace SyncfusionLab.Helpers
         {
             CreateMap<Person, PersonAdaptorModel>();
             CreateMap<PersonAdaptorModel, Person>();
+            CreateMap<Department, DepartmentAdapterModel>();
+            CreateMap<DepartmentAdapterModel, Department>();
         }
     }
 }

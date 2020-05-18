@@ -27,7 +27,7 @@
     <GridEvents CommandClicked="RazorModel.OnCommandClicked" TValue="CourseAdaptorModel"
                 OnToolbarClick="RazorModel.ToolbarClickHandler" />
     <GridPageSettings PageSize="15" />
-    <GridSearchSettings Fields="@(new string[] { "Name"})"
+    <GridSearchSettings Fields="@(new string[] { "Title","Department.Name"})"
                         Operator=Syncfusion.Blazor.Operator.Contains IgnoreCase="true" />
     <GridColumns>
         <GridColumn Field=@nameof(CourseAdaptorModel.Title) HeaderText="課程名稱" Width="150"></GridColumn>

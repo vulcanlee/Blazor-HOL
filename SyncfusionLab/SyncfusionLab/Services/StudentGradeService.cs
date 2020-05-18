@@ -24,6 +24,14 @@ namespace SyncfusionLab.Services
                 .AsNoTracking().AsQueryable());
         }
 
+        public Task<IQueryable<StudentGrade>> GetByHeaderIDAsync(int id)
+        {
+            return Task.FromResult(context.StudentGrade
+                .Include(x=>x.Student)
+                .Where(x=>x.CourseId==id)
+                .AsNoTracking().AsQueryable());
+        }
+
         public async Task<StudentGrade> GetAsync(int id)
         {
             StudentGrade item = await context.StudentGrade

@@ -16,5 +16,17 @@ namespace SyncfusionLab.AdaptorModels
         public int DepartmentId { get; set; }
         [Required(ErrorMessage = "科系 欄位必須要存在，請點選問號來選取")]
         public string DepartmentName { get; set; } = "";
+
+        public bool IsExistCourse()
+        {
+            if(string.IsNullOrEmpty(Title))
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
     }
 }

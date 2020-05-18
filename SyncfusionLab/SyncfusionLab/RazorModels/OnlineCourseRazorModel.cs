@@ -157,10 +157,11 @@ namespace SyncfusionLab.RazorModels
 
         #endregion
 
-        public void UpdateMasterHeader(CourseAdaptorModel header)
+        public async Task UpdateMasterHeader(CourseAdaptorModel header)
         {
             Header = header;
-            Grid.Refresh();
+            await Task.Delay(100);
+            Grid?.Refresh();
         }
         #endregion
     }

@@ -12,6 +12,7 @@ namespace SyncfusionLab.RazorModels
     using SyncfusionLab.Services;
     using Syncfusion.Blazor.Grids;
     using Microsoft.AspNetCore.Components.Forms;
+    using Microsoft.AspNetCore.Components;
 
     public class CourseRazorModel
     {
@@ -154,8 +155,8 @@ namespace SyncfusionLab.RazorModels
             }
             ShowAontherRecordPicker = false;
         }
-
         #endregion
+
         #endregion
     }
 }

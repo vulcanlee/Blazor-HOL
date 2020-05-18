@@ -25,7 +25,9 @@
         <CourseAdaptor></CourseAdaptor>
     </SfDataManager>
     <GridEvents CommandClicked="RazorModel.OnCommandClicked" TValue="CourseAdaptorModel"
-                OnToolbarClick="RazorModel.ToolbarClickHandler" />
+                OnToolbarClick="RazorModel.ToolbarClickHandler" 
+                RowSelected="RowSelectHandler" 
+                RowDeselected="RowDeselectHandler"/>
     <GridPageSettings PageSize="15" />
     <GridSearchSettings Fields="@(new string[] { "Title","Department.Name"})"
                         Operator=Syncfusion.Blazor.Operator.Contains IgnoreCase="true" />
@@ -105,6 +107,8 @@
 
 @code{
     SfGrid<CourseAdaptorModel> Grid;
+    [Parameter]
+    public EventCallback<CourseAdaptorModel> OnChangeRecord { get; set; }
 
     protected override void OnInitialized()
     {
@@ -125,4 +129,25 @@
     {
         await InvokeAsync(action);
     }
+
+    #region 選取紀錄異動的事件處理
+    public async Task RowSelectHandler(RowSelectEventArgs<CourseAdaptorModel> args)
+    {
+        if (OnChangeRecord.HasDelegate)
+        {
+            await OnChangeRecord.InvokeAsync(args.Data);
+        }
+    }
+    public async Task RowDeselectHandler(RowDeselectEventArgs<CourseAdaptorModel> args)
+    {
+        if (OnChangeRecord.HasDelegate)
+        {
+            await OnChangeRecord.InvokeAsync(new CourseAdaptorModel()
+            {
+                CourseId = -1,
+                Title = "",
+            });
+        }
+    }
+    #endregion
 }

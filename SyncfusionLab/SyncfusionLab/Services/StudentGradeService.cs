@@ -20,15 +20,15 @@ namespace SyncfusionLab.Services
         public Task<IQueryable<StudentGrade>> GetAsync()
         {
             return Task.FromResult(context.StudentGrade
-                .Include(x=>x.Student)
+                .Include(x => x.Student)
                 .AsNoTracking().AsQueryable());
         }
 
         public Task<IQueryable<StudentGrade>> GetByHeaderIDAsync(int id)
         {
             return Task.FromResult(context.StudentGrade
-                .Include(x=>x.Student)
-                .Where(x=>x.CourseId==id)
+                .Include(x => x.Student)
+                .Where(x => x.CourseId == id)
                 .AsNoTracking().AsQueryable());
         }
 
@@ -39,11 +39,42 @@ namespace SyncfusionLab.Services
             return item;
         }
 
+        public async Task<bool> BeforeAddCheckAsync(StudentGrade paraObject)
+        {
+            var checkedHasExistResult = await context.StudentGrade
+                .FirstOrDefaultAsync(x => x.CourseId == paraObject.CourseId
+                && x.StudentId == paraObject.StudentId);
+            if (checkedHasExistResult == null)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
         public async Task<bool> AddAsync(StudentGrade paraObject)
         {
             await context.StudentGrade.AddAsync(paraObject);
             await context.SaveChangesAsync();
             return true;
+        }
+
+        public async Task<bool> BeforeUpdateCheckAsync(StudentGrade paraObject)
+        {
+            var checkedDuplicateStudentResult = await context.StudentGrade
+                .FirstOrDefaultAsync(x => x.CourseId == paraObject.CourseId
+                && x.StudentId == paraObject.StudentId
+                && x.EnrollmentId != paraObject.EnrollmentId);
+            if (checkedDuplicateStudentResult == null)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
 
         public async Task<bool> UpdateAsync(StudentGrade paraObject)

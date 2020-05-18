@@ -92,7 +92,7 @@
                 .FirstOrDefault(x => x.EnrollmentId == adaptorModelItem.EnrollmentId);
             if (itemRelation != null)
             {
-                adaptorModelItem.StudentName = $"{itemRelation.Student.FirstName} {itemRelation.Student.LastName}";
+                adaptorModelItem.StudentName = $"{itemRelation.Student.LastName} {itemRelation.Student.FirstName}";
             }
         }
         #endregion

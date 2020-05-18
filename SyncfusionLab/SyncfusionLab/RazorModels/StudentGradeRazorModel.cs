@@ -122,6 +122,26 @@ namespace SyncfusionLab.RazorModels
             #endregion
 
             #region 檢查資料完整性
+            if (isNewRecordMode == true)
+            {
+                var checkedResult = await CurrentService
+                    .BeforeAddCheckAsync(mapper.Map<StudentGrade>(CurrentRecord));
+                if (checkedResult == false)
+                {
+                    ConfirmMessageBox.Show("400px", "200px", "警告", "該學生已經存在該課程內，無法完成新增");
+                    return;
+                }
+            }
+            else
+            {
+                var checkedResult = await CurrentService
+                    .BeforeUpdateCheckAsync(mapper.Map<StudentGrade>(CurrentRecord));
+                if (checkedResult == false)
+                {
+                    ConfirmMessageBox.Show("400px", "200px", "警告", "該學生已經存在該課程內，無法完成修改");
+                    return;
+                }
+            }
             #endregion
 
             if (IsShowEditRecord == true)

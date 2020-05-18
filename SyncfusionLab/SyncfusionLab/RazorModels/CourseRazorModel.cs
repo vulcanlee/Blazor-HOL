@@ -128,7 +128,7 @@ namespace SyncfusionLab.RazorModels
                 if (isNewRecordMode == true)
                 {
                     Random rm = new Random();
-                    CurrentRecord.CourseId = rm.Next(int.MaxValue);
+                    CurrentRecord.CourseId = rm.Next(1000, 999999);
                     await CurrentService.AddAsync(mapper.Map<Course>(CurrentRecord));
                     Grid.Refresh();
                 }

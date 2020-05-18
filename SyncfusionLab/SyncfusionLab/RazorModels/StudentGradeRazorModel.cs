@@ -145,12 +145,12 @@ namespace SyncfusionLab.RazorModels
         }
 
         #region 開窗選取紀錄使用到的方法
-        public void OnPickerCompletion(CourseAdaptorModel e)
+        public void OnPickerCompletion(PersonAdaptorModel e)
         {
             if (e != null)
             {
-                CurrentRecord.CourseId = e.CourseId;
-                CurrentRecord.CourseTitle = e.Title;
+                CurrentRecord.StudentId = e.PersonId;
+                CurrentRecord.StudentName = e.FullName;
             }
             ShowAontherRecordPicker = false;
         }

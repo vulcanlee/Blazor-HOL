@@ -65,7 +65,7 @@
 
                     <div class="form-row">
                         <div class="form-group col">
-                            <label class="control-label">課程 <span class="oi oi-question-mark" @onclick="RazorModel.OnOpenPicker"></span></label>
+                            <label class="control-label">學生 <span class="oi oi-question-mark" @onclick="RazorModel.OnOpenPicker"></span></label>
                             <SfTextBox Value="@RazorModel.CurrentRecord.StudentName" Enabled="false"></SfTextBox>
                         </div>
                     </div>
@@ -82,7 +82,7 @@
     <DialogPositionData X="center" Y="center"></DialogPositionData>
 </SfDialog>
 
-<PickCourse OpenPicker="RazorModel.ShowAontherRecordPicker" OnConfirmCallback="x=>RazorModel.OnPickerCompletion(x)"></PickCourse>
+<PickPerson OpenPicker="RazorModel.ShowAontherRecordPicker" OnConfirmCallback="x=>RazorModel.OnPickerCompletion(x)"></PickPerson>
 
 
 <MessageBox Height="@RazorModel.MessageBox.Height" Width="@RazorModel.MessageBox.Width"
@@ -118,10 +118,7 @@
     }
     protected override void OnAfterRender(bool firstRender)
     {
-        if (firstRender == true)
-        {
-            RazorModel.Setup(this, Grid);
-        }
+        RazorModel.Setup(this, Grid);
     }
     public void NeedRefresh()
     {

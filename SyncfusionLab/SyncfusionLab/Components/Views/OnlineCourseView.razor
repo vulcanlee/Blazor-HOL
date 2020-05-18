@@ -131,10 +131,7 @@
     }
     protected override void OnAfterRender(bool firstRender)
     {
-        if (firstRender == true)
-        {
-            RazorModel.Setup(this, Grid);
-        }
+        RazorModel.Setup(this, Grid);
     }
     public void NeedRefresh()
     {

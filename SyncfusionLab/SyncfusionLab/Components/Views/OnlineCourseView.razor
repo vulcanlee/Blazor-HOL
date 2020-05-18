@@ -1,0 +1,119 @@
+﻿@using System.Threading
+@using Syncfusion.Blazor
+@using Syncfusion.Blazor.Buttons
+@using Syncfusion.Blazor.Data
+@using Syncfusion.Blazor.Grids
+@using Syncfusion.Blazor.Popups
+@using Syncfusion.Blazor.Inputs
+@using Syncfusion.Blazor.Calendars
+@using SyncfusionLab.Adaptors
+@using SyncfusionLab.Services
+@using EFCoreModel.Models
+@using AutoMapper
+@using SyncfusionLab.AdaptorModels
+@using SyncfusionLab.RazorModels
+@using SyncfusionLab.Interfaces
+@using SyncfusionLab.Components.Commons
+@using SyncfusionLab.Components.Pickers
+@inject OnlineCourseRazorModel RazorModel
+@implements IRazorPage
+
+<SfGrid @ref="Grid" TValue="OnlineCourseAdaptorModel"
+        AllowPaging="true"
+        Toolbar="@(new List<string>() { "新增","Search" })">
+    <SfDataManager Adaptor="Adaptors.CustomAdaptor">
+        <OnlineCourseAdaptor></OnlineCourseAdaptor>
+    </SfDataManager>
+    <GridEvents CommandClicked="RazorModel.OnCommandClicked" TValue="OnlineCourseAdaptorModel"
+                OnToolbarClick="RazorModel.ToolbarClickHandler" />
+    <GridPageSettings PageSize="15" />
+    <GridSearchSettings Fields="@(new string[] { "Title","Course.Title"})"
+                        Operator=Syncfusion.Blazor.Operator.Contains IgnoreCase="true" />
+    <GridColumns>
+        <GridColumn Field=@nameof(OnlineCourseAdaptorModel.Title) HeaderText="大綱名稱" Width="150"></GridColumn>
+        <GridColumn Field=@nameof(OnlineCourseAdaptorModel.CourseTitle) HeaderText="課程" Width="100" Format="yyyy-MM-dd"></GridColumn>
+        <GridColumn HeaderText="命令" Width="150" TextAlign="@TextAlign.Center">
+            <GridCommandColumns>
+                <GridCommandColumn ButtonOption="@(new CommandButtonOptions() { Content = "修改", CssClass = "e-flat" })"></GridCommandColumn>
+                <GridCommandColumn ButtonOption="@(new CommandButtonOptions() { Content = "刪除", CssClass = "e-flat e-danger" })"></GridCommandColumn>
+            </GridCommandColumns>
+        </GridColumn>
+    </GridColumns>
+</SfGrid>
+
+<SfDialog @bind-Visible="@RazorModel.IsShowEditRecord" IsModal="true"
+          Width="600px" Height="600px">
+    <DialogTemplates>
+        <Header>@RazorModel.EditRecordDialogTitle</Header>
+        <Content>
+            <EditForm Model="@RazorModel.CurrentRecord">
+                <DataAnnotationsValidator />
+                <ValidationSummary />
+                <InputWatcher EditContextActionChanged="@RazorModel.OnEditContestChanged" />
+
+                <div>
+                    <div class="form-row">
+                        <div class="form-group col">
+                            <label class="control-label">大綱名稱</label>
+                            <SfTextBox @bind-Value="RazorModel.CurrentRecord.Title"></SfTextBox>
+                            <ValidationMessage For="@(() => RazorModel.CurrentRecord.Title)" />
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group col">
+                            <label class="control-label">課程 <span class="oi oi-question-mark" @onclick="RazorModel.OnOpenPicker"></span></label>
+                            <SfTextBox Value="@RazorModel.CurrentRecord.CourseTitle" Enabled="false"></SfTextBox>
+                        </div>
+                    </div>
+                </div>
+            </EditForm>
+        </Content>
+        <FooterTemplate>
+            <div>
+                <button type="submit" class="btn btn-primary" @onclick="RazorModel.HandleValidSubmit">儲存</button>
+                <button class="btn btn-secondary" @onclick="RazorModel.OnCancel">取消</button>
+            </div>
+        </FooterTemplate>
+    </DialogTemplates>
+    <DialogPositionData X="center" Y="center"></DialogPositionData>
+</SfDialog>
+
+<PickCourse OpenPicker="RazorModel.ShowAontherRecordPicker" OnConfirmCallback="x=>RazorModel.OnPickerCompletion(x)"></PickCourse>
+
+
+<MessageBox Height="@RazorModel.MessageBox.Height" Width="@RazorModel.MessageBox.Width"
+            IsVisible="@RazorModel.MessageBox.IsVisible"
+            Title="@RazorModel.MessageBox.Title" Message="@RazorModel.MessageBox.Body"
+            Callback="x=>RazorModel.MessageBox.Hidden()" />
+
+<ConfirmBox Height="@RazorModel.ConfirmMessageBox.Height" Width="@RazorModel.ConfirmMessageBox.Width"
+            IsVisible="@RazorModel.ConfirmMessageBox.IsVisible"
+            Title="@RazorModel.ConfirmMessageBox.Title" Message="@RazorModel.ConfirmMessageBox.Body"
+            Callback="x=>RazorModel.RemoveThisRecord(x)" />
+
+<DialogBackground />
+
+@code{
+    SfGrid<OnlineCourseAdaptorModel> Grid;
+
+    protected override void OnInitialized()
+    {
+        RazorModel.Setup(this, Grid);
+    }
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if (firstRender == true)
+        {
+            RazorModel.Setup(this, Grid);
+        }
+    }
+    public void NeedRefresh()
+    {
+        StateHasChanged();
+    }
+    public async Task NeedInvokeAsync(System.Action action)
+    {
+        await InvokeAsync(action);
+    }
+}

@@ -33,7 +33,7 @@ namespace SyncfusionLab.RazorModels
         public OnlineCourseAdaptorModel CurrentNeedDeleteRecord { get; set; } = new OnlineCourseAdaptorModel();
         public EditContext LocalEditContext { get; set; }
         public bool ShowAontherRecordPicker { get; set; } = false;
-
+        public CourseAdaptorModel Header { get; set; } = new CourseAdaptorModel();
 
         #region 訊息說明之對話窗使用的變數
         public ConfirmBoxModel ConfirmMessageBox { get; set; } = new ConfirmBoxModel();
@@ -73,6 +73,8 @@ namespace SyncfusionLab.RazorModels
                 EditRecordDialogTitle = "新增紀錄";
                 isNewRecordMode = true;
                 IsShowEditRecord = true;
+                CurrentRecord.CourseId = Header.CourseId;
+                CurrentRecord.CourseTitle = Header.Title;
             }
         }
         public void OnCommandClicked(CommandClickEventArgs<OnlineCourseAdaptorModel> args)
@@ -154,6 +156,12 @@ namespace SyncfusionLab.RazorModels
         }
 
         #endregion
+
+        public void UpdateMasterHeader(CourseAdaptorModel header)
+        {
+            Header = header;
+            Grid.Refresh();
+        }
         #endregion
     }
 }

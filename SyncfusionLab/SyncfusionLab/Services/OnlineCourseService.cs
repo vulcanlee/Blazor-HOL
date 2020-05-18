@@ -30,6 +30,13 @@ namespace SyncfusionLab.Services
                 .FirstOrDefaultAsync(x => x.OnlineCourseId == id);
             return item;
         }
+        public Task<IQueryable<OnlineCourse>> GetByHeaderIDAsync(int paraObj)
+        {
+            return Task.FromResult(context.OnlineCourse
+                .Where(x => x.CourseId == paraObj)
+                .Include(x => x.Course)
+                .AsNoTracking().AsQueryable());
+        }
 
         public async Task<bool> AddAsync(OnlineCourse paraObject)
         {

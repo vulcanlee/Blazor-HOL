@@ -9,6 +9,7 @@ namespace SyncfusionLab.Services
         Task<bool> AddAsync(OnlineCourse paraObject);
         Task<bool> DeleteAsync(OnlineCourse paraObject);
         Task<IQueryable<OnlineCourse>> GetAsync();
+        Task<IQueryable<OnlineCourse>> GetByHeaderIDAsync(int id);
         Task<OnlineCourse> GetAsync(int id);
         Task<bool> UpdateAsync(OnlineCourse paraObject);
     }

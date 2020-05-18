@@ -18,6 +18,8 @@
     [Parameter]
     [JsonIgnore]
     public RenderFragment ChildContent { get; set; }
+    [Parameter]
+    public int HeaderID { get; set; }
 
     /// <summary>
     /// 透過 Service 使用 Entity Framework Core 來讀取資料庫內的紀錄出來
@@ -27,7 +29,15 @@
     /// <returns></returns>
     public override async Task<object> ReadAsync(DataManagerRequest dataManagerRequest, string key = null)
     {
-        IQueryable<OnlineCourse> DataSource = await Service.GetAsync();
+        IQueryable<OnlineCourse> DataSource;
+        if (HeaderID == -1)
+        {
+            DataSource = await Service.GetAsync();
+        }
+        else
+        {
+            DataSource = await Service.GetByHeaderIDAsync(HeaderID);
+        }
         if (dataManagerRequest.Search != null && dataManagerRequest.Search.Count > 0)
         {
             // 進行搜尋動作

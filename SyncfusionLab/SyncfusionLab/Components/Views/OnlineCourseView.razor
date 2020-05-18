@@ -22,7 +22,7 @@
         AllowPaging="true"
         Toolbar="@(new List<string>() { "新增","Search" })">
     <SfDataManager Adaptor="Adaptors.CustomAdaptor">
-        <OnlineCourseAdaptor></OnlineCourseAdaptor>
+        <OnlineCourseAdaptor HeaderID="RazorModel.Header.CourseId"></OnlineCourseAdaptor>
     </SfDataManager>
     <GridEvents CommandClicked="RazorModel.OnCommandClicked" TValue="OnlineCourseAdaptorModel"
                 OnToolbarClick="RazorModel.ToolbarClickHandler" />
@@ -96,6 +96,10 @@
 
 @code{
     SfGrid<OnlineCourseAdaptorModel> Grid;
+    [Parameter]
+    public CourseAdaptorModel Header { get; set; } = new CourseAdaptorModel();
+    [Parameter]
+    public bool CombineWithHeaderMode { get; set; } = false;
 
     protected override void OnInitialized()
     {
@@ -115,5 +119,9 @@
     public async Task NeedInvokeAsync(System.Action action)
     {
         await InvokeAsync(action);
+    }
+    public void RefreshNewMaster(CourseAdaptorModel header)
+    {
+        RazorModel.UpdateMasterHeader(header);
     }
 }

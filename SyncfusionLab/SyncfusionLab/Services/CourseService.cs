@@ -20,6 +20,7 @@ namespace SyncfusionLab.Services
         public Task<IQueryable<Course>> GetAsync()
         {
             return Task.FromResult(context.Course
+                .Include(x=>x.Department)
                 .AsNoTracking().AsQueryable());
         }
 

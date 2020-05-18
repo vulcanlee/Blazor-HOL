@@ -28,19 +28,19 @@ Scaffold-DbContext "Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=School;In
 
 ## 單一資料表的 CRUD 開發步驟說明
 
-* OnlineCourse
-* OnlineCourseService
-* OnlineCourseAdaptorModel
-* OnlineCourseAdaptor
-* OnlineCourseRazorModel
-* OnlineCourseView
-* OnlineCoursePage
+* StudentGrade
+* StudentGradeService
+* StudentGradeAdaptorModel
+* StudentGradeAdaptor
+* StudentGradeRazorModel
+* StudentGradeView
+* StudentGradePage
 
-* 建立 OnlineCourse 的服務
-* 建立 OnlineCourse 轉接器 資料模型 Adaptor Data Model
-* 建立 OnlineCourse 服務與 Grid 元件要用到的 轉接器元件 Adaptor Component
-* 建立 OnlineCourse 頁面要用到的 Razor 資料模型 Razor Data Model
-* 建立 OnlineCourse CRUD 的 View 元件
-* 建立 OnlineCourse CRUD 的 Page 頁面
+* 建立 StudentGrade 的服務
+* 建立 StudentGrade 轉接器 資料模型 Adaptor Data Model
+* 建立 StudentGrade 服務與 Grid 元件要用到的 轉接器元件 Adaptor Component
+* 建立 StudentGrade 頁面要用到的 Razor 資料模型 Razor Data Model
+* 建立 StudentGrade CRUD 的 View 元件
+* 建立 StudentGrade CRUD 的 Page 頁面
 
 

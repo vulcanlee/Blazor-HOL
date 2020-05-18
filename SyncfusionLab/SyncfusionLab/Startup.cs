@@ -52,6 +52,7 @@ namespace SyncfusionLab
             services.AddScoped<IDepartmentService, DepartmentService>();
             services.AddScoped<ICourseService, CourseService>();
             services.AddScoped<IOnlineCourseService, OnlineCourseService>();
+            services.AddScoped<IStudentGradeService, StudentGradeService>();
             #endregion
 
             #region µù¥U Razor Model

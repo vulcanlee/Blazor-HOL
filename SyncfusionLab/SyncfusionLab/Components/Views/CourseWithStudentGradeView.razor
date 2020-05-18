@@ -1,0 +1,23 @@
+﻿@using SyncfusionLab.AdaptorModels
+@using SyncfusionLab.Components.Views
+
+
+<div>
+    <h1>課程</h1>
+    <CourseView OnRecordChanged="RecordChanged" />
+    <StudentGradeView @ref="DetailView" CombineWithHeaderMode="true"
+                      Header="@Header" />
+</div>
+<div style="height:100px"></div>
+
+@code{
+    public CourseAdaptorModel Header { get; set; } = new CourseAdaptorModel() { CourseId = -2 };
+    public string HeaderDescription { get; set; } = "";
+    StudentGradeView DetailView;
+    void RecordChanged(CourseAdaptorModel header)
+    {
+        Header = header;
+
+        DetailView.RefreshNewMaster(Header);
+    }
+}

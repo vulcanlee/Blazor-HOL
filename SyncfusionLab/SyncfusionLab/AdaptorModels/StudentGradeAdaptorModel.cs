@@ -14,6 +14,6 @@ namespace SyncfusionLab.AdaptorModels
         public decimal? Grade { get; set; }
         [Required(ErrorMessage = "學生 欄位必須要存在，請點選問號來選取")]
         public string StudentName { get; set; } = "";
-        public string CourseName { get; set; } = "";
+        public string CourseTitle { get; set; } = "";
     }
 }

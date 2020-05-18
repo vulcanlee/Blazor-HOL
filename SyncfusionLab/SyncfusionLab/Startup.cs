@@ -60,6 +60,7 @@ namespace SyncfusionLab
             services.AddScoped<DepartmentRazorModel>();
             services.AddScoped<CourseRazorModel>();
             services.AddScoped<OnlineCourseRazorModel>();
+            services.AddScoped<StudentGradeRazorModel>();
             #endregion
         }
 

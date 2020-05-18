@@ -22,6 +22,8 @@ namespace SyncfusionLab.Helpers
             CreateMap<CourseAdaptorModel, Course>();
             CreateMap<OnlineCourse, OnlineCourseAdaptorModel>();
             CreateMap<OnlineCourseAdaptorModel, OnlineCourse>();
+            CreateMap<StudentGrade, StudentGradeAdaptorModel>();
+            CreateMap<StudentGradeAdaptorModel, StudentGrade>();
         }
     }
 }

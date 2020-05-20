@@ -17,9 +17,6 @@
 @inject PersonRazorModel RazorModel
 @implements IRazorPage
 
-<div>
-    <button class="btn btn-primary" @onclick="RazorModel.SortTest">排序測試</button>
-</div>
 
 <SfGrid @ref="Grid" TValue="PersonAdaptorModel"
         AllowPaging="true" 
@@ -94,8 +91,8 @@
         </Content>
         <FooterTemplate>
             <div>
-                <button type="submit" class="btn btn-primary" @onclick="RazorModel.HandleValidSubmit">儲存</button>
-                <button class="btn btn-secondary" @onclick="RazorModel.OnCancel">取消</button>
+                <button type="submit" class="btn btn-primary" @onclick="RazorModel.OnRecordEditConfirm">儲存</button>
+                <button class="btn btn-secondary" @onclick="RazorModel.OnRecordEditCancel">取消</button>
             </div>
         </FooterTemplate>
     </DialogTemplates>

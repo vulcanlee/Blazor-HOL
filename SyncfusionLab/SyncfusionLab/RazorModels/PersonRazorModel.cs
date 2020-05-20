@@ -53,18 +53,17 @@ namespace SyncfusionLab.RazorModels
         #endregion
 
         #region Method
+
+        #region DataGrid 初始化
         public void Setup(IRazorPage componentBase,
             SfGrid<PersonAdaptorModel> grid)
         {
             thisRazorComponent = componentBase;
             Grid = grid;
-            //RazorModel
         }
-        public void OnOpenPicker()
-        {
-            ShowAontherRecordPicker = true;
-        }
+        #endregion
 
+        #region 工具列事件 (新增)
         public void ToolbarClickHandler(Syncfusion.Blazor.Navigations.ClickEventArgs args)
         {
             if (args.Item.Text == "新增")
@@ -75,6 +74,9 @@ namespace SyncfusionLab.RazorModels
                 IsShowEditRecord = true;
             }
         }
+        #endregion
+
+        #region 記錄列的按鈕事件 (修改與刪除)
         public void OnCommandClicked(CommandClickEventArgs<PersonAdaptorModel> args)
         {
             PersonAdaptorModel item = args.RowData as PersonAdaptorModel;
@@ -104,13 +106,20 @@ namespace SyncfusionLab.RazorModels
             }
             ConfirmMessageBox.Hidden();
         }
+        #endregion
 
-        public void OnCancel()
+        #region 修改紀錄對話窗的按鈕事件
+        public void OnEditContestChanged(EditContext context)
+        {
+            LocalEditContext = context;
+        }
+
+        public void OnRecordEditCancel()
         {
             IsShowEditRecord = false;
         }
 
-        public async Task HandleValidSubmit()
+        public async Task OnRecordEditConfirm()
         {
             #region 進行 Form Validation 檢查驗證作業
             if (LocalEditContext.Validate() == false)
@@ -143,21 +152,7 @@ namespace SyncfusionLab.RazorModels
                 IsShowEditRecord = false;
             }
         }
-        public void OnEditContestChanged(EditContext context)
-        {
-            LocalEditContext = context;
-        }
-
-        public void SortTest()
-        {
-            Grid.SortSettings.Columns = new List<GridSortColumn>();
-            Grid.SortSettings.Columns.Add(new GridSortColumn()
-            {
-                Field = "LastName",
-                Direction = SortDirection.Ascending
-            });
-            Grid.Refresh();
-        }
+        #endregion
         #endregion
     }
 }

@@ -10,6 +10,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using MatBlazorLab.Data;
+using AutoMapper;
+using MatBlazorLab.Helpers;
 
 namespace MatBlazorLab
 {
@@ -29,6 +31,19 @@ namespace MatBlazorLab
             services.AddRazorPages();
             services.AddServerSideBlazor();
             services.AddSingleton<WeatherForecastService>();
+
+            services.AddAutoMapper(c => c.AddProfile<AutoMapping>(), typeof(Startup));
+
+            RegisterInspectionService(services);
+        }
+
+        private static void RegisterInspectionService(IServiceCollection services)
+        {
+            #region µù¥UªA°È
+            #endregion
+
+            #region µù¥U Razor Model
+            #endregion
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

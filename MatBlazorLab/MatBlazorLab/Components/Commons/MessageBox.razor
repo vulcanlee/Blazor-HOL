@@ -1,0 +1,39 @@
+﻿@using MatBlazor
+
+<MatDialog @bind-IsOpen="@DialogIsOpen">
+    <MatDialogTitle>@Title</MatDialogTitle>
+    <MatDialogContent>
+        <div style="width:@Width;height:@Height">
+            @Body
+        </div>
+    </MatDialogContent>
+    <MatDialogActions>
+        <MatButton OnClick="@OkClick">確定</MatButton>
+    </MatDialogActions>
+
+</MatDialog>
+
+@code {
+    [Parameter]
+    public bool DialogIsOpen { get; set; }
+    [Parameter]
+    public string Title { get; set; }
+    [Parameter]
+    public string Body { get; set; }
+    [Parameter]
+    public string Width { get; set; } = "500px";
+    [Parameter]
+    public string Height { get; set; } = "300px";
+    [Parameter]
+    public EventCallback PressOKCallback { get; set; }
+    protected override void OnInitialized()
+    {
+    }
+    async Task OkClick()
+    {
+        if (PressOKCallback.HasDelegate)
+        {
+            await PressOKCallback.InvokeAsync(0);
+        }
+    }
+}

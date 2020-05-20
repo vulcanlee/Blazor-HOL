@@ -1,0 +1,130 @@
+﻿@page "/Sample1"
+@using MatBlazorLab.Components.Commons
+@using System.ComponentModel.DataAnnotations
+@using MatBlazor
+
+<h1>Hello, MatBlazor 功能展示!</h1>
+
+<MatButton OnClick="@OpenDialog" Raised="true">新增</MatButton>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>名</th>
+            <th>姓</th>
+            <th>雇用時間</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var RecItem in Items)
+        {
+            <tr>
+                <td>@RecItem.FirstName</td>
+                <td>@RecItem.LastName</td>
+                <td>@RecItem.HireDate.ToString("yyyy-MM-dd")</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<MatDialog @bind-IsOpen="@dialogIsOpen">
+    <MatDialogTitle>請修正相關資料</MatDialogTitle>
+    <MatDialogContent>
+        <div style="width:500px;height:400px">
+            <EditForm Model="person">
+                <DataAnnotationsValidator />
+                <ValidationSummary />
+                <InputWatcher EditContextActionChanged="OnEditContestChanged" />
+
+                <div class="form-group col">
+                    <label class="control-label">名</label>
+                    <InputText class="form-control" @bind-Value="person.LastName"></InputText>
+                    <ValidationMessage For="@(() => person.LastName)" />
+                </div>
+
+                <div class="form-group col">
+                    <label class="control-label">姓</label>
+                    <InputText class="form-control" @bind-Value="person.FirstName"></InputText>
+                    <ValidationMessage For="@(() => person.FirstName)" />
+                </div>
+
+                <div class="form-group col">
+                    <label class="control-label">雇用日期</label>
+                    <InputDate class="form-control" @bind-Value="person.HireDate"></InputDate>
+                    <ValidationMessage For="@(() => person.HireDate)" />
+                </div>
+
+            </EditForm>
+        </div>
+    </MatDialogContent>
+    <MatDialogActions>
+        <MatButton OnClick="@(e => { dialogIsOpen = false; })">取消</MatButton>
+        <MatButton OnClick="@OkClick">儲存</MatButton>
+    </MatDialogActions>
+
+</MatDialog>
+
+<MessageBox Width="400px" Height="150px"
+            Title="@Title" Body="@Body" DialogIsOpen="MessageBoxIsOpen"
+            PressOKCallback="x => MessageBoxIsOpen = false" />
+
+@code    {
+    bool dialogIsOpen = false;
+    bool MessageBoxIsOpen = false;
+    string Title = "通知";
+    string Body = "操作提醒，請注意這裡顯示的訊息";
+    EditContext LocalEditContext;
+    public List<Person> Items { get; set; }
+    Person person;
+
+    protected override void OnInitialized()
+    {
+        int cc = 0;
+        Items = new List<Person>()
+{
+            new Person(){ FirstName="F1", LastName="L1", HireDate=DateTime.Now.AddDays(cc++) },
+            new Person(){ FirstName="F2", LastName="L2", HireDate=DateTime.Now.AddDays(cc++) },
+            new Person(){ FirstName="F3", LastName="L3", HireDate=DateTime.Now.AddDays(cc++) },
+            new Person(){ FirstName="F4", LastName="L4", HireDate=DateTime.Now.AddDays(cc++) },
+            new Person(){ FirstName="F5", LastName="L5", HireDate=DateTime.Now.AddDays(cc++) },
+            new Person(){ FirstName="F6", LastName="L6", HireDate=DateTime.Now.AddDays(cc++) },
+            new Person(){ FirstName="F7", LastName="L7", HireDate=DateTime.Now.AddDays(cc++) },
+            new Person(){ FirstName="F8", LastName="L8", HireDate=DateTime.Now.AddDays(cc++) },
+            new Person(){ FirstName="F9", LastName="L9", HireDate=DateTime.Now.AddDays(cc++) },
+        };
+        person = new Person();
+    }
+
+    void OnEditContestChanged(EditContext context)
+    {
+        LocalEditContext = context;
+    }
+
+    void OpenDialog()
+    {
+        person = new Person() { HireDate = DateTime.Now };
+        dialogIsOpen = true;
+    }
+
+    void OkClick()
+    {
+        if (LocalEditContext.Validate() == false)
+        {
+            Body = "請注意，輸入資料尚有錯誤，請修正後重新送出";
+            MessageBoxIsOpen = true;
+            return;
+        }
+        dialogIsOpen = false;
+        Items.Add(person);
+    }
+
+    public class Person
+    {
+        [Required(ErrorMessage = "名 欄位必須要輸入值")]
+        public string LastName { get; set; }
+        [Required(ErrorMessage = "姓 欄位必須要輸入值")]
+        public string FirstName { get; set; }
+        public DateTime HireDate { get; set; }
+    }
+
+}

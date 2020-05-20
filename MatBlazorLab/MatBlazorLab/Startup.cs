@@ -14,6 +14,9 @@ using AutoMapper;
 using MatBlazorLab.Helpers;
 using MatBlazorLab.Services;
 using MatBlazorLab.Adaptors;
+using EFCoreModel.Models;
+using Microsoft.EntityFrameworkCore;
+using System.Net.Http;
 
 namespace MatBlazorLab
 {
@@ -34,6 +37,23 @@ namespace MatBlazorLab
             services.AddServerSideBlazor();
             services.AddSingleton<WeatherForecastService>();
 
+            services.AddDbContext<SchoolContext>(options =>
+            options.UseSqlServer(Configuration.GetConnectionString("SchoolContext")));
+
+            // Server Side Blazor doesn't register HttpClient by default
+            if (!services.Any(x => x.ServiceType == typeof(HttpClient)))
+            {
+                // Setup HttpClient for server side in a client side compatible fashion
+                services.AddScoped<HttpClient>(s =>
+                {
+                    // Creating the URI helper needs to wait until the JS Runtime is initialized, so defer it.
+                    var uriHelper = s.GetRequiredService<NavigationManager>();
+                    return new HttpClient
+                    {
+                        BaseAddress = new Uri(uriHelper.BaseUri)
+                    };
+                });
+            }
             services.AddAutoMapper(c => c.AddProfile<AutoMapping>(), typeof(Startup));
 
             RegisterInspectionService(services);

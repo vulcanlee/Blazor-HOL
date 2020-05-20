@@ -1,0 +1,113 @@
+﻿@using System.Threading
+@using MatBlazorLab.Adaptors
+@using MatBlazorLab.Services
+@using EFCoreModel.Models
+@using AutoMapper
+@using MatBlazorLab.AdaptorModels
+@using MatBlazorLab.Components.Commons
+@inject IPersonService PersonService
+@inject PersonAdaptor PersonAdaptor
+@using MatBlazor
+
+@*@foreach (var item in Items)
+    {
+        <div>@item.FirstName</div>
+    }*@
+<MatTable Items="@Items" AllowSelection="true"
+          ShowPaging="false" SelectionChanged="SelectionChanged"
+          class="mat-elevation-z5">
+    <MatTableHeader>
+        <th>姓名</th>
+        <th>註冊日期</th>
+        <th>雇用日期</th>
+        <th>功能</th>
+    </MatTableHeader>
+    <MatTableRow>
+        <td><p style="width:200px">@context.LastName @context.FirstName</p></td>
+        <td><p style="width:150px">@context.EnrollmentDate?.ToString("yyyy-MM-dd")</p></td>
+        <td><p style="width:150px">@context.HireDate?.ToString("yyyy-MM-dd")</p></td>
+        <td><button class="btn btn-primary" @onclick="UpdateRecord">修改</button></td>
+    </MatTableRow>
+</MatTable>
+<div>
+    <MatPaginator @ref="PaginatorComponent" Length="DataManagerRequest.RecordLength" PageSize="DataManagerRequest.PageSize"
+                  Page="PageChanged" PageIndexChanged="IndexChanged"
+                  PageSizeOptions="DataManagerRequest.PageSizeOptions"></MatPaginator>
+</div>
+@*<MatDialog @bind-IsOpen="@dialogIsOpen">
+        <MatDialogTitle>請修正相關資料</MatDialogTitle>
+        <MatDialogContent>
+            <div style="width:500px;height:400px">
+                <EditForm Model="person">
+                    <DataAnnotationsValidator />
+                    <ValidationSummary />
+                    <InputWatcher EditContextActionChanged="OnEditContestChanged" />
+
+                    <div class="form-group col">
+                        <label class="control-label">名</label>
+                        <InputText class="form-control" @bind-Value="person.LastName"></InputText>
+                        <ValidationMessage For="@(() => person.LastName)" />
+                    </div>
+
+                    <div class="form-group col">
+                        <label class="control-label">姓</label>
+                        <InputText class="form-control" @bind-Value="person.FirstName"></InputText>
+                        <ValidationMessage For="@(() => person.FirstName)" />
+                    </div>
+
+                    <div class="form-group col">
+                        <label class="control-label">雇用日期</label>
+                        <InputDate class="form-control" @bind-Value="person.HireDate"></InputDate>
+                        <ValidationMessage For="@(() => person.HireDate)" />
+                    </div>
+
+                </EditForm>
+            </div>
+        </MatDialogContent>
+        <MatDialogActions>
+            <MatButton OnClick="@(e => { dialogIsOpen = false; })">取消</MatButton>
+            <MatButton OnClick="@OkClick">儲存</MatButton>
+        </MatDialogActions>
+
+    </MatDialog>
+
+    <MessageBox Width="400px" Height="150px"
+                Title="@Title" Body="@Body" DialogIsOpen="MessageBoxIsOpen"
+                PressOKCallback="x => MessageBoxIsOpen = false" />*@
+
+@code{
+    MatPaginator PaginatorComponent;
+    public List<PersonAdaptorModel> Items { get; set; } = new List<PersonAdaptorModel>();
+    public DataManagerRequest DataManagerRequest { get; set; } = new DataManagerRequest();
+    public PersonAdaptorModel CurrentItem { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        DataManagerRequest.GoFirstPage();
+        var reslut = await PersonAdaptor.ReadAsync(DataManagerRequest) as DataResult<PersonAdaptorModel>;
+        DataManagerRequest.RecordLength = reslut.Count;
+        Items = reslut.Result as List<PersonAdaptorModel>;
+    }
+    protected override void OnAfterRender(bool firstRender)
+    {
+    }
+    async Task PageChanged(MatPaginatorPageEvent args)
+    {
+        DataManagerRequest.GotoPage(args.PageIndex + 1);
+        var reslut = await PersonAdaptor.ReadAsync(DataManagerRequest) as DataResult<PersonAdaptorModel>;
+        DataManagerRequest.RecordLength = reslut.Count;
+        Items = reslut.Result as List<PersonAdaptorModel>;
+    }
+    void IndexChanged(int index)
+    {
+
+    }
+    void SelectionChanged(object arg)
+    {
+        CurrentItem = arg as PersonAdaptorModel;
+    }
+    async Task UpdateRecord()
+    {
+        await Task.Delay(100);
+    }
+}

@@ -19,8 +19,8 @@ namespace EFCoreModel.Models
         public virtual DbSet<CourseInstructor> CourseInstructor { get; set; }
         public virtual DbSet<Department> Department { get; set; }
         public virtual DbSet<OfficeAssignment> OfficeAssignment { get; set; }
-        public virtual DbSet<OnlineCourse> OnlineCourse { get; set; }
         public virtual DbSet<OnsiteCourse> OnsiteCourse { get; set; }
+        public virtual DbSet<Outline> Outline { get; set; }
         public virtual DbSet<Person> Person { get; set; }
         public virtual DbSet<StudentGrade> StudentGrade { get; set; }
 
@@ -114,23 +114,6 @@ namespace EFCoreModel.Models
                     .HasConstraintName("FK_OfficeAssignment_Person");
             });
 
-            modelBuilder.Entity<OnlineCourse>(entity =>
-            {
-                entity.Property(e => e.OnlineCourseId).HasColumnName("OnlineCourseID");
-
-                entity.Property(e => e.CourseId).HasColumnName("CourseID");
-
-                entity.Property(e => e.Title)
-                    .IsRequired()
-                    .HasMaxLength(100);
-
-                entity.HasOne(d => d.Course)
-                    .WithMany(p => p.OnlineCourse)
-                    .HasForeignKey(d => d.CourseId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_OnlineCourse_Course");
-            });
-
             modelBuilder.Entity<OnsiteCourse>(entity =>
             {
                 entity.HasKey(e => e.CourseId);
@@ -154,6 +137,23 @@ namespace EFCoreModel.Models
                     .HasForeignKey<OnsiteCourse>(d => d.CourseId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_OnsiteCourse_Course");
+            });
+
+            modelBuilder.Entity<Outline>(entity =>
+            {
+                entity.Property(e => e.OutlineId).HasColumnName("OutlineID");
+
+                entity.Property(e => e.CourseId).HasColumnName("CourseID");
+
+                entity.Property(e => e.Title)
+                    .IsRequired()
+                    .HasMaxLength(100);
+
+                entity.HasOne(d => d.Course)
+                    .WithMany(p => p.Outline)
+                    .HasForeignKey(d => d.CourseId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Outline_Course");
             });
 
             modelBuilder.Entity<Person>(entity =>

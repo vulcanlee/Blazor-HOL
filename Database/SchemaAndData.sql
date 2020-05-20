@@ -79,18 +79,18 @@ CREATE TABLE [dbo].[OnsiteCourse](
 END
 GO
 
--- Create the OnlineCourse table.
+-- Create the Outline table.
 IF NOT EXISTS (SELECT * FROM sys.objects 
-        WHERE object_id = OBJECT_ID(N'[dbo].[OnlineCourse]') 
+        WHERE object_id = OBJECT_ID(N'[dbo].[Outline]') 
         AND type in (N'U'))
 BEGIN
-CREATE TABLE [dbo].[OnlineCourse](
-    [OnlineCourseID] [int] IDENTITY(1,1) NOT NULL,
+CREATE TABLE [dbo].[Outline](
+    [OutlineID] [int] IDENTITY(1,1) NOT NULL,
     [CourseID] [int] NOT NULL,
     [Title] [nvarchar](100) NOT NULL,
- CONSTRAINT [PK_OnlineCourse] PRIMARY KEY CLUSTERED 
+ CONSTRAINT [PK_Outline] PRIMARY KEY CLUSTERED 
 (
-    [OnlineCourseID] ASC
+    [OutlineID] ASC
 )WITH (IGNORE_DUP_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 END
@@ -178,16 +178,16 @@ ALTER TABLE [dbo].[OnsiteCourse] CHECK
        CONSTRAINT [FK_OnsiteCourse_Course]
 GO
 
--- Define the relationship between OnlineCourse and Course.
+-- Define the relationship between Outline and Course.
 IF NOT EXISTS (SELECT * FROM sys.foreign_keys 
-       WHERE object_id = OBJECT_ID(N'[dbo].[FK_OnlineCourse_Course]')
-       AND parent_object_id = OBJECT_ID(N'[dbo].[OnlineCourse]'))
-ALTER TABLE [dbo].[OnlineCourse]  WITH CHECK ADD  
-       CONSTRAINT [FK_OnlineCourse_Course] FOREIGN KEY([CourseID])
+       WHERE object_id = OBJECT_ID(N'[dbo].[FK_Outline_Course]')
+       AND parent_object_id = OBJECT_ID(N'[dbo].[Outline]'))
+ALTER TABLE [dbo].[Outline]  WITH CHECK ADD  
+       CONSTRAINT [FK_Outline_Course] FOREIGN KEY([CourseID])
 REFERENCES [dbo].[Course] ([CourseID])
 GO
-ALTER TABLE [dbo].[OnlineCourse] CHECK 
-       CONSTRAINT [FK_OnlineCourse_Course]
+ALTER TABLE [dbo].[Outline] CHECK 
+       CONSTRAINT [FK_Outline_Course]
 GO
 
 -- Define the relationship between StudentGrade and Course.
@@ -523,34 +523,34 @@ INSERT INTO dbo.Course (CourseID, Title, Credits, DepartmentID)
 VALUES (3141, 'Trigonometry', 4, 7);
 GO
 
--- Insert data into the OnlineCourse table.
-INSERT INTO dbo.OnlineCourse (CourseID, Title)
+-- Insert data into the Outline table.
+INSERT INTO dbo.Outline (CourseID, Title)
 VALUES (2030, 'http://www.fineartschool.net/Poetry1');
-INSERT INTO dbo.OnlineCourse (CourseID, Title)
+INSERT INTO dbo.Outline (CourseID, Title)
 VALUES (2030, 'http://www.fineartschool.net/Poetry2');
-INSERT INTO dbo.OnlineCourse (CourseID, Title)
+INSERT INTO dbo.Outline (CourseID, Title)
 VALUES (2030, 'http://www.fineartschool.net/Poetry3');
-INSERT INTO dbo.OnlineCourse (CourseID, Title)
+INSERT INTO dbo.Outline (CourseID, Title)
 VALUES (2021, 'http://www.fineartschool.net/Composition1');
-INSERT INTO dbo.OnlineCourse (CourseID, Title)
+INSERT INTO dbo.Outline (CourseID, Title)
 VALUES (2021, 'http://www.fineartschool.net/Composition2');
-INSERT INTO dbo.OnlineCourse (CourseID, Title)
+INSERT INTO dbo.Outline (CourseID, Title)
 VALUES (2021, 'http://www.fineartschool.net/Composition3');
-INSERT INTO dbo.OnlineCourse (CourseID, Title)
+INSERT INTO dbo.Outline (CourseID, Title)
 VALUES (2021, 'http://www.fineartschool.net/Composition4');
-INSERT INTO dbo.OnlineCourse (CourseID, Title)
+INSERT INTO dbo.Outline (CourseID, Title)
 VALUES (2021, 'http://www.fineartschool.net/Composition5');
-INSERT INTO dbo.OnlineCourse (CourseID, Title)
+INSERT INTO dbo.Outline (CourseID, Title)
 VALUES (4041, 'http://www.fineartschool.net/Macroeconomics1');
-INSERT INTO dbo.OnlineCourse (CourseID, Title)
+INSERT INTO dbo.Outline (CourseID, Title)
 VALUES (4041, 'http://www.fineartschool.net/Macroeconomics2');
-INSERT INTO dbo.OnlineCourse (CourseID, Title)
+INSERT INTO dbo.Outline (CourseID, Title)
 VALUES (4041, 'http://www.fineartschool.net/Macroeconomics3');
-INSERT INTO dbo.OnlineCourse (CourseID, Title)
+INSERT INTO dbo.Outline (CourseID, Title)
 VALUES (4041, 'http://www.fineartschool.net/Macroeconomics4');
-INSERT INTO dbo.OnlineCourse (CourseID, Title)
+INSERT INTO dbo.Outline (CourseID, Title)
 VALUES (3141, 'http://www.fineartschool.net/Trigonometry1');
-INSERT INTO dbo.OnlineCourse (CourseID, Title)
+INSERT INTO dbo.Outline (CourseID, Title)
 VALUES (3141, 'http://www.fineartschool.net/Trigonometry2');
 
 --Insert data into OnsiteCourse table.

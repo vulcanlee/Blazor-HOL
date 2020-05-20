@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 namespace MatBlazorLab.AdaptorModels
 {
     using System.ComponentModel.DataAnnotations;
-    public class PersonAdaptorModel
+    public class PersonAdaptorModel:ICloneable
     {
         public int PersonId { get; set; }
         [Required(ErrorMessage = "名 欄位必須要輸入值")]
@@ -51,6 +51,15 @@ namespace MatBlazorLab.AdaptorModels
             {
                 return "";
             }
+        }
+
+        public PersonAdaptorModel Clone()
+        {
+            return ((ICloneable)this).Clone() as PersonAdaptorModel;
+        }
+        object ICloneable.Clone()
+        {
+            return this.MemberwiseClone();
         }
     }
 }

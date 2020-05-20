@@ -1,0 +1,47 @@
+﻿@using MatBlazor
+
+<MatDialog @bind-IsOpen="@DialogIsOpen">
+    <MatDialogTitle>@Title</MatDialogTitle>
+    <MatDialogContent>
+        <div style="width:@Width;height:@Height">
+            @Body
+        </div>
+    </MatDialogContent>
+    <MatDialogActions>
+        <MatButton OnClick="@OnOKBtnclick" Class="btn btn-danger">確定</MatButton>
+        <MatButton OnClick="@OnCancelBtnclick" Class="btn btn-primary">取消</MatButton>
+    </MatDialogActions>
+
+</MatDialog>
+
+@code {
+    [Parameter]
+    public bool DialogIsOpen { get; set; }
+    [Parameter]
+    public string Title { get; set; }
+    [Parameter]
+    public string Body { get; set; }
+    [Parameter]
+    public string Width { get; set; } = "500px";
+    [Parameter]
+    public string Height { get; set; } = "300px";
+    [Parameter]
+    public EventCallback<bool> Callback { get; set; }
+    protected override void OnInitialized()
+    {
+    }
+    public async Task OnOKBtnclick()
+    {
+        await CallCallBack(true);
+    }
+    public async Task OnCancelBtnclick()
+    {
+        await CallCallBack(false);
+    }
+
+    public async Task CallCallBack(bool action)
+    {
+        if (Callback.HasDelegate)
+            await Callback.InvokeAsync(action);
+    }
+}

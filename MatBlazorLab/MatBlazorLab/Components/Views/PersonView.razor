@@ -5,10 +5,12 @@
 @using AutoMapper
 @using MatBlazorLab.AdaptorModels
 @using MatBlazorLab.Components.Commons
-@inject IPersonService PersonService
+@inject IPersonService CurrentService
 @inject PersonAdaptor PersonAdaptor
+@inject IMapper mapper
 @using MatBlazor
 
+<button class="btn btn-primary" @onclick="AddNewRecord">新增</button>
 <MatTable Items="@Items" AllowSelection="true" PageSize="DataManagerRequest.PageSize"
           ShowPaging="false" SelectionChanged="SelectionChanged"
           class="mat-elevation-z5">
@@ -22,7 +24,10 @@
         <td><p style="width:200px">@context.FullName</p></td>
         <td><p style="width:150px">@context.EnrollmentDate?.ToString("yyyy-MM-dd")</p></td>
         <td><p style="width:150px">@context.HireDate?.ToString("yyyy-MM-dd")</p></td>
-        <td><button class="btn btn-primary" @onclick="UpdateRecord">修改</button></td>
+        <td>
+            <button class="btn btn-primary" @onclick="UpdateRecord">修改</button>
+            <button class="btn btn-danger" @onclick="DeleteRecord">刪除</button>
+        </td>
     </MatTableRow>
 </MatTable>
 <div>
@@ -31,60 +36,84 @@
                   Page="PageChanged" PageIndexChanged="IndexChanged"
                   PageSizeOptions="DataManagerRequest.PageSizeOptions"></MatPaginator>
 </div>
-@*<MatDialog @bind-IsOpen="@dialogIsOpen">
-        <MatDialogTitle>請修正相關資料</MatDialogTitle>
-        <MatDialogContent>
-            <div style="width:500px;height:400px">
-                <EditForm Model="person">
-                    <DataAnnotationsValidator />
-                    <ValidationSummary />
-                    <InputWatcher EditContextActionChanged="OnEditContestChanged" />
 
-                    <div class="form-group col">
-                        <label class="control-label">名</label>
-                        <InputText class="form-control" @bind-Value="person.LastName"></InputText>
-                        <ValidationMessage For="@(() => person.LastName)" />
-                    </div>
+<MatDialog @bind-IsOpen="@dialogIsOpen">
+    <MatDialogTitle>請修正相關資料</MatDialogTitle>
+    <MatDialogContent>
+        <div style="width:500px;height:400px">
+            <EditForm Model="CurrentRecord">
+                <DataAnnotationsValidator />
+                <ValidationSummary />
+                <InputWatcher EditContextActionChanged="OnEditContestChanged" />
 
-                    <div class="form-group col">
-                        <label class="control-label">姓</label>
-                        <InputText class="form-control" @bind-Value="person.FirstName"></InputText>
-                        <ValidationMessage For="@(() => person.FirstName)" />
-                    </div>
+                <div class="form-group col">
+                    <label class="control-label">名</label>
+                    <InputText class="form-control" @bind-Value="CurrentRecord.LastName"></InputText>
+                    <ValidationMessage For="@(() => CurrentRecord.LastName)" />
+                </div>
 
-                    <div class="form-group col">
-                        <label class="control-label">雇用日期</label>
-                        <InputDate class="form-control" @bind-Value="person.HireDate"></InputDate>
-                        <ValidationMessage For="@(() => person.HireDate)" />
-                    </div>
+                <div class="form-group col">
+                    <label class="control-label">姓</label>
+                    <InputText class="form-control" @bind-Value="CurrentRecord.FirstName"
+                               @bind-Value:format="yyyy-MM-dd"></InputText>
+                    <ValidationMessage For="@(() => CurrentRecord.FirstName)" />
+                </div>
 
-                </EditForm>
-            </div>
-        </MatDialogContent>
-        <MatDialogActions>
-            <MatButton OnClick="@(e => { dialogIsOpen = false; })">取消</MatButton>
-            <MatButton OnClick="@OkClick">儲存</MatButton>
-        </MatDialogActions>
+                <div class="form-group col">
+                    <label class="control-label">註冊日期</label>
+                    <InputDate class="form-control" @bind-Value="CurrentRecord.EnrollmentDate"
+                               @bind-Value:format="yyyy-MM-dd"></InputDate>
+                    <ValidationMessage For="@(() => CurrentRecord.EnrollmentDate)" />
+                </div>
 
-    </MatDialog>
+                <div class="form-group col">
+                    <label class="control-label">雇用日期</label>
+                    <InputDate class="form-control" @bind-Value="CurrentRecord.HireDate"></InputDate>
+                    <ValidationMessage For="@(() => CurrentRecord.HireDate)" />
+                </div>
 
-    <MessageBox Width="400px" Height="150px"
-                Title="@Title" Body="@Body" DialogIsOpen="MessageBoxIsOpen"
-                PressOKCallback="x => MessageBoxIsOpen = false" />*@
+            </EditForm>
+        </div>
+    </MatDialogContent>
+    <MatDialogActions>
+        <MatButton OnClick="@(e => { dialogIsOpen = false; })">取消</MatButton>
+        <MatButton OnClick="@OnRecordEditConfirm">儲存</MatButton>
+    </MatDialogActions>
+
+</MatDialog>
+
+<MessageBox Width="@MessageBoxWidth" Height="@MessageBoxHeight"
+            Title="@MessageBoxTitle" Body="@MessageBoxBody" DialogIsOpen="MessageBoxIsOpen"
+            PressOKCallback="x => MessageBoxIsOpen = false" />
+<ConfirmBox Width="@ConfirmBoxWidth" Height="@ConfirmBoxHeight"
+            Title="@ConfirmBoxTitle" Body="@ConfirmBoxBody" DialogIsOpen="ConfirmBoxIsOpen"
+            Callback="RemoveThisRecord" />
 
 @code{
     MatPaginator PaginatorComponent;
     public List<PersonAdaptorModel> Items { get; set; } = new List<PersonAdaptorModel>();
     public DataManagerRequest DataManagerRequest { get; set; } = new DataManagerRequest();
-    public PersonAdaptorModel CurrentItem { get; set; }
+    public PersonAdaptorModel CurrentRecord { get; set; } = new PersonAdaptorModel();
+    public PersonAdaptorModel CurrentEditRecord { get; set; } = new PersonAdaptorModel();
+    bool dialogIsOpen = false;
+    public EditContext LocalEditContext { get; set; }
+    bool isNewRecordMode;
+    public string MessageBoxTitle { get; set; }
+    public string MessageBoxBody { get; set; }
+    public bool MessageBoxIsOpen { get; set; }
+    public string MessageBoxHeight { get; set; } = "300px";
+    public string MessageBoxWidth { get; set; } = "400px";
+    public string ConfirmBoxTitle { get; set; }
+    public string ConfirmBoxBody { get; set; }
+    public string ConfirmBoxHeight { get; set; } = "300px";
+    public string ConfirmBoxWidth { get; set; } = "400px";
+    public bool ConfirmBoxIsOpen { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
         DataManagerRequest.ChangePageSize(10);
         DataManagerRequest.GoFirstPage();
-        var reslut = await PersonAdaptor.ReadAsync(DataManagerRequest) as DataResult<PersonAdaptorModel>;
-        DataManagerRequest.RecordLength = reslut.Count;
-        Items = reslut.Result as List<PersonAdaptorModel>;
+        await Refresh();
     }
     protected override void OnAfterRender(bool firstRender)
     {
@@ -92,6 +121,10 @@
     async Task PageChanged(MatPaginatorPageEvent args)
     {
         DataManagerRequest.GotoPage(args.PageIndex + 1);
+        await Refresh();
+    }
+    public async Task Refresh()
+    {
         var reslut = await PersonAdaptor.ReadAsync(DataManagerRequest) as DataResult<PersonAdaptorModel>;
         DataManagerRequest.RecordLength = reslut.Count;
         Items = reslut.Result as List<PersonAdaptorModel>;
@@ -102,10 +135,80 @@
     }
     void SelectionChanged(object arg)
     {
-        CurrentItem = arg as PersonAdaptorModel;
+        CurrentEditRecord = arg as PersonAdaptorModel;
+    }
+    async Task DeleteRecord()
+    {
+        await Task.Delay(100);
+        if (CurrentEditRecord is null) return;
+        ConfirmBoxWidth = "400px";
+        ConfirmBoxHeight = "200px";
+        ConfirmBoxTitle = "警告";
+        ConfirmBoxBody = "確認要刪除這筆紀錄嗎？";
+        ConfirmBoxIsOpen = true;
+    }
+    public async Task RemoveThisRecord(bool NeedDelete)
+    {
+        if (NeedDelete == true)
+        {
+            await CurrentService.DeleteAsync(mapper.Map<Person>(CurrentEditRecord));
+            await Refresh();
+        }
+        ConfirmBoxIsOpen = false;
+    }
+    async Task AddNewRecord()
+    {
+        CurrentRecord = new PersonAdaptorModel();
+        isNewRecordMode = true;
+        dialogIsOpen = true;
     }
     async Task UpdateRecord()
     {
         await Task.Delay(100);
+        if (CurrentEditRecord is null) return;
+        CurrentRecord = CurrentEditRecord.Clone();
+        isNewRecordMode = false;
+        dialogIsOpen = true;
+    }
+    public void OnEditContestChanged(EditContext context)
+    {
+        LocalEditContext = context;
+    }
+    async Task OnRecordEditConfirm()
+    {
+        #region 進行 Form Validation 檢查驗證作業
+        if (LocalEditContext.Validate() == false)
+        {
+            return;
+        }
+        #endregion
+
+        #region 檢查資料完整性
+        var checkKindDateResult = CurrentRecord.CheckKindDate();
+        if (string.IsNullOrEmpty(checkKindDateResult) == false)
+        {
+            MessageBoxWidth = "400px";
+            MessageBoxHeight = "200px";
+            MessageBoxTitle = "警告";
+            MessageBoxBody = checkKindDateResult;
+            MessageBoxIsOpen = true;
+            return;
+        }
+        #endregion
+
+        if (dialogIsOpen == true)
+        {
+            if (isNewRecordMode == true)
+            {
+                await CurrentService.AddAsync(mapper.Map<Person>(CurrentRecord));
+                await Refresh();
+            }
+            else
+            {
+                await Refresh();
+                await CurrentService.UpdateAsync(mapper.Map<Person>(CurrentRecord));
+            }
+            dialogIsOpen = false;
+        }
     }
 }

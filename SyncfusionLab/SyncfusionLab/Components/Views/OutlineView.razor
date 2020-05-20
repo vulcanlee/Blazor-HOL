@@ -15,7 +15,7 @@
 @using SyncfusionLab.Interfaces
 @using SyncfusionLab.Components.Commons
 @using SyncfusionLab.Components.Pickers
-@inject OnlineCourseRazorModel RazorModel
+@inject OutlineRazorModel RazorModel
 @implements IRazorPage
 
 <div>
@@ -31,22 +31,22 @@
     }
 </div>
 
-@if (RazorModel.Header.IsExistCourse() == true)
+@if (RazorModel.Header.IsExistCourse() == true || CombineWithHeaderMode==false)
 {
-    <SfGrid @ref="Grid" TValue="OnlineCourseAdaptorModel"
+    <SfGrid @ref="Grid" TValue="OutlineAdaptorModel"
             AllowPaging="true"
             Toolbar="@(new List<string>() { "新增", "Search" })">
         <SfDataManager Adaptor="Adaptors.CustomAdaptor">
-            <OnlineCourseAdaptor HeaderID="RazorModel.Header.CourseId"></OnlineCourseAdaptor>
+            <OutlineAdaptor HeaderID="RazorModel.Header.CourseId"></OutlineAdaptor>
         </SfDataManager>
-        <GridEvents CommandClicked="RazorModel.OnCommandClicked" TValue="OnlineCourseAdaptorModel"
+        <GridEvents CommandClicked="RazorModel.OnCommandClicked" TValue="OutlineAdaptorModel"
                     OnToolbarClick="RazorModel.ToolbarClickHandler" />
         <GridPageSettings PageSize="15" />
         <GridSearchSettings Fields="@(new string[] { "Title", "Course.Title" })"
                             Operator=Syncfusion.Blazor.Operator.Contains IgnoreCase="true" />
         <GridColumns>
-            <GridColumn Field=@nameof(OnlineCourseAdaptorModel.Title) HeaderText="大綱名稱" Width="150"></GridColumn>
-            <GridColumn Field=@nameof(OnlineCourseAdaptorModel.CourseTitle) HeaderText="課程" Width="100" Format="yyyy-MM-dd"></GridColumn>
+            <GridColumn Field=@nameof(OutlineAdaptorModel.Title) HeaderText="大綱名稱" Width="150"></GridColumn>
+            <GridColumn Field=@nameof(OutlineAdaptorModel.CourseTitle) HeaderText="課程" Width="100" Format="yyyy-MM-dd"></GridColumn>
             <GridColumn HeaderText="命令" Width="150" TextAlign="@TextAlign.Center">
                 <GridCommandColumns>
                     <GridCommandColumn ButtonOption="@(new CommandButtonOptions() { Content = "修改", CssClass = "e-flat" })"></GridCommandColumn>
@@ -111,7 +111,7 @@
 <DialogBackground />
 
 @code{
-    SfGrid<OnlineCourseAdaptorModel> Grid;
+    SfGrid<OutlineAdaptorModel> Grid;
     [Parameter]
     public CourseAdaptorModel Header { get; set; }
     [Parameter]

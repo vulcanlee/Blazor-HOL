@@ -13,10 +13,10 @@ namespace SyncfusionLab.RazorModels
     using Syncfusion.Blazor.Grids;
     using Microsoft.AspNetCore.Components.Forms;
 
-    public class OnlineCourseRazorModel
+    public class OutlineRazorModel
     {
         #region Constructor
-        public OnlineCourseRazorModel(IOnlineCourseService CurrentService,
+        public OutlineRazorModel(IOutlineService CurrentService,
            SchoolContext SchoolContext,
            IMapper Mapper)
         {
@@ -27,10 +27,10 @@ namespace SyncfusionLab.RazorModels
         #endregion
 
         #region Property
-        public SfGrid<OnlineCourseAdaptorModel> Grid { get; set; }
+        public SfGrid<OutlineAdaptorModel> Grid { get; set; }
         public bool IsShowEditRecord { get; set; } = false;
-        public OnlineCourseAdaptorModel CurrentRecord { get; set; } = new OnlineCourseAdaptorModel();
-        public OnlineCourseAdaptorModel CurrentNeedDeleteRecord { get; set; } = new OnlineCourseAdaptorModel();
+        public OutlineAdaptorModel CurrentRecord { get; set; } = new OutlineAdaptorModel();
+        public OutlineAdaptorModel CurrentNeedDeleteRecord { get; set; } = new OutlineAdaptorModel();
         public EditContext LocalEditContext { get; set; }
         public bool ShowAontherRecordPicker { get; set; } = false;
         public CourseAdaptorModel Header { get; set; } = new CourseAdaptorModel();
@@ -45,7 +45,7 @@ namespace SyncfusionLab.RazorModels
 
         #region Field
         bool isNewRecordMode;
-        private readonly IOnlineCourseService CurrentService;
+        private readonly IOutlineService CurrentService;
         private readonly SchoolContext SchoolContext;
         private readonly IMapper mapper;
         IRazorPage thisRazorComponent;
@@ -54,7 +54,7 @@ namespace SyncfusionLab.RazorModels
 
         #region Method
         public void Setup(IRazorPage componentBase,
-            SfGrid<OnlineCourseAdaptorModel> grid)
+            SfGrid<OutlineAdaptorModel> grid)
         {
             thisRazorComponent = componentBase;
             Grid = grid;
@@ -69,7 +69,7 @@ namespace SyncfusionLab.RazorModels
         {
             if (args.Item.Text == "新增")
             {
-                CurrentRecord = new OnlineCourseAdaptorModel();
+                CurrentRecord = new OutlineAdaptorModel();
                 EditRecordDialogTitle = "新增紀錄";
                 isNewRecordMode = true;
                 IsShowEditRecord = true;
@@ -77,9 +77,9 @@ namespace SyncfusionLab.RazorModels
                 CurrentRecord.CourseTitle = Header.Title;
             }
         }
-        public void OnCommandClicked(CommandClickEventArgs<OnlineCourseAdaptorModel> args)
+        public void OnCommandClicked(CommandClickEventArgs<OutlineAdaptorModel> args)
         {
-            OnlineCourseAdaptorModel item = args.RowData as OnlineCourseAdaptorModel;
+            OutlineAdaptorModel item = args.RowData as OutlineAdaptorModel;
             if (args.CommandColumn.ButtonOption.Content == "修改")
             {
                 CurrentRecord = item;
@@ -101,7 +101,7 @@ namespace SyncfusionLab.RazorModels
         {
             if (NeedDelete == true)
             {
-                await CurrentService.DeleteAsync(mapper.Map<OnlineCourse>(CurrentNeedDeleteRecord));
+                await CurrentService.DeleteAsync(mapper.Map<Outline>(CurrentNeedDeleteRecord));
                 Grid.Refresh();
             }
             ConfirmMessageBox.Hidden();
@@ -128,12 +128,12 @@ namespace SyncfusionLab.RazorModels
             {
                 if (isNewRecordMode == true)
                 {
-                    await CurrentService.AddAsync(mapper.Map<OnlineCourse>(CurrentRecord));
+                    await CurrentService.AddAsync(mapper.Map<Outline>(CurrentRecord));
                     Grid.Refresh();
                 }
                 else
                 {
-                    await CurrentService.UpdateAsync(mapper.Map<OnlineCourse>(CurrentRecord));
+                    await CurrentService.UpdateAsync(mapper.Map<Outline>(CurrentRecord));
                     Grid.Refresh();
                 }
                 IsShowEditRecord = false;

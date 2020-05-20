@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 namespace SyncfusionLab.AdaptorModels
 {
     using System.ComponentModel.DataAnnotations;
-    public class OnlineCourseAdaptorModel
+    public class OutlineAdaptorModel
     {
-        public int OnlineCourseId { get; set; }
+        public int OutlineId { get; set; }
         public int CourseId { get; set; }
         [Required(ErrorMessage = "主題 欄位必須要輸入值")]
         public string Title { get; set; }

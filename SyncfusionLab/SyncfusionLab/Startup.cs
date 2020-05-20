@@ -51,7 +51,7 @@ namespace SyncfusionLab
             services.AddScoped<IPersonService,PersonService>();
             services.AddScoped<IDepartmentService, DepartmentService>();
             services.AddScoped<ICourseService, CourseService>();
-            services.AddScoped<IOnlineCourseService, OnlineCourseService>();
+            services.AddScoped<IOutlineService, OutlineService>();
             services.AddScoped<IStudentGradeService, StudentGradeService>();
             #endregion
 
@@ -59,7 +59,7 @@ namespace SyncfusionLab
             services.AddScoped<PersonRazorModel>();
             services.AddScoped<DepartmentRazorModel>();
             services.AddScoped<CourseRazorModel>();
-            services.AddScoped<OnlineCourseRazorModel>();
+            services.AddScoped<OutlineRazorModel>();
             services.AddScoped<StudentGradeRazorModel>();
             #endregion
         }

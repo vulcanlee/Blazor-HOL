@@ -5,7 +5,7 @@
 <div>
     <h1>課程</h1>
     <CourseView OnRecordChanged="RecordChanged" />
-    <OnlineCourseView @ref="DetailView" CombineWithHeaderMode="true"
+    <OutlineView @ref="DetailView" CombineWithHeaderMode="true"
                       Header="@Header" />
 </div>
 <div style="height:100px"></div>
@@ -13,7 +13,7 @@
 @code{
     public CourseAdaptorModel Header { get; set; } = new CourseAdaptorModel() { CourseId = -2 };
     public string HeaderDescription { get; set; } = "";
-    OnlineCourseView DetailView;
+    OutlineView DetailView;
     void RecordChanged(CourseAdaptorModel header)
     {
         Header = header;

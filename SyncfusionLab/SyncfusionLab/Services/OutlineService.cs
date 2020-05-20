@@ -8,47 +8,47 @@ namespace SyncfusionLab.Services
     using EFCoreModel.Models;
     using Microsoft.EntityFrameworkCore;
 
-    public class OnlineCourseService : IOnlineCourseService
+    public class OutlineService : IOutlineService
     {
         private readonly SchoolContext context;
 
-        public OnlineCourseService(SchoolContext context)
+        public OutlineService(SchoolContext context)
         {
             this.context = context;
         }
 
-        public Task<IQueryable<OnlineCourse>> GetAsync()
+        public Task<IQueryable<Outline>> GetAsync()
         {
-            return Task.FromResult(context.OnlineCourse
+            return Task.FromResult(context.Outline
                 .Include(x=>x.Course)
                 .AsNoTracking().AsQueryable());
         }
 
-        public async Task<OnlineCourse> GetAsync(int id)
+        public async Task<Outline> GetAsync(int id)
         {
-            OnlineCourse item = await context.OnlineCourse
-                .FirstOrDefaultAsync(x => x.OnlineCourseId == id);
+            Outline item = await context.Outline
+                .FirstOrDefaultAsync(x => x.OutlineId == id);
             return item;
         }
-        public Task<IQueryable<OnlineCourse>> GetByHeaderIDAsync(int paraObj)
+        public Task<IQueryable<Outline>> GetByHeaderIDAsync(int paraObj)
         {
-            return Task.FromResult(context.OnlineCourse
+            return Task.FromResult(context.Outline
                 .Where(x => x.CourseId == paraObj)
                 .Include(x => x.Course)
                 .AsNoTracking().AsQueryable());
         }
 
-        public async Task<bool> AddAsync(OnlineCourse paraObject)
+        public async Task<bool> AddAsync(Outline paraObject)
         {
-            await context.OnlineCourse.AddAsync(paraObject);
+            await context.Outline.AddAsync(paraObject);
             await context.SaveChangesAsync();
             return true;
         }
 
-        public async Task<bool> UpdateAsync(OnlineCourse paraObject)
+        public async Task<bool> UpdateAsync(Outline paraObject)
         {
-            OnlineCourse item = await context.OnlineCourse
-                .FirstOrDefaultAsync(x => x.OnlineCourseId == paraObject.OnlineCourseId);
+            Outline item = await context.Outline
+                .FirstOrDefaultAsync(x => x.OutlineId == paraObject.OutlineId);
             if (item == null)
             {
                 return false;
@@ -59,9 +59,9 @@ namespace SyncfusionLab.Services
                 //context.Entry(paraObject).State = EntityState.Modified;
                 #endregion
                 // 
-                var local = context.Set<OnlineCourse>()
+                var local = context.Set<Outline>()
                     .Local
-                    .FirstOrDefault(entry => entry.OnlineCourseId.Equals(paraObject.OnlineCourseId));
+                    .FirstOrDefault(entry => entry.OutlineId.Equals(paraObject.OutlineId));
 
                 // check if local is not null 
                 if (local != null)
@@ -79,17 +79,17 @@ namespace SyncfusionLab.Services
 
         }
 
-        public async Task<bool> DeleteAsync(OnlineCourse paraObject)
+        public async Task<bool> DeleteAsync(Outline paraObject)
         {
-            OnlineCourse item = await context.OnlineCourse
-                .FirstOrDefaultAsync(x => x.OnlineCourseId == paraObject.OnlineCourseId);
+            Outline item = await context.Outline
+                .FirstOrDefaultAsync(x => x.OutlineId == paraObject.OutlineId);
             if (item == null)
             {
                 return false;
             }
             else
             {
-                context.OnlineCourse.Remove(item);
+                context.Outline.Remove(item);
                 await context.SaveChangesAsync();
                 return true;
             }

@@ -53,6 +53,7 @@ namespace SyncfusionLab.RazorModels
         #endregion
 
         #region Method
+        #region DataGrid 初始化
         public void Setup(IRazorPage componentBase,
             SfGrid<StudentGradeAdaptorModel> grid)
         {
@@ -60,11 +61,9 @@ namespace SyncfusionLab.RazorModels
             Grid = grid;
             //RazorModel
         }
-        public void OnOpenPicker()
-        {
-            ShowAontherRecordPicker = true;
-        }
+        #endregion
 
+        #region 工具列事件 (新增)
         public void ToolbarClickHandler(Syncfusion.Blazor.Navigations.ClickEventArgs args)
         {
             if (args.Item.Text == "新增")
@@ -77,6 +76,9 @@ namespace SyncfusionLab.RazorModels
                 CurrentRecord.CourseTitle = Header.Title;
             }
         }
+        #endregion
+
+        #region 記錄列的按鈕事件 (修改與刪除)
         public void OnCommandClicked(CommandClickEventArgs<StudentGradeAdaptorModel> args)
         {
             StudentGradeAdaptorModel item = args.RowData as StudentGradeAdaptorModel;
@@ -106,13 +108,20 @@ namespace SyncfusionLab.RazorModels
             }
             ConfirmMessageBox.Hidden();
         }
+        #endregion
 
-        public void OnCancel()
+        #region 修改紀錄對話窗的按鈕事件
+        public void OnEditContestChanged(EditContext context)
+        {
+            LocalEditContext = context;
+        }
+
+        public void OnRecordEditCancel()
         {
             IsShowEditRecord = false;
         }
 
-        public async Task HandleValidSubmit()
+        public async Task OnRecordEditConfirm()
         {
             #region 進行 Form Validation 檢查驗證作業
             if (LocalEditContext.Validate() == false)
@@ -159,12 +168,14 @@ namespace SyncfusionLab.RazorModels
                 IsShowEditRecord = false;
             }
         }
-        public void OnEditContestChanged(EditContext context)
-        {
-            LocalEditContext = context;
-        }
+        #endregion
 
         #region 開窗選取紀錄使用到的方法
+        public void OnOpenPicker()
+        {
+            ShowAontherRecordPicker = true;
+        }
+
         public void OnPickerCompletion(PersonAdaptorModel e)
         {
             if (e != null)
@@ -177,11 +188,14 @@ namespace SyncfusionLab.RazorModels
 
         #endregion
 
+        #region 資料表關聯的方法
         public void UpdateMasterHeader(CourseAdaptorModel header)
         {
             Header = header;
             Grid?.Refresh();
         }
+        #endregion
+
         #endregion
     }
 }

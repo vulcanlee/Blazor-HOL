@@ -9,11 +9,7 @@
 @inject PersonAdaptor PersonAdaptor
 @using MatBlazor
 
-@*@foreach (var item in Items)
-    {
-        <div>@item.FirstName</div>
-    }*@
-<MatTable Items="@Items" AllowSelection="true"
+<MatTable Items="@Items" AllowSelection="true" PageSize="DataManagerRequest.PageSize"
           ShowPaging="false" SelectionChanged="SelectionChanged"
           class="mat-elevation-z5">
     <MatTableHeader>
@@ -30,7 +26,8 @@
     </MatTableRow>
 </MatTable>
 <div>
-    <MatPaginator @ref="PaginatorComponent" Length="DataManagerRequest.RecordLength" PageSize="DataManagerRequest.PageSize"
+    <MatPaginator @ref="PaginatorComponent" Length="DataManagerRequest.RecordLength"
+                  PageSize="DataManagerRequest.PageSize"
                   Page="PageChanged" PageIndexChanged="IndexChanged"
                   PageSizeOptions="DataManagerRequest.PageSizeOptions"></MatPaginator>
 </div>
@@ -83,6 +80,7 @@
 
     protected override async Task OnInitializedAsync()
     {
+        DataManagerRequest.ChangePageSize(10);
         DataManagerRequest.GoFirstPage();
         var reslut = await PersonAdaptor.ReadAsync(DataManagerRequest) as DataResult<PersonAdaptorModel>;
         DataManagerRequest.RecordLength = reslut.Count;

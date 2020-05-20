@@ -27,6 +27,12 @@ namespace MatBlazorLab.Adaptors
 
         public DataManagerRequest()
         {
+            ChangePageSize(PageSize);
+        }
+        public void ChangePageSize(int pageSize)
+        {
+            PageSize = pageSize;
+            PageSizeOptions.Clear();
             PageSizeOptions.Add(new MatPageSizeOption(PageSize));
         }
         public void GoFirstPage()

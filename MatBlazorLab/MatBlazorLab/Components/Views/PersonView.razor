@@ -19,7 +19,7 @@
         <th>功能</th>
     </MatTableHeader>
     <MatTableRow>
-        <td><p style="width:200px">@context.LastName @context.FirstName</p></td>
+        <td><p style="width:200px">@context.FullName</p></td>
         <td><p style="width:150px">@context.EnrollmentDate?.ToString("yyyy-MM-dd")</p></td>
         <td><p style="width:150px">@context.HireDate?.ToString("yyyy-MM-dd")</p></td>
         <td><button class="btn btn-primary" @onclick="UpdateRecord">修改</button></td>

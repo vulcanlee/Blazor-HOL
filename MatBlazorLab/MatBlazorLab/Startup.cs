@@ -12,6 +12,7 @@ using Microsoft.Extensions.Hosting;
 using MatBlazorLab.Data;
 using AutoMapper;
 using MatBlazorLab.Helpers;
+using MatBlazorLab.Services;
 
 namespace MatBlazorLab
 {
@@ -40,6 +41,7 @@ namespace MatBlazorLab
         private static void RegisterInspectionService(IServiceCollection services)
         {
             #region µù¥UªA°È
+            services.AddScoped<IPersonService, PersonService>();
             #endregion
 
             #region µù¥U Razor Model

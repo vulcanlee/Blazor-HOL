@@ -39,4 +39,12 @@ namespace MatBlazorLab.Adaptors
 
         public bool IgnoreCase { get; set; }
     }
+
+    public class DataResult<T>
+    {
+        public IEnumerable<T> Result { get; set; }
+
+        public int Count { get; set; }
+    }
+
 }

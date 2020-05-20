@@ -13,6 +13,7 @@ using MatBlazorLab.Data;
 using AutoMapper;
 using MatBlazorLab.Helpers;
 using MatBlazorLab.Services;
+using MatBlazorLab.Adaptors;
 
 namespace MatBlazorLab
 {
@@ -42,6 +43,7 @@ namespace MatBlazorLab
         {
             #region µù¥UªA°È
             services.AddScoped<IPersonService, PersonService>();
+            services.AddScoped<PersonAdaptor>();
             #endregion
 
             #region µù¥U Razor Model

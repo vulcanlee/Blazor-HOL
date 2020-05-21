@@ -8,7 +8,7 @@ namespace EFCoreModel.Models
         public Course()
         {
             CourseInstructor = new HashSet<CourseInstructor>();
-            OnlineCourse = new HashSet<OnlineCourse>();
+            Outline = new HashSet<Outline>();
             StudentGrade = new HashSet<StudentGrade>();
         }
 
@@ -20,7 +20,7 @@ namespace EFCoreModel.Models
         public virtual Department Department { get; set; }
         public virtual OnsiteCourse OnsiteCourse { get; set; }
         public virtual ICollection<CourseInstructor> CourseInstructor { get; set; }
-        public virtual ICollection<OnlineCourse> OnlineCourse { get; set; }
+        public virtual ICollection<Outline> Outline { get; set; }
         public virtual ICollection<StudentGrade> StudentGrade { get; set; }
     }
 }

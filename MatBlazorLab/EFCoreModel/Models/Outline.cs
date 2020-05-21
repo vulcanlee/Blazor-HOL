@@ -3,9 +3,9 @@ using System.Collections.Generic;
 
 namespace EFCoreModel.Models
 {
-    public partial class OnlineCourse
+    public partial class Outline
     {
-        public int OnlineCourseId { get; set; }
+        public int OutlineId { get; set; }
         public int CourseId { get; set; }
         public string Title { get; set; }
 

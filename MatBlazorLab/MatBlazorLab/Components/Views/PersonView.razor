@@ -25,8 +25,8 @@
         <td><p style="width:150px">@context.EnrollmentDate?.ToString("yyyy-MM-dd")</p></td>
         <td><p style="width:150px">@context.HireDate?.ToString("yyyy-MM-dd")</p></td>
         <td>
-            <button class="btn btn-primary" @onclick="UpdateRecord">修改</button>
-            <button class="btn btn-danger" @onclick="DeleteRecord">刪除</button>
+            <button class="btn btn-primary" @onclick="x=>UpdateRecord(context)">修改</button>
+            <button class="btn btn-danger" @onclick="x=>DeleteRecord(context)">刪除</button>
         </td>
     </MatTableRow>
 </MatTable>
@@ -95,6 +95,7 @@
     public DataManagerRequest DataManagerRequest { get; set; } = new DataManagerRequest();
     public PersonAdaptorModel CurrentRecord { get; set; } = new PersonAdaptorModel();
     public PersonAdaptorModel CurrentEditRecord { get; set; } = new PersonAdaptorModel();
+    public PersonAdaptorModel CurrentSelectedRecord { get; set; }
     bool dialogIsOpen = false;
     public EditContext LocalEditContext { get; set; }
     bool isNewRecordMode;
@@ -108,6 +109,8 @@
     public string ConfirmBoxHeight { get; set; } = "300px";
     public string ConfirmBoxWidth { get; set; } = "400px";
     public bool ConfirmBoxIsOpen { get; set; }
+    [Parameter]
+    public EventCallback<PersonAdaptorModel> SelectedRecordChanged { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
@@ -133,14 +136,17 @@
     {
 
     }
-    void SelectionChanged(object arg)
+    async void SelectionChanged(object arg)
     {
-        CurrentEditRecord = arg as PersonAdaptorModel;
+        CurrentSelectedRecord = arg as PersonAdaptorModel;
+        if(SelectedRecordChanged.HasDelegate)
+        {
+            await SelectedRecordChanged.InvokeAsync(CurrentSelectedRecord);
+        }
     }
-    async Task DeleteRecord()
+    void DeleteRecord(PersonAdaptorModel context)
     {
-        await Task.Delay(100);
-        if (CurrentEditRecord is null) return;
+        CurrentEditRecord = context;
         ConfirmBoxWidth = "400px";
         ConfirmBoxHeight = "200px";
         ConfirmBoxTitle = "警告";
@@ -162,10 +168,9 @@
         isNewRecordMode = true;
         dialogIsOpen = true;
     }
-    async Task UpdateRecord()
+    void UpdateRecord(PersonAdaptorModel context)
     {
-        await Task.Delay(100);
-        if (CurrentEditRecord is null) return;
+        CurrentEditRecord = context;
         CurrentRecord = CurrentEditRecord.Clone();
         isNewRecordMode = false;
         dialogIsOpen = true;
@@ -205,8 +210,8 @@
             }
             else
             {
-                await Refresh();
                 await CurrentService.UpdateAsync(mapper.Map<Person>(CurrentRecord));
+                await Refresh();
             }
             dialogIsOpen = false;
         }

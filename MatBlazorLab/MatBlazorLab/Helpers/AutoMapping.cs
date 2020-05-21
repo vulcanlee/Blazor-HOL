@@ -15,6 +15,8 @@ namespace MatBlazorLab.Helpers
         {
             CreateMap<Person, PersonAdaptorModel>();
             CreateMap<PersonAdaptorModel, Person>();
+            CreateMap<Department, DepartmentAdaptorModel>();
+            CreateMap<DepartmentAdaptorModel, Department>();
         }
     }
 }

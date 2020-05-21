@@ -64,6 +64,9 @@ namespace MatBlazorLab
             #region µù¥UªA°È
             services.AddScoped<IPersonService, PersonService>();
             services.AddScoped<PersonAdaptor>();
+            services.AddScoped<IDepartmentService, DepartmentService>();
+            services.AddScoped<DepartmentAdaptor>();
+            services.AddScoped<ICourseService, CourseService>();
             #endregion
 
             #region µù¥U Razor Model

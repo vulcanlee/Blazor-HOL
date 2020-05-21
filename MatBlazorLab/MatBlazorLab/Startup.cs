@@ -68,6 +68,8 @@ namespace MatBlazorLab
             services.AddScoped<DepartmentAdaptor>();
             services.AddScoped<ICourseService, CourseService>();
             services.AddScoped<CourseAdaptor>();
+            services.AddScoped<IOutlineService, OutlineService>();
+            services.AddScoped<OutlineAdaptor>();
             #endregion
 
             #region µù¥U Razor Model

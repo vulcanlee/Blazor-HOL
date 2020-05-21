@@ -19,6 +19,8 @@ namespace MatBlazorLab.Helpers
             CreateMap<DepartmentAdaptorModel, Department>();
             CreateMap<Course, CourseAdaptorModel>();
             CreateMap<CourseAdaptorModel, Course>();
+            CreateMap<Outline, OutlineAdaptorModel>();
+            CreateMap<OutlineAdaptorModel, Outline>();
         }
     }
 }

@@ -1,0 +1,123 @@
+﻿@using System.Threading
+@using MatBlazorLab.Adaptors
+@using MatBlazorLab.Services
+@using MatBlazorLab.Components.Commons
+@using MatBlazorLab.AdaptorModels
+@using EFCoreModel.Models
+@using AutoMapper
+@inject IDepartmentService CurrentService
+@inject DepartmentAdaptor DepartmentAdaptor
+@inject IMapper mapper
+@using MatBlazor
+
+<MatDialog @bind-IsOpen="@OpenPicker">
+    <MatDialogTitle>@DialogTitle</MatDialogTitle>
+    <MatDialogContent>
+        <div style="width:500px;height:600px">
+            <MatTable Items="@Items" AllowSelection="true" PageSize="DataManagerRequest.PageSize"
+                      ShowPaging="false" SelectionChanged="SelectionChanged"
+                      class="mat-elevation-z5">
+                <MatTableHeader>
+                    <th>名稱</th>
+                    <th>預算</th>
+                    <th>開始時間</th>
+                    <th>管理者</th>
+                </MatTableHeader>
+                <MatTableRow>
+                    <td><p style="width:150px">@context.Name</p></td>
+                    <td><p style="width:100px">@context.Budget</p></td>
+                    <td><p style="width:100px">@context.StartDate.ToString("yyyy-MM-dd")</p></td>
+                    <td><p style="width:100px">@context.FullName</p></td>
+                </MatTableRow>
+            </MatTable>
+        </div>
+        <div>
+            <MatPaginator @ref="PaginatorComponent" Length="DataManagerRequest.RecordLength"
+                          PageSize="DataManagerRequest.PageSize"
+                          Page="PageChanged"
+                          PageSizeOptions="DataManagerRequest.PageSizeOptions"></MatPaginator>
+        </div>
+    </MatDialogContent>
+    <MatDialogActions>
+        <button @onclick="@OnPickerOK" class='btn btn-primary'>確認</button>
+        <button @onclick="@OnPickerCancel" class='btn btn-secondary'>取消</button>
+    </MatDialogActions>
+
+</MatDialog>
+
+
+<MessageBox Width="@MessageBoxWidth" Height="@MessageBoxHeight"
+            Title="@MessageBoxTitle" Body="@MessageBoxBody" DialogIsOpen="MessageBoxIsOpen"
+            PressOKCallback="x => MessageBoxIsOpen = false" />
+
+
+@code{
+    [Parameter]
+    public bool OpenPicker { get; set; } = false;
+    string DialogTitle = "請選取人員紀錄";
+    DepartmentAdaptorModel CurrentRecord;
+    public bool ShowMessageBox { get; set; } = false;
+    public List<DepartmentAdaptorModel> Items { get; set; } = new List<DepartmentAdaptorModel>();
+    public DataManagerRequest DataManagerRequest { get; set; } = new DataManagerRequest();
+    public string MessageBoxTitle { get; set; }
+    public string MessageBoxBody { get; set; }
+    public bool MessageBoxIsOpen { get; set; }
+    public string MessageBoxHeight { get; set; } = "300px";
+    public string MessageBoxWidth { get; set; } = "400px";
+    MatPaginator PaginatorComponent;
+    [Parameter]
+    public EventCallback<DepartmentAdaptorModel> SelectedRecordChanged { get; set; }
+    [Parameter]
+    public EventCallback<DepartmentAdaptorModel> OnConfirmCallback { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        DataManagerRequest.ChangePageSize(7);
+        DataManagerRequest.GoFirstPage();
+        await Refresh();
+    }
+
+    async Task PageChanged(MatPaginatorPageEvent args)
+    {
+        DataManagerRequest.GotoPage(args.PageIndex + 1);
+        await Refresh();
+    }
+    public async Task Refresh()
+    {
+        var reslut = await DepartmentAdaptor.ReadAsync(DataManagerRequest) as DataResult<DepartmentAdaptorModel>;
+        DataManagerRequest.RecordLength = reslut.Count;
+        Items = reslut.Result as List<DepartmentAdaptorModel>;
+    }
+    async void SelectionChanged(object arg)
+    {
+        CurrentRecord = arg as DepartmentAdaptorModel;
+        if (SelectedRecordChanged.HasDelegate)
+        {
+            await SelectedRecordChanged.InvokeAsync(CurrentRecord);
+        }
+    }
+    public void ShowDialog()
+    {
+        OpenPicker = true;
+    }
+
+    async Task OnPickerOK()
+    {
+        if (CurrentRecord != null)
+        {
+            await OnConfirmCallback.InvokeAsync(CurrentRecord);
+        }
+        else
+        {
+            MessageBoxWidth = "400px";
+            MessageBoxHeight = "200px";
+            MessageBoxTitle = "通知訊息";
+            MessageBoxBody = "請選取一筆紀錄？";
+            MessageBoxIsOpen = true;
+        }
+    }
+    async Task OnPickerCancel()
+    {
+        await OnConfirmCallback.InvokeAsync(null);
+    }
+}

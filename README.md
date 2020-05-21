@@ -1,5 +1,10 @@
 # Blazor Hands-On 教育訓練專案原始碼
 
+
+# 事前準備工作
+
+若想要進行這兩種類型專案開發練習 ( [|使用 Syncfusion 元件來完成 Contoso University 的資料庫存取應用](SyncfusionLab) 、 [使用 MatBlazor 元件來完成 Contoso University 的資料庫存取應用](MatBlazorLab))，請先在開發電腦上，準備這裡說明的相關軟體與操作步驟。
+
 ## 練習使用資料庫的建立方式
 
 在 [Database] 資料夾內，找到 [SchemaAndData.sql](Database/SchemaAndData.sql) 檔案，將這裡的 SQL 指令，在指定的 SQL Server 來執行，便會自動建立起相關開發使用的資料庫。
@@ -13,7 +18,7 @@ Scaffold-DbContext "Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=School;In
 |類型|專案名稱|專案說明|
 |-|-|-|
 ||SyncfusionLab|使用 Syncfusion 元件來完成 Contoso University 的資料庫存取應用|
-||MatBlazorLab|使用 Syncfusion 元件來完成 Contoso University 的資料庫存取應用|
+||MatBlazorLab|使用 MatBlazor 元件來完成 Contoso University 的資料庫存取應用|
 ||||
 ||||
 ||||

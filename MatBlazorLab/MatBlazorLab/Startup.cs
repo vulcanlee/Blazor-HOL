@@ -70,6 +70,8 @@ namespace MatBlazorLab
             services.AddScoped<CourseAdaptor>();
             services.AddScoped<IOutlineService, OutlineService>();
             services.AddScoped<OutlineAdaptor>();
+            services.AddScoped<IStudentGradeService, StudentGradeService>();
+            services.AddScoped<StudentGradeAdaptor>();
             #endregion
 
             #region µù¥U Razor Model

@@ -6,8 +6,8 @@
 @using MatBlazorLab.AdaptorModels
 @using MatBlazorLab.Components.Commons
 @using MatBlazorLab.Components.Pickers
-@inject IOutlineService CurrentService
-@inject OutlineAdaptor OutlineAdaptor
+@inject IStudentGradeService CurrentService
+@inject StudentGradeAdaptor StudentGradeAdaptor
 @inject IMapper mapper
 @using MatBlazor
 
@@ -30,13 +30,13 @@
               ShowPaging="false" SelectionChanged="SelectionChanged"
               class="mat-elevation-z5">
         <MatTableHeader>
-            <th>大綱名稱</th>
-            <th>課程</th>
+            <th>分數</th>
+            <th>學生</th>
             <th>功能</th>
         </MatTableHeader>
         <MatTableRow>
-            <td><p style="width:400px">@context.Title</p></td>
-            <td><p style="width:180px">@context.CourseTitle</p></td>
+            <td><p style="width:100px">@context.Grade</p></td>
+            <td><p style="width:200px">@context.StudentName</p></td>
             <td>
                 <button class="btn btn-primary" @onclick="x=>UpdateRecord(context)">修改</button>
                 <button class="btn btn-danger" @onclick="x=>DeleteRecord(context)">刪除</button>
@@ -61,15 +61,15 @@
                 <InputWatcher EditContextActionChanged="OnEditContestChanged" />
 
                 <div class="form-group col">
-                    <label class="control-label">大綱名稱</label>
-                    <InputText class="form-control" @bind-Value="CurrentRecord.Title"></InputText>
-                    <ValidationMessage For="@(() => CurrentRecord.Title)" />
+                    <label class="control-label">分數</label>
+                    <InputNumber class="form-control" @bind-Value="CurrentRecord.Grade"></InputNumber>
+                    <ValidationMessage For="@(() => CurrentRecord.Grade)" />
                 </div>
 
                 <div class="form-group col">
-                    <label class="control-label">科系 <span class="oi oi-question-mark" @onclick="OnOpenPicker"></span></label>
+                    <label class="control-label">學生 <span class="oi oi-question-mark" @onclick="OnOpenPicker"></span></label>
                     <InputText class="form-control"
-                               @bind-Value="CurrentRecord.CourseTitle" Enabled="false"></InputText>
+                               @bind-Value="CurrentRecord.StudentName" Enabled="false"></InputText>
                 </div>
 
             </EditForm>
@@ -82,7 +82,7 @@
 
 </MatDialog>
 
-<PickCourse OpenPicker="ShowAontherRecordPicker" OnConfirmCallback="x=>OnPickerCompletion(x)"></PickCourse>
+<PickPerson OpenPicker="ShowAontherRecordPicker" OnConfirmCallback="x=>OnPickerCompletion(x)"></PickPerson>
 
 <MessageBox Width="@MessageBoxWidth" Height="@MessageBoxHeight"
             Title="@MessageBoxTitle" Body="@MessageBoxBody" DialogIsOpen="MessageBoxIsOpen"
@@ -93,11 +93,11 @@
 
 @code{
     MatPaginator PaginatorComponent;
-    public List<OutlineAdaptorModel> Items { get; set; } = new List<OutlineAdaptorModel>();
+    public List<StudentGradeAdaptorModel> Items { get; set; } = new List<StudentGradeAdaptorModel>();
     public DataManagerRequest DataManagerRequest { get; set; } = new DataManagerRequest();
-    public OutlineAdaptorModel CurrentRecord { get; set; } = new OutlineAdaptorModel();
-    public OutlineAdaptorModel CurrentEditRecord { get; set; } = new OutlineAdaptorModel();
-    public OutlineAdaptorModel CurrentSelectedRecord { get; set; }
+    public StudentGradeAdaptorModel CurrentRecord { get; set; } = new StudentGradeAdaptorModel();
+    public StudentGradeAdaptorModel CurrentEditRecord { get; set; } = new StudentGradeAdaptorModel();
+    public StudentGradeAdaptorModel CurrentSelectedRecord { get; set; }
     bool dialogIsOpen = false;
     public EditContext LocalEditContext { get; set; }
     bool isNewRecordMode;
@@ -116,7 +116,7 @@
     public CourseAdaptorModel Header { get; set; } = new CourseAdaptorModel();
 
     [Parameter]
-    public EventCallback<OutlineAdaptorModel> SelectedRecordChanged { get; set; }
+    public EventCallback<StudentGradeAdaptorModel> SelectedRecordChanged { get; set; }
     [Parameter]
     public bool CombineWithHeaderMode { get; set; } = false;
 
@@ -124,7 +124,7 @@
     {
         DataManagerRequest.ChangePageSize(10);
         DataManagerRequest.GoFirstPage();
-        OutlineAdaptor.HeaderID = -1;
+        StudentGradeAdaptor.HeaderID = -1;
         await Refresh();
     }
     protected override void OnAfterRender(bool firstRender)
@@ -137,9 +137,9 @@
     }
     public async Task Refresh()
     {
-        var reslut = await OutlineAdaptor.ReadAsync(DataManagerRequest) as DataResult<OutlineAdaptorModel>;
+        var reslut = await StudentGradeAdaptor.ReadAsync(DataManagerRequest) as DataResult<StudentGradeAdaptorModel>;
         DataManagerRequest.RecordLength = reslut.Count;
-        Items = reslut.Result as List<OutlineAdaptorModel>;
+        Items = reslut.Result as List<StudentGradeAdaptorModel>;
     }
     void IndexChanged(int index)
     {
@@ -147,13 +147,13 @@
     }
     async void SelectionChanged(object arg)
     {
-        CurrentSelectedRecord = arg as OutlineAdaptorModel;
+        CurrentSelectedRecord = arg as StudentGradeAdaptorModel;
         if (SelectedRecordChanged.HasDelegate)
         {
             await SelectedRecordChanged.InvokeAsync(CurrentSelectedRecord);
         }
     }
-    void DeleteRecord(OutlineAdaptorModel context)
+    void DeleteRecord(StudentGradeAdaptorModel context)
     {
         CurrentEditRecord = context;
         ConfirmBoxWidth = "400px";
@@ -166,7 +166,7 @@
     {
         if (NeedDelete == true)
         {
-            await CurrentService.DeleteAsync(mapper.Map<Outline>(CurrentEditRecord));
+            await CurrentService.DeleteAsync(mapper.Map<StudentGrade>(CurrentEditRecord));
             await Refresh();
         }
         ConfirmBoxIsOpen = false;
@@ -174,7 +174,7 @@
     void AddNewRecord()
     {
         EditRecordDialogTitle = "新增紀錄";
-        CurrentRecord = new OutlineAdaptorModel();
+        CurrentRecord = new StudentGradeAdaptorModel();
         if (Header.CourseId > 0)
         {
             CurrentRecord.CourseId = Header.CourseId;
@@ -183,7 +183,7 @@
         isNewRecordMode = true;
         dialogIsOpen = true;
     }
-    void UpdateRecord(OutlineAdaptorModel context)
+    void UpdateRecord(StudentGradeAdaptorModel context)
     {
         EditRecordDialogTitle = "修改紀錄";
         CurrentEditRecord = context;
@@ -205,18 +205,46 @@
         #endregion
 
         #region 檢查資料完整性
+        if (isNewRecordMode == true)
+        {
+            var checkedResult = await CurrentService
+                .BeforeAddCheckAsync(mapper.Map<StudentGrade>(CurrentRecord));
+            if (checkedResult == false)
+            {
+                MessageBoxWidth = "400px";
+                MessageBoxHeight = "200px";
+                MessageBoxTitle = "警告";
+                MessageBoxBody = "該學生已經存在該課程內，無法完成新增";
+                MessageBoxIsOpen = true;
+                return;
+            }
+        }
+        else
+        {
+            var checkedResult = await CurrentService
+                .BeforeUpdateCheckAsync(mapper.Map<StudentGrade>(CurrentRecord));
+            if (checkedResult == false)
+            {
+                MessageBoxWidth = "400px";
+                MessageBoxHeight = "200px";
+                MessageBoxTitle = "警告";
+                MessageBoxBody = "該學生已經存在該課程內，無法完成修改";
+                MessageBoxIsOpen = true;
+                return;
+            }
+        }
         #endregion
 
         if (dialogIsOpen == true)
         {
             if (isNewRecordMode == true)
             {
-                await CurrentService.AddAsync(mapper.Map<Outline>(CurrentRecord));
+                await CurrentService.AddAsync(mapper.Map<StudentGrade>(CurrentRecord));
                 await Refresh();
             }
             else
             {
-                await CurrentService.UpdateAsync(mapper.Map<Outline>(CurrentRecord));
+                await CurrentService.UpdateAsync(mapper.Map<StudentGrade>(CurrentRecord));
                 await Refresh();
             }
             dialogIsOpen = false;
@@ -228,19 +256,19 @@
         ShowAontherRecordPicker = true;
     }
 
-    public void OnPickerCompletion(CourseAdaptorModel e)
+    public void OnPickerCompletion(PersonAdaptorModel e)
     {
         if (e != null)
         {
-            CurrentRecord.CourseId = e.CourseId;
-            CurrentRecord.CourseTitle = e.Title;
+            CurrentRecord.StudentId = e.PersonId;
+            CurrentRecord.StudentName = e.FullName;
         }
         ShowAontherRecordPicker = false;
     }
     public async Task UpdateMasterHeader(CourseAdaptorModel header)
     {
         Header = header;
-        OutlineAdaptor.HeaderID = Header.CourseId;
+        StudentGradeAdaptor.HeaderID = Header.CourseId;
         await Task.Delay(100);
         await Refresh();
         // 必須要加入這個方法呼叫，否則，UI 無法更新

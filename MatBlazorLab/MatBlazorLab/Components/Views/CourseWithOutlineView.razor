@@ -1,0 +1,29 @@
+﻿@using MatBlazorLab.Components.Views
+@using MatBlazorLab.AdaptorModels
+
+<div>
+    <h1>課程</h1>
+    <CourseView SelectedRecordChanged="RecordChanged" PageSize="3" />
+    <OutlineView @ref="DetailView" CombineWithHeaderMode="true"
+                 />
+</div>
+
+@code{
+    public CourseAdaptorModel Header { get; set; } = new CourseAdaptorModel() { CourseId = -2 };
+    public string HeaderDescription { get; set; } = "";
+    OutlineView DetailView;
+    async Task RecordChanged(CourseAdaptorModel header)
+    {
+        Header = header;
+        if(Header == null)
+        {
+            Header = new CourseAdaptorModel()
+            {
+                CourseId = -2,
+                 Title = ""
+            };
+        }
+
+        await DetailView.UpdateMasterHeader(Header);
+    }
+}

@@ -11,30 +11,46 @@
 @inject IMapper mapper
 @using MatBlazor
 
-<button class="btn btn-primary" @onclick="AddNewRecord">新增</button>
-<MatTable Items="@Items" AllowSelection="true" PageSize="DataManagerRequest.PageSize"
-          ShowPaging="false" SelectionChanged="SelectionChanged"
-          class="mat-elevation-z5">
-    <MatTableHeader>
-        <th>大綱名稱</th>
-        <th>課程</th>
-        <th>功能</th>
-    </MatTableHeader>
-    <MatTableRow>
-        <td><p style="width:400px">@context.Title</p></td>
-        <td><p style="width:180px">@context.CourseTitle</p></td>
-        <td>
-            <button class="btn btn-primary" @onclick="x=>UpdateRecord(context)">修改</button>
-            <button class="btn btn-danger" @onclick="x=>DeleteRecord(context)">刪除</button>
-        </td>
-    </MatTableRow>
-</MatTable>
 <div>
-    <MatPaginator @ref="PaginatorComponent" Length="DataManagerRequest.RecordLength"
-                  PageSize="DataManagerRequest.PageSize"
-                  Page="PageChanged" PageIndexChanged="IndexChanged"
-                  PageSizeOptions="DataManagerRequest.PageSizeOptions"></MatPaginator>
+    @if (CombineWithHeaderMode == false)
+    {
+        <button class="btn btn-primary" @onclick="x => ShowAontherRecordPicker = true">選取課程</button>
+        <span>@Header.Title</span>
+    }
+    else
+    {
+        <div style="height:100px"></div>
+        <h1>@Header.Title</h1>
+    }
 </div>
+
+@if (Header.IsExistCourse() == true || CombineWithHeaderMode == false)
+{
+    <button class="btn btn-primary" @onclick="AddNewRecord">新增</button>
+    <MatTable Items="@Items" AllowSelection="true" PageSize="DataManagerRequest.PageSize"
+              ShowPaging="false" SelectionChanged="SelectionChanged"
+              class="mat-elevation-z5">
+        <MatTableHeader>
+            <th>大綱名稱</th>
+            <th>課程</th>
+            <th>功能</th>
+        </MatTableHeader>
+        <MatTableRow>
+            <td><p style="width:400px">@context.Title</p></td>
+            <td><p style="width:180px">@context.CourseTitle</p></td>
+            <td>
+                <button class="btn btn-primary" @onclick="x=>UpdateRecord(context)">修改</button>
+                <button class="btn btn-danger" @onclick="x=>DeleteRecord(context)">刪除</button>
+            </td>
+        </MatTableRow>
+    </MatTable>
+    <div>
+        <MatPaginator @ref="PaginatorComponent" Length="DataManagerRequest.RecordLength"
+                      PageSize="DataManagerRequest.PageSize"
+                      Page="PageChanged" PageIndexChanged="IndexChanged"
+                      PageSizeOptions="DataManagerRequest.PageSizeOptions"></MatPaginator>
+    </div>
+}
 
 <MatDialog @bind-IsOpen="@dialogIsOpen">
     <MatDialogTitle>@EditRecordDialogTitle</MatDialogTitle>
@@ -77,7 +93,7 @@
             Callback="RemoveThisRecord" />
 
 @code{
-    MatPaginator PaginatorComponent;
+        MatPaginator PaginatorComponent;
     public List<OutlineAdaptorModel> Items { get; set; } = new List<OutlineAdaptorModel>();
     public DataManagerRequest DataManagerRequest { get; set; } = new DataManagerRequest();
     public OutlineAdaptorModel CurrentRecord { get; set; } = new OutlineAdaptorModel();
@@ -102,6 +118,8 @@
 
     [Parameter]
     public EventCallback<OutlineAdaptorModel> SelectedRecordChanged { get; set; }
+    [Parameter]
+    public bool CombineWithHeaderMode { get; set; } = false;
 
     protected override async Task OnInitializedAsync()
     {
@@ -158,6 +176,11 @@
     {
         EditRecordDialogTitle = "新增紀錄";
         CurrentRecord = new OutlineAdaptorModel();
+        if (Header.CourseId > 0)
+        {
+            CurrentRecord.CourseId = Header.CourseId;
+            CurrentRecord.CourseTitle = Header.Title;
+        }
         isNewRecordMode = true;
         dialogIsOpen = true;
     }
@@ -189,9 +212,6 @@
         {
             if (isNewRecordMode == true)
             {
-                // 這裡因為練習用的 Outline 資料表中的 PK，沒有自動編號
-                CurrentRecord.OutlineId= new Random().Next(1000, 999999);
-
                 await CurrentService.AddAsync(mapper.Map<Outline>(CurrentRecord));
                 await Refresh();
             }
@@ -221,8 +241,11 @@
     public async Task UpdateMasterHeader(CourseAdaptorModel header)
     {
         Header = header;
+        OutlineAdaptor.HeaderID = Header.CourseId;
         await Task.Delay(100);
         await Refresh();
+        // 必須要加入這個方法呼叫，否則，UI 無法更新
+        StateHasChanged();
     }
 
     #endregion

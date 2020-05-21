@@ -108,15 +108,14 @@
 
     [Parameter]
     public EventCallback<CourseAdaptorModel> SelectedRecordChanged { get; set; }
+    [Parameter]
+    public int PageSize { get; set; } = 10;
 
     protected override async Task OnInitializedAsync()
     {
-        DataManagerRequest.ChangePageSize(10);
+        DataManagerRequest.ChangePageSize(PageSize);
         DataManagerRequest.GoFirstPage();
         await Refresh();
-    }
-    protected override void OnAfterRender(bool firstRender)
-    {
     }
     async Task PageChanged(MatPaginatorPageEvent args)
     {
@@ -193,7 +192,7 @@
             if (isNewRecordMode == true)
             {
                 // 這裡因為練習用的 Course 資料表中的 PK，沒有自動編號
-                CurrentRecord.CourseId= new Random().Next(1000, 999999);
+                CurrentRecord.CourseId = new Random().Next(1000, 999999);
 
                 await CurrentService.AddAsync(mapper.Map<Course>(CurrentRecord));
                 await Refresh();

@@ -47,16 +47,36 @@
             // 進行搜尋動作
             DataSource = DataOperations.PerformSearching(DataSource, dataManagerRequest.Search);
         }
-        if (dataManagerRequest.Sorted != null && dataManagerRequest.Sorted.Count > 0)
+
+
+        #region 進行排序動作
+        if (CurrentSortCondition != null)
         {
-            // 進行排序動作
-            DataSource = DataOperations.PerformSorting(DataSource, dataManagerRequest.Sorted);
+            if (CurrentSortCondition.Id == "Title Ascending")
+            {
+                DataSource = DataSource.OrderBy(x => x.Title);
+            }
+            else if (CurrentSortCondition.Id == "Title Descending")
+            {
+                DataSource = DataSource.OrderByDescending(x => x.Title);
+            }
+            else
+            {
+                DataSource = DataSource.OrderBy(x => x.Title);
+            }
         }
-        else
-        {
-            // 進行預設排序
-            DataSource = DataSource.OrderBy(x => x.Title);
-        }
+        #endregion
+
+        //if (dataManagerRequest.Sorted != null && dataManagerRequest.Sorted.Count > 0)
+        //{
+        //    // 進行排序動作
+        //    DataSource = DataOperations.PerformSorting(DataSource, dataManagerRequest.Sorted);
+        //}
+        //else
+        //{
+        //    // 進行預設排序
+        //    DataSource = DataSource.OrderBy(x => x.Title);
+        //}
         if (dataManagerRequest.Where != null && dataManagerRequest.Where.Count > 0)
         {
             // 進行過濾動作

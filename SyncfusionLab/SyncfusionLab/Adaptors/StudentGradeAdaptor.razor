@@ -47,18 +47,49 @@
             // 進行搜尋動作
             DataSource = DataOperations.PerformSearching(DataSource, dataManagerRequest.Search);
         }
-        if (dataManagerRequest.Sorted != null && dataManagerRequest.Sorted.Count > 0)
+
+        #region 進行排序動作
+        if (CurrentSortCondition != null)
         {
-            // 進行排序動作
-            DataSource = DataOperations.PerformSorting(DataSource, dataManagerRequest.Sorted);
+            if (CurrentSortCondition.Id == "Grade Descending")
+            {
+                DataSource = DataSource.OrderByDescending(x => x.Grade);
+            }
+            else if (CurrentSortCondition.Id == "Grade Ascending")
+            {
+                DataSource = DataSource.OrderBy(x => x.Grade);
+            }
+            if (CurrentSortCondition.Id == "Name Descending")
+            {
+                DataSource = DataSource.OrderByDescending(x => x.Student.LastName).ThenByDescending(x => x.Student.FirstName);
+            }
+            else if (CurrentSortCondition.Id == "Name Ascending")
+            {
+                DataSource = DataSource.OrderBy(x => x.Student.LastName).ThenBy(x => x.Student.FirstName);
+            }
+            else if (CurrentSortCondition.Id == "Student Ascending")
+            {
+                DataSource = DataSource.OrderByDescending(x => x.Student.EnrollmentDate);
+            }
+            else
+            {
+                DataSource = DataSource.OrderBy(x => x.Student.LastName).ThenBy(x => x.Student.FirstName);
+            }
         }
-        else
-        {
-            // 進行預設排序
-            DataSource = DataSource
-                .OrderBy(x => x.Student.FirstName)
-                .ThenBy(x => x.Student.LastName);
-        }
+        #endregion
+
+        //if (dataManagerRequest.Sorted != null && dataManagerRequest.Sorted.Count > 0)
+        //{
+        //    // 進行排序動作
+        //    DataSource = DataOperations.PerformSorting(DataSource, dataManagerRequest.Sorted);
+        //}
+        //else
+        //{
+        //    // 進行預設排序
+        //    DataSource = DataSource
+        //        .OrderBy(x => x.Student.FirstName)
+        //        .ThenBy(x => x.Student.LastName);
+        //}
         if (dataManagerRequest.Where != null && dataManagerRequest.Where.Count > 0)
         {
             // 進行過濾動作

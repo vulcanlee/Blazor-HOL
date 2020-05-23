@@ -20,14 +20,6 @@
 @implements IRazorPage
 
 <div>
-    <SfDropDownList TValue="string" TItem="SortCondition"
-                    Placeholder="選擇排序條件" DataSource="@RazorModel.SortConditions">
-        <DropDownListFieldSettings Value="Id" Text="Title"></DropDownListFieldSettings>
-        <DropDownListEvents TValue="string" ValueChange="@RazorModel.SortChanged"></DropDownListEvents>
-    </SfDropDownList>
-</div>
-
-<div>
     @if (CombineWithHeaderMode == false)
     {
         <button class="btn btn-primary" @onclick="x => RazorModel.ShowAontherRecordPicker = true">選取課程</button>
@@ -42,12 +34,20 @@
 
 @if (RazorModel.Header.IsExistCourse() == true || CombineWithHeaderMode == false)
 {
+    <div>
+        <SfDropDownList TValue="string" TItem="SortCondition"
+                        Placeholder="選擇排序條件" DataSource="@RazorModel.SortConditions">
+            <DropDownListFieldSettings Value="Id" Text="Title"></DropDownListFieldSettings>
+            <DropDownListEvents TValue="string" ValueChange="@RazorModel.SortChanged"></DropDownListEvents>
+        </SfDropDownList>
+    </div>
+
     <SfGrid @ref="Grid" TValue="OutlineAdaptorModel"
             AllowPaging="true"
             Toolbar="@(new List<string>() { "新增", "Search" })">
         <SfDataManager Adaptor="Adaptors.CustomAdaptor">
             <OutlineAdaptor HeaderID="RazorModel.Header.CourseId"
-                             CurrentSortCondition="@RazorModel.CurrentSortCondition"></OutlineAdaptor>
+                            CurrentSortCondition="@RazorModel.CurrentSortCondition"></OutlineAdaptor>
         </SfDataManager>
         <GridEvents CommandClicked="RazorModel.OnCommandClicked" TValue="OutlineAdaptorModel"
                     OnToolbarClick="RazorModel.ToolbarClickHandler" />

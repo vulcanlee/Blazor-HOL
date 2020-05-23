@@ -44,7 +44,7 @@
             {
                 DataSource = DataSource.OrderByDescending(x => x.LastName).ThenByDescending(x => x.FirstName);
             }
-            else if (CurrentSortCondition.Id == "Name Descending")
+            else if (CurrentSortCondition.Id == "Name Ascending")
             {
                 DataSource = DataSource.OrderBy(x => x.LastName).ThenBy(x => x.FirstName);
             }

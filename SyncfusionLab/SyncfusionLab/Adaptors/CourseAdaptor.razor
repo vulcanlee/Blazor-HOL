@@ -39,25 +39,28 @@
         }
 
         #region 進行排序動作
-        if (CurrentSortCondition.Id == "Course Name Ascending")
+        if (CurrentSortCondition != null)
         {
-            DataSource = DataSource.OrderBy(x => x.Title).ThenBy(x => x.Credits);
-        }
-        else if (CurrentSortCondition.Id == "Course Name Descending")
-        {
-            DataSource = DataSource.OrderByDescending(x => x.Title).ThenBy(x => x.Credits);
-        }
-        else if (CurrentSortCondition.Id == "Department Name Ascending")
-        {
-            DataSource = DataSource.OrderBy(x => x.Department.Name).ThenBy(x => x.Title);
-        }
-        else if (CurrentSortCondition.Id == "Department Name Descending")
-        {
-            DataSource = DataSource.OrderByDescending(x => x.Department.Name).ThenBy(x=>x.Title);
-        }
-        else
-        {
-            DataSource = DataSource.OrderBy(x => x.Title);
+            if (CurrentSortCondition.Id == "Course Name Ascending")
+            {
+                DataSource = DataSource.OrderBy(x => x.Title).ThenBy(x => x.Credits);
+            }
+            else if (CurrentSortCondition.Id == "Course Name Descending")
+            {
+                DataSource = DataSource.OrderByDescending(x => x.Title).ThenBy(x => x.Credits);
+            }
+            else if (CurrentSortCondition.Id == "Department Name Ascending")
+            {
+                DataSource = DataSource.OrderBy(x => x.Department.Name).ThenBy(x => x.Title);
+            }
+            else if (CurrentSortCondition.Id == "Department Name Descending")
+            {
+                DataSource = DataSource.OrderByDescending(x => x.Department.Name).ThenBy(x => x.Title);
+            }
+            else
+            {
+                DataSource = DataSource.OrderBy(x => x.Title);
+            }
         }
         #endregion
 

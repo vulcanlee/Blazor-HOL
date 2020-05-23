@@ -219,6 +219,16 @@ namespace SyncfusionLab.RazorModels
             SortConditions.Clear();
             SortConditions.Add(new SortCondition()
             {
+                Id = "Grade Ascending",
+                Title = "分數 遞增"
+            });
+            SortConditions.Add(new SortCondition()
+            {
+                Id = "Grade Descending",
+                Title = "分數 遞減"
+            });
+            SortConditions.Add(new SortCondition()
+            {
                 Id = "Name Ascending",
                 Title = "姓名 遞增"
             });
@@ -231,11 +241,6 @@ namespace SyncfusionLab.RazorModels
             {
                 Id = "Student Ascending",
                 Title = "學生身分排序"
-            });
-            SortConditions.Add(new SortCondition()
-            {
-                Id = "Employee Ascending",
-                Title = "職員身分排序"
             });
         }
 

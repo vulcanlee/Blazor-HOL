@@ -19,7 +19,7 @@ namespace SyncfusionLab.AdaptorModels
 
         public bool IsExistCourse()
         {
-            if(string.IsNullOrEmpty(Title))
+            if (string.IsNullOrEmpty(Title))
             {
                 return false;
             }
@@ -30,3 +30,4 @@ namespace SyncfusionLab.AdaptorModels
         }
     }
 }
+

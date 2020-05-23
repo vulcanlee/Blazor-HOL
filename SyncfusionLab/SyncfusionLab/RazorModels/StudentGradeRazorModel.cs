@@ -34,6 +34,20 @@ namespace SyncfusionLab.RazorModels
         public EditContext LocalEditContext { get; set; }
         public bool ShowAontherRecordPicker { get; set; } = false;
         public CourseAdaptorModel Header { get; set; } = new CourseAdaptorModel();
+        public string HeaderTitle
+        {
+            get
+            {
+                if (Header == null || string.IsNullOrEmpty(Header.Title))
+                {
+                    return "";
+                }
+                else
+                {
+                    return $"{Header.Title} 的 學生清單";
+                }
+            }
+        }
 
         #region 訊息說明之對話窗使用的變數
         public ConfirmBoxModel ConfirmMessageBox { get; set; } = new ConfirmBoxModel();

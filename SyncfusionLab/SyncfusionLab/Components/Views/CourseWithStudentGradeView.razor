@@ -4,9 +4,9 @@
 
 <div>
     <h1>課程</h1>
-    <CourseView OnRecordChanged="RecordChanged" />
+    <CourseView OnRecordChanged="RecordChanged" PageSize="3" />
     <StudentGradeView @ref="DetailView" CombineWithHeaderMode="true"
-                      Header="@Header" />
+                      Header="@Header" PageSize="@PageSize" />
 </div>
 <div style="height:100px"></div>
 
@@ -14,6 +14,8 @@
     public CourseAdaptorModel Header { get; set; } = new CourseAdaptorModel() { CourseId = -2 };
     public string HeaderDescription { get; set; } = "";
     StudentGradeView DetailView;
+    [Parameter]
+    public int PageSize { get; set; } = 15;
     void RecordChanged(CourseAdaptorModel header)
     {
         Header = header;

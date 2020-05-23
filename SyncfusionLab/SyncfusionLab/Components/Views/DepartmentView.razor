@@ -26,7 +26,7 @@
     </SfDataManager>
     <GridEvents CommandClicked="RazorModel.OnCommandClicked" TValue="DepartmentAdaptorModel"
                 OnToolbarClick="RazorModel.ToolbarClickHandler" />
-    <GridPageSettings PageSize="15" />
+    <GridPageSettings PageSize="@PageSize" />
     <GridSearchSettings Fields="@(new string[] { "Name"})"
                         Operator=Syncfusion.Blazor.Operator.Contains IgnoreCase="true" />
     <GridColumns>
@@ -117,6 +117,8 @@
 
 @code{
     SfGrid<DepartmentAdaptorModel> Grid;
+    [Parameter]
+    public int PageSize { get; set; } = 15;
 
     protected override void OnInitialized()
     {

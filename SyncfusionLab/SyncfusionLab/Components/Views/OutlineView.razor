@@ -41,7 +41,7 @@
         </SfDataManager>
         <GridEvents CommandClicked="RazorModel.OnCommandClicked" TValue="OutlineAdaptorModel"
                     OnToolbarClick="RazorModel.ToolbarClickHandler" />
-        <GridPageSettings PageSize="15" />
+        <GridPageSettings PageSize="@PageSize" />
         <GridSearchSettings Fields="@(new string[] { "Title", "Course.Title" })"
                             Operator=Syncfusion.Blazor.Operator.Contains IgnoreCase="true" />
         <GridColumns>
@@ -116,6 +116,8 @@
     public CourseAdaptorModel Header { get; set; }
     [Parameter]
     public bool CombineWithHeaderMode { get; set; } = false;
+    [Parameter]
+    public int PageSize { get; set; } = 15;
 
     protected override void OnInitialized()
     {

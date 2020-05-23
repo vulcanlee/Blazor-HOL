@@ -28,7 +28,7 @@
                 OnToolbarClick="RazorModel.ToolbarClickHandler" 
                 RowSelected="RowSelectHandler" 
                 RowDeselected="RowDeselectHandler"/>
-    <GridPageSettings PageSize="5" />
+    <GridPageSettings PageSize="@PageSize" />
     <GridSearchSettings Fields="@(new string[] { "Title","Department.Name"})"
                         Operator=Syncfusion.Blazor.Operator.Contains IgnoreCase="true" />
     <GridColumns>
@@ -109,6 +109,8 @@
     SfGrid<CourseAdaptorModel> Grid;
     [Parameter]
     public EventCallback<CourseAdaptorModel> OnRecordChanged { get; set; }
+    [Parameter]
+    public int PageSize { get; set; } = 15;
 
     protected override void OnInitialized()
     {

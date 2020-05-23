@@ -6,6 +6,7 @@
 @using EFCoreModel.Models
 @using AutoMapper
 @using SyncfusionLab.AdaptorModels
+@using SyncfusionLab.RazorModels
 @inherits DataAdaptor<IPersonService>
 @inject IMapper Mapper
 
@@ -17,6 +18,9 @@
     [Parameter]
     [JsonIgnore]
     public RenderFragment ChildContent { get; set; }
+
+    [Parameter]
+    public SortCondition CurrentSortCondition { get; set; }
 
     /// <summary>
     /// 透過 Service 使用 Entity Framework Core 來讀取資料庫內的紀錄出來
@@ -32,16 +36,39 @@
             // 進行搜尋動作
             DataSource = DataOperations.PerformSearching(DataSource, dataManagerRequest.Search);
         }
-        if (dataManagerRequest.Sorted != null && dataManagerRequest.Sorted.Count > 0)
+        #region 進行排序動作
+        if (CurrentSortCondition.Id == "Name Descending")
         {
-            // 進行排序動作
-            DataSource = DataOperations.PerformSorting(DataSource, dataManagerRequest.Sorted);
+            DataSource = DataSource.OrderByDescending(x => x.LastName).ThenByDescending(x => x.FirstName);
+        }
+        else if (CurrentSortCondition.Id == "Name Descending")
+        {
+            DataSource = DataSource.OrderBy(x => x.LastName).ThenBy(x => x.FirstName);
+        }
+        else if (CurrentSortCondition.Id == "Student Ascending")
+        {
+            DataSource = DataSource.OrderByDescending(x => x.EnrollmentDate);
+        }
+        else if (CurrentSortCondition.Id == "Employee Ascending")
+        {
+            DataSource = DataSource.OrderByDescending(x => x.HireDate);
         }
         else
         {
-            // 進行預設排序
-            DataSource= DataSource.OrderBy(x => x.LastName).ThenBy(x => x.FirstName);
+            DataSource = DataSource.OrderBy(x => x.LastName);
         }
+        #endregion
+
+        //if (dataManagerRequest.Sorted != null && dataManagerRequest.Sorted.Count > 0)
+        //{
+        //    // 進行排序動作
+        //    DataSource = DataOperations.PerformSorting(DataSource, dataManagerRequest.Sorted);
+        //}
+        //else
+        //{
+        //    // 進行預設排序
+        //    DataSource = DataSource.OrderBy(x => x.LastName).ThenBy(x => x.FirstName);
+        //}
         if (dataManagerRequest.Where != null && dataManagerRequest.Where.Count > 0)
         {
             // 進行過濾動作

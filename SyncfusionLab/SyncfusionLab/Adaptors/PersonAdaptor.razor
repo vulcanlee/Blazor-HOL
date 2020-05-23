@@ -36,26 +36,30 @@
             // 進行搜尋動作
             DataSource = DataOperations.PerformSearching(DataSource, dataManagerRequest.Search);
         }
+
         #region 進行排序動作
-        if (CurrentSortCondition.Id == "Name Descending")
+        if (CurrentSortCondition != null)
         {
-            DataSource = DataSource.OrderByDescending(x => x.LastName).ThenByDescending(x => x.FirstName);
-        }
-        else if (CurrentSortCondition.Id == "Name Descending")
-        {
-            DataSource = DataSource.OrderBy(x => x.LastName).ThenBy(x => x.FirstName);
-        }
-        else if (CurrentSortCondition.Id == "Student Ascending")
-        {
-            DataSource = DataSource.OrderByDescending(x => x.EnrollmentDate);
-        }
-        else if (CurrentSortCondition.Id == "Employee Ascending")
-        {
-            DataSource = DataSource.OrderByDescending(x => x.HireDate);
-        }
-        else
-        {
-            DataSource = DataSource.OrderBy(x => x.LastName);
+            if (CurrentSortCondition.Id == "Name Descending")
+            {
+                DataSource = DataSource.OrderByDescending(x => x.LastName).ThenByDescending(x => x.FirstName);
+            }
+            else if (CurrentSortCondition.Id == "Name Descending")
+            {
+                DataSource = DataSource.OrderBy(x => x.LastName).ThenBy(x => x.FirstName);
+            }
+            else if (CurrentSortCondition.Id == "Student Ascending")
+            {
+                DataSource = DataSource.OrderByDescending(x => x.EnrollmentDate);
+            }
+            else if (CurrentSortCondition.Id == "Employee Ascending")
+            {
+                DataSource = DataSource.OrderByDescending(x => x.HireDate);
+            }
+            else
+            {
+                DataSource = DataSource.OrderBy(x => x.LastName);
+            }
         }
         #endregion
 

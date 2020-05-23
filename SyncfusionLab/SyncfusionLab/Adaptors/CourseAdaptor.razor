@@ -6,6 +6,7 @@
 @using EFCoreModel.Models
 @using AutoMapper
 @using SyncfusionLab.AdaptorModels
+@using SyncfusionLab.RazorModels
 @using Microsoft.EntityFrameworkCore
 @inherits DataAdaptor<ICourseService>
 @inject IMapper Mapper
@@ -18,6 +19,9 @@
     [Parameter]
     [JsonIgnore]
     public RenderFragment ChildContent { get; set; }
+
+    [Parameter]
+    public SortCondition CurrentSortCondition { get; set; }
 
     /// <summary>
     /// 透過 Service 使用 Entity Framework Core 來讀取資料庫內的紀錄出來
@@ -33,16 +37,41 @@
             // 進行搜尋動作
             DataSource = DataOperations.PerformSearching(DataSource, dataManagerRequest.Search);
         }
-        if (dataManagerRequest.Sorted != null && dataManagerRequest.Sorted.Count > 0)
+
+        #region 進行排序動作
+        if (CurrentSortCondition.Id == "Course Name Ascending")
         {
-            // 進行排序動作
-            DataSource = DataOperations.PerformSorting(DataSource, dataManagerRequest.Sorted);
+            DataSource = DataSource.OrderBy(x => x.Title).ThenBy(x => x.Credits);
+        }
+        else if (CurrentSortCondition.Id == "Course Name Descending")
+        {
+            DataSource = DataSource.OrderByDescending(x => x.Title).ThenBy(x => x.Credits);
+        }
+        else if (CurrentSortCondition.Id == "Department Name Ascending")
+        {
+            DataSource = DataSource.OrderBy(x => x.Department.Name).ThenBy(x => x.Title);
+        }
+        else if (CurrentSortCondition.Id == "Department Name Descending")
+        {
+            DataSource = DataSource.OrderByDescending(x => x.Department.Name).ThenBy(x=>x.Title);
         }
         else
         {
-            // 進行預設排序
             DataSource = DataSource.OrderBy(x => x.Title);
         }
+        #endregion
+
+        //if (dataManagerRequest.Sorted != null && dataManagerRequest.Sorted.Count > 0)
+        //{
+        //    // 進行排序動作
+        //    DataSource = DataOperations.PerformSorting(DataSource, dataManagerRequest.Sorted);
+        //}
+        //else
+        //{
+        //    // 進行預設排序
+        //    DataSource = DataSource.OrderBy(x => x.Title);
+        //}
+
         if (dataManagerRequest.Where != null && dataManagerRequest.Where.Count > 0)
         {
             // 進行過濾動作

@@ -23,6 +23,7 @@ namespace SyncfusionLab.RazorModels
             this.CurrentService = CurrentService;
             this.SchoolContext = SchoolContext;
             mapper = Mapper;
+            InitializeSortCondition();
         }
         #endregion
 
@@ -48,6 +49,8 @@ namespace SyncfusionLab.RazorModels
                 }
             }
         }
+        public List<SortCondition> SortConditions { get; set; } = new List<SortCondition>();
+        public SortCondition CurrentSortCondition { get; set; } = new SortCondition();
 
         #region 訊息說明之對話窗使用的變數
         public ConfirmBoxModel ConfirmMessageBox { get; set; } = new ConfirmBoxModel();
@@ -210,6 +213,42 @@ namespace SyncfusionLab.RazorModels
         }
         #endregion
 
+        #region 排序搜尋事件
+        private void InitializeSortCondition()
+        {
+            SortConditions.Clear();
+            SortConditions.Add(new SortCondition()
+            {
+                Id = "Name Ascending",
+                Title = "姓名 遞增"
+            });
+            SortConditions.Add(new SortCondition()
+            {
+                Id = "Name Descending",
+                Title = "姓名 遞減"
+            });
+            SortConditions.Add(new SortCondition()
+            {
+                Id = "Student Ascending",
+                Title = "學生身分排序"
+            });
+            SortConditions.Add(new SortCondition()
+            {
+                Id = "Employee Ascending",
+                Title = "職員身分排序"
+            });
+        }
+
+        public void SortChanged(Syncfusion.Blazor.DropDowns.ChangeEventArgs<string> args)
+        {
+            if (Grid != null)
+            {
+                CurrentSortCondition.Id = args.Value;
+                Grid.Refresh();
+            }
+        }
+
+        #endregion
         #endregion
     }
 }

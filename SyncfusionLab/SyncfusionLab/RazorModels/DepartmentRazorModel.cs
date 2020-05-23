@@ -23,6 +23,7 @@ namespace SyncfusionLab.RazorModels
             this.CurrentService = CurrentService;
             this.SchoolContext = SchoolContext;
             mapper = Mapper;
+            InitializeSortCondition();
         }
         #endregion
 
@@ -33,6 +34,8 @@ namespace SyncfusionLab.RazorModels
         public DepartmentAdaptorModel CurrentNeedDeleteRecord { get; set; } = new DepartmentAdaptorModel();
         public EditContext LocalEditContext { get; set; }
         public bool ShowAontherRecordPicker { get; set; } = false;
+        public List<SortCondition> SortConditions { get; set; } = new List<SortCondition>();
+        public SortCondition CurrentSortCondition { get; set; } = new SortCondition();
 
 
         #region 訊息說明之對話窗使用的變數
@@ -141,7 +144,7 @@ namespace SyncfusionLab.RazorModels
                 IsShowEditRecord = false;
             }
         }
-  
+
         public void OnEditContestChanged(EditContext context)
         {
             LocalEditContext = context;
@@ -165,6 +168,44 @@ namespace SyncfusionLab.RazorModels
         }
 
         #endregion
+
+        #region 排序搜尋事件
+        private void InitializeSortCondition()
+        {
+            SortConditions.Clear();
+            SortConditions.Add(new SortCondition()
+            {
+                Id = "Name Ascending",
+                Title = "名稱 遞增"
+            });
+            SortConditions.Add(new SortCondition()
+            {
+                Id = "Name Descending",
+                Title = "名稱 遞減"
+            });
+            SortConditions.Add(new SortCondition()
+            {
+                Id = "Budget Ascending",
+                Title = "預算 遞增"
+            });
+            SortConditions.Add(new SortCondition()
+            {
+                Id = "Budget Ascending",
+                Title = "預算 遞減"
+            });
+        }
+
+        public void SortChanged(Syncfusion.Blazor.DropDowns.ChangeEventArgs<string> args)
+        {
+            if (Grid != null)
+            {
+                CurrentSortCondition.Id = args.Value;
+                Grid.Refresh();
+            }
+        }
+
+        #endregion
         #endregion
     }
 }
+

@@ -6,6 +6,7 @@
 @using Syncfusion.Blazor.Popups
 @using Syncfusion.Blazor.Inputs
 @using Syncfusion.Blazor.Calendars
+@using Syncfusion.Blazor.DropDowns
 @using SyncfusionLab.Adaptors
 @using SyncfusionLab.Services
 @using EFCoreModel.Models
@@ -17,6 +18,14 @@
 @using SyncfusionLab.Components.Pickers
 @inject OutlineRazorModel RazorModel
 @implements IRazorPage
+
+<div>
+    <SfDropDownList TValue="string" TItem="SortCondition"
+                    Placeholder="選擇排序條件" DataSource="@RazorModel.SortConditions">
+        <DropDownListFieldSettings Value="Id" Text="Title"></DropDownListFieldSettings>
+        <DropDownListEvents TValue="string" ValueChange="@RazorModel.SortChanged"></DropDownListEvents>
+    </SfDropDownList>
+</div>
 
 <div>
     @if (CombineWithHeaderMode == false)
@@ -31,13 +40,14 @@
     }
 </div>
 
-@if (RazorModel.Header.IsExistCourse() == true || CombineWithHeaderMode==false)
+@if (RazorModel.Header.IsExistCourse() == true || CombineWithHeaderMode == false)
 {
     <SfGrid @ref="Grid" TValue="OutlineAdaptorModel"
             AllowPaging="true"
             Toolbar="@(new List<string>() { "新增", "Search" })">
         <SfDataManager Adaptor="Adaptors.CustomAdaptor">
-            <OutlineAdaptor HeaderID="RazorModel.Header.CourseId"></OutlineAdaptor>
+            <OutlineAdaptor HeaderID="RazorModel.Header.CourseId"
+                             CurrentSortCondition="@RazorModel.CurrentSortCondition"></OutlineAdaptor>
         </SfDataManager>
         <GridEvents CommandClicked="RazorModel.OnCommandClicked" TValue="OutlineAdaptorModel"
                     OnToolbarClick="RazorModel.ToolbarClickHandler" />

@@ -6,6 +6,7 @@
 @using EFCoreModel.Models
 @using AutoMapper
 @using SyncfusionLab.AdaptorModels
+@using SyncfusionLab.RazorModels
 @using Microsoft.EntityFrameworkCore
 @inherits DataAdaptor<IOutlineService>
 @inject IMapper Mapper
@@ -20,6 +21,9 @@
     public RenderFragment ChildContent { get; set; }
     [Parameter]
     public int HeaderID { get; set; }
+
+    [Parameter]
+    public SortCondition CurrentSortCondition { get; set; }
 
     /// <summary>
     /// 透過 Service 使用 Entity Framework Core 來讀取資料庫內的紀錄出來

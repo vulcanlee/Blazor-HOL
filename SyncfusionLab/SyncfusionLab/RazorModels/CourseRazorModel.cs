@@ -13,6 +13,7 @@ namespace SyncfusionLab.RazorModels
     using Syncfusion.Blazor.Grids;
     using Microsoft.AspNetCore.Components.Forms;
     using Microsoft.AspNetCore.Components;
+    using SyncfusionLab.Helpers;
 
     public class CourseRazorModel
     {
@@ -24,7 +25,7 @@ namespace SyncfusionLab.RazorModels
             this.CurrentService = CurrentService;
             this.SchoolContext = SchoolContext;
             mapper = Mapper;
-            InitializeSortCondition();
+            CourseSortHelper.Initialization(SortConditions);
         }
         #endregion
 
@@ -172,30 +173,6 @@ namespace SyncfusionLab.RazorModels
         #endregion
 
         #region 排序搜尋事件
-        private void InitializeSortCondition()
-        {
-            SortConditions.Clear();
-            SortConditions.Add(new SortCondition()
-            {
-                Id = "Course Name Ascending",
-                Title = "課程名稱 遞增"
-            });
-            SortConditions.Add(new SortCondition()
-            {
-                Id = "Course Name Descending",
-                Title = "課程名稱 遞減"
-            });
-            SortConditions.Add(new SortCondition()
-            {
-                Id = "Department Name Ascending",
-                Title = "科系 遞增"
-            });
-            SortConditions.Add(new SortCondition()
-            {
-                Id = "Department Name Descending",
-                Title = "科系 遞減"
-            });
-        }
 
         public void SortChanged(Syncfusion.Blazor.DropDowns.ChangeEventArgs<string> args)
         {

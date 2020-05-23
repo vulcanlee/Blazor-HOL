@@ -6,10 +6,13 @@
 @using Syncfusion.Blazor.Popups
 @using Syncfusion.Blazor.Inputs
 @using Syncfusion.Blazor.Calendars
+@using Syncfusion.Blazor.DropDowns
 @using SyncfusionLab.Adaptors
 @using SyncfusionLab.Services
 @using SyncfusionLab.Components.Commons
 @using SyncfusionLab.AdaptorModels
+@using SyncfusionLab.RazorModels
+@using SyncfusionLab.Helpers
 @using EFCoreModel.Models
 @inject IDepartmentService CurrentService
 @inject SchoolContext SchoolContext
@@ -18,11 +21,18 @@
     <DialogTemplates>
         <Header>@DialogTitle</Header>
         <Content>
+            <div>
+                <SfDropDownList TValue="string" TItem="SortCondition"
+                                Placeholder="選擇排序條件" DataSource="@SortConditions">
+                    <DropDownListFieldSettings Value="Id" Text="Title"></DropDownListFieldSettings>
+                    <DropDownListEvents TValue="string" ValueChange="@SortChanged"></DropDownListEvents>
+                </SfDropDownList>
+            </div>
             <SfGrid @ref="GridDialog" TValue="DepartmentAdaptorModel"
                     AllowPaging="true"
                     Toolbar="@(new List<string>() { "Search" })">
                 <SfDataManager Adaptor="Adaptors.CustomAdaptor">
-                    <DepartmentAdaptor></DepartmentAdaptor>
+                    <DepartmentAdaptor CurrentSortCondition="@CurrentSortCondition"></DepartmentAdaptor>
                 </SfDataManager>
                 <GridSelectionSettings Type="SelectionType.Single"></GridSelectionSettings>
                 <GridEvents RowSelected="GetSelectedRecords" TValue="DepartmentAdaptorModel"></GridEvents>
@@ -61,9 +71,12 @@
     public bool ShowMessageBox { get; set; } = false;
     public string MessageBoxBody { get; set; } = "";
     public string MessageBoxTitle { get; set; } = "";
+    public List<SortCondition> SortConditions { get; set; } = new List<SortCondition>();
+    public SortCondition CurrentSortCondition { get; set; } = new SortCondition();
 
     protected override void OnInitialized()
     {
+        DepartmentSortHelper.Initialization(SortConditions);
     }
 
     public void ShowDialog()
@@ -92,4 +105,16 @@
     {
         CurrentRecord = args.Data as DepartmentAdaptorModel;
     }
+    #region 排序搜尋事件
+
+    public void SortChanged(Syncfusion.Blazor.DropDowns.ChangeEventArgs<string> args)
+    {
+        if (GridDialog != null)
+        {
+            CurrentSortCondition.Id = args.Value;
+            GridDialog.Refresh();
+        }
+    }
+
+    #endregion
 }

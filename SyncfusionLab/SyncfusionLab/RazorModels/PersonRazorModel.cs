@@ -12,6 +12,7 @@ namespace SyncfusionLab.RazorModels
     using SyncfusionLab.Services;
     using Syncfusion.Blazor.Grids;
     using Microsoft.AspNetCore.Components.Forms;
+    using SyncfusionLab.Helpers;
 
     public class PersonRazorModel
     {
@@ -23,7 +24,7 @@ namespace SyncfusionLab.RazorModels
             this.CurrentService = CurrentService;
             this.SchoolContext = SchoolContext;
             mapper = Mapper;
-            InitializeSortCondition();
+            PersonSortHelper.Initialization(SortConditions);
         }
         #endregion
 
@@ -157,30 +158,6 @@ namespace SyncfusionLab.RazorModels
         #endregion
 
         #region 排序搜尋事件
-        private void InitializeSortCondition()
-        {
-            SortConditions.Clear();
-            SortConditions.Add(new SortCondition()
-            {
-                Id = "Name Ascending",
-                Title = "姓名 遞增"
-            });
-            SortConditions.Add(new SortCondition()
-            {
-                Id = "Name Descending",
-                Title = "姓名 遞減"
-            });
-            SortConditions.Add(new SortCondition()
-            {
-                Id = "Student Ascending",
-                Title = "學生身分排序"
-            });
-            SortConditions.Add(new SortCondition()
-            {
-                Id = "Employee Ascending",
-                Title = "職員身分排序"
-            });
-        }
 
         public void SortChanged(Syncfusion.Blazor.DropDowns.ChangeEventArgs<string> args)
         {

@@ -59,7 +59,7 @@
             {
                 DataSource = DataSource.OrderBy(x => x.Grade);
             }
-            if (CurrentSortCondition.Id == "Name Descending")
+            else if (CurrentSortCondition.Id == "Name Descending")
             {
                 DataSource = DataSource.OrderByDescending(x => x.Student.LastName).ThenByDescending(x => x.Student.FirstName);
             }

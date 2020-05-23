@@ -4,9 +4,9 @@
 
 <div>
     <h1 class="text-success">課程清單</h1>
-    <CourseView OnRecordChanged="RecordChanged" PageSize="3"/>
+    <CourseView OnRecordChanged="RecordChanged" PageSize="@HeaderPageSize" />
     <OutlineView @ref="DetailView" CombineWithHeaderMode="true"
-                      Header="@Header" PageSize="@PageSize" />
+                 Header="@Header" PageSize="@DetailPageSize" />
 </div>
 <div style="height:100px"></div>
 
@@ -15,7 +15,9 @@
     public string HeaderDescription { get; set; } = "";
     OutlineView DetailView;
     [Parameter]
-    public int PageSize { get; set; } = 15;
+    public int DetailPageSize { get; set; } = 15;
+    [Parameter]
+    public int HeaderPageSize { get; set; } = 3;
     void RecordChanged(CourseAdaptorModel header)
     {
         Header = header;

@@ -7,6 +7,7 @@
 @using AutoMapper
 @using SyncfusionLab.AdaptorModels
 @using SyncfusionLab.RazorModels
+@using SyncfusionLab.Helpers
 @using Microsoft.EntityFrameworkCore
 @inherits DataAdaptor<ICourseService>
 @inject IMapper Mapper
@@ -41,19 +42,19 @@
         #region 進行排序動作
         if (CurrentSortCondition != null)
         {
-            if (CurrentSortCondition.Id == "Course Name Ascending")
+            if (CurrentSortCondition.Id == (int)CourseSortEnum.CourseNameAscending)
             {
                 DataSource = DataSource.OrderBy(x => x.Title).ThenBy(x => x.Credits);
             }
-            else if (CurrentSortCondition.Id == "Course Name Descending")
+            else if (CurrentSortCondition.Id == (int)CourseSortEnum.CourseNameDescending)
             {
                 DataSource = DataSource.OrderByDescending(x => x.Title).ThenBy(x => x.Credits);
             }
-            else if (CurrentSortCondition.Id == "Department Name Ascending")
+            else if (CurrentSortCondition.Id == (int)CourseSortEnum.DepartmentNameAscending)
             {
                 DataSource = DataSource.OrderBy(x => x.Department.Name).ThenBy(x => x.Title);
             }
-            else if (CurrentSortCondition.Id == "Department Name Descending")
+            else if (CurrentSortCondition.Id == (int)CourseSortEnum.DepartmentNameDescending)
             {
                 DataSource = DataSource.OrderByDescending(x => x.Department.Name).ThenBy(x => x.Title);
             }

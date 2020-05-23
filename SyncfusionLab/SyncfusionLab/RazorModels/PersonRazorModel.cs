@@ -158,8 +158,8 @@ namespace SyncfusionLab.RazorModels
         #endregion
 
         #region 排序搜尋事件
-        public string DefaultSorting { get; set; } = "";
-        public void SortChanged(Syncfusion.Blazor.DropDowns.ChangeEventArgs<string> args)
+        public int DefaultSorting { get; set; } = -1;
+        public void SortChanged(Syncfusion.Blazor.DropDowns.ChangeEventArgs<int> args)
         {
             if (Grid != null)
             {

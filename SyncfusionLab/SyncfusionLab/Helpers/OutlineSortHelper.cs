@@ -6,6 +6,11 @@ using System.Threading.Tasks;
 
 namespace SyncfusionLab.Helpers
 {
+    public enum OutlineEnum
+    {
+        TitleAscending,
+        TitleDescending,
+    }
     public class OutlineSortHelper
     {
         public static void Initialization(List<SortCondition> SortConditions)
@@ -13,12 +18,12 @@ namespace SyncfusionLab.Helpers
             SortConditions.Clear();
             SortConditions.Add(new SortCondition()
             {
-                Id = "Title Ascending",
+                Id = (int)OutlineEnum.TitleAscending,
                 Title = "名稱 遞增"
             });
             SortConditions.Add(new SortCondition()
             {
-                Id = "Title Descending",
+                Id = (int)OutlineEnum.TitleDescending,
                 Title = "名稱 遞減"
             });
         }

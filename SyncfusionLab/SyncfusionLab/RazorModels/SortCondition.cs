@@ -7,7 +7,7 @@ namespace SyncfusionLab.RazorModels
 {
     public class SortCondition
     {
-        public string Id { get; set; }
+        public int Id { get; set; }
         public string Title { get; set; }
     }
 }

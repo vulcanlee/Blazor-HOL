@@ -4,6 +4,7 @@
 @using SyncfusionLab.Data
 @using SyncfusionLab.Services
 @using EFCoreModel.Models
+@using SyncfusionLab.Helpers
 @using AutoMapper
 @using SyncfusionLab.AdaptorModels
 @using SyncfusionLab.RazorModels
@@ -40,19 +41,19 @@
         #region 進行排序動作
         if (CurrentSortCondition != null)
         {
-            if (CurrentSortCondition.Id == "Name Descending")
+            if (CurrentSortCondition.Id == (int)PersonEnum.NameDescending)
             {
                 DataSource = DataSource.OrderByDescending(x => x.LastName).ThenByDescending(x => x.FirstName);
             }
-            else if (CurrentSortCondition.Id == "Name Ascending")
+            else if (CurrentSortCondition.Id == (int)PersonEnum.NameAscending)
             {
                 DataSource = DataSource.OrderBy(x => x.LastName).ThenBy(x => x.FirstName);
             }
-            else if (CurrentSortCondition.Id == "Student Ascending")
+            else if (CurrentSortCondition.Id == (int)PersonEnum.StudentAscending)
             {
                 DataSource = DataSource.OrderByDescending(x => x.EnrollmentDate);
             }
-            else if (CurrentSortCondition.Id == "Employee Ascending")
+            else if (CurrentSortCondition.Id == (int)PersonEnum.EmployeeAscending)
             {
                 DataSource = DataSource.OrderByDescending(x => x.HireDate);
             }

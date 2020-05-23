@@ -216,7 +216,7 @@ namespace SyncfusionLab.RazorModels
 
         #region 排序搜尋事件
 
-        public void SortChanged(Syncfusion.Blazor.DropDowns.ChangeEventArgs<string> args)
+        public void SortChanged(Syncfusion.Blazor.DropDowns.ChangeEventArgs<int> args)
         {
             if (Grid != null)
             {

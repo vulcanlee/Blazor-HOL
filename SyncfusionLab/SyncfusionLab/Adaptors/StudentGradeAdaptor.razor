@@ -4,6 +4,7 @@
 @using SyncfusionLab.Data
 @using SyncfusionLab.Services
 @using EFCoreModel.Models
+@using SyncfusionLab.Helpers
 @using AutoMapper
 @using SyncfusionLab.AdaptorModels
 @using SyncfusionLab.RazorModels
@@ -51,23 +52,23 @@
         #region 進行排序動作
         if (CurrentSortCondition != null)
         {
-            if (CurrentSortCondition.Id == "Grade Descending")
+            if (CurrentSortCondition.Id == (int)StudentGradeEnum.GradeDescending)
             {
                 DataSource = DataSource.OrderByDescending(x => x.Grade);
             }
-            else if (CurrentSortCondition.Id == "Grade Ascending")
+            else if (CurrentSortCondition.Id == (int)StudentGradeEnum.GradeAscending)
             {
                 DataSource = DataSource.OrderBy(x => x.Grade);
             }
-            else if (CurrentSortCondition.Id == "Name Descending")
+            else if (CurrentSortCondition.Id == (int)StudentGradeEnum.NameDescending)
             {
                 DataSource = DataSource.OrderByDescending(x => x.Student.LastName).ThenByDescending(x => x.Student.FirstName);
             }
-            else if (CurrentSortCondition.Id == "Name Ascending")
+            else if (CurrentSortCondition.Id == (int)StudentGradeEnum.NameAscending)
             {
                 DataSource = DataSource.OrderBy(x => x.Student.LastName).ThenBy(x => x.Student.FirstName);
             }
-            else if (CurrentSortCondition.Id == "Student Ascending")
+            else if (CurrentSortCondition.Id == (int)StudentGradeEnum.StudentAscending)
             {
                 DataSource = DataSource.OrderByDescending(x => x.Student.EnrollmentDate);
             }

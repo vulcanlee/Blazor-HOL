@@ -20,7 +20,7 @@
 
 
 <div>
-    <SfDropDownList TValue="string" TItem="SortCondition" @bind-Value="@RazorModel.DefaultSorting"
+    <SfDropDownList TValue="int" TItem="SortCondition" @bind-Value="@RazorModel.DefaultSorting"
                     Placeholder="選擇排序條件" DataSource="@RazorModel.SortConditions">
         <DropDownListFieldSettings Value="Id" Text="Title"></DropDownListFieldSettings>
         <DropDownListEvents TValue="string" ValueChange="@RazorModel.SortChanged"></DropDownListEvents>

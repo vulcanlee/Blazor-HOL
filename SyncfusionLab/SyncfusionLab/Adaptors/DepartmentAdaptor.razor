@@ -4,6 +4,7 @@
 @using SyncfusionLab.Data
 @using SyncfusionLab.Services
 @using SyncfusionLab.RazorModels
+@using SyncfusionLab.Helpers
 @using EFCoreModel.Models
 @using AutoMapper
 @using SyncfusionLab.AdaptorModels
@@ -41,19 +42,19 @@
         #region 進行排序動作
         if (CurrentSortCondition != null)
         {
-            if (CurrentSortCondition.Id == "Name Ascending")
+            if (CurrentSortCondition.Id == (int)DepartmentEnum.NameAscending)
             {
                 DataSource = DataSource.OrderBy(x => x.Name);
             }
-            else if (CurrentSortCondition.Id == "Name Descending")
+            else if (CurrentSortCondition.Id == (int)DepartmentEnum.NameDescending)
             {
                 DataSource = DataSource.OrderByDescending(x => x.Name);
             }
-            else if (CurrentSortCondition.Id == "Budget Ascending")
+            else if (CurrentSortCondition.Id == (int)DepartmentEnum.BudgetAscending)
             {
                 DataSource = DataSource.OrderBy(x => x.Budget);
             }
-            else if (CurrentSortCondition.Id == "Budget Descending")
+            else if (CurrentSortCondition.Id == (int)DepartmentEnum.BudgetDescending)
             {
                 DataSource = DataSource.OrderByDescending(x => x.Budget);
             }

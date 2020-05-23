@@ -6,6 +6,13 @@ using System.Threading.Tasks;
 
 namespace SyncfusionLab.Helpers
 {
+    public enum PersonEnum
+    {
+        NameAscending,
+        NameDescending,
+        StudentAscending,
+        EmployeeAscending,
+    }
     public class PersonSortHelper
     {
         public static void Initialization(List<SortCondition> SortConditions)
@@ -13,22 +20,22 @@ namespace SyncfusionLab.Helpers
             SortConditions.Clear();
             SortConditions.Add(new SortCondition()
             {
-                Id = "Name Ascending",
+                Id = (int)PersonEnum.NameAscending,
                 Title = "姓名 遞增"
             });
             SortConditions.Add(new SortCondition()
             {
-                Id = "Name Descending",
+                Id = (int)PersonEnum.NameDescending,
                 Title = "姓名 遞減"
             });
             SortConditions.Add(new SortCondition()
             {
-                Id = "Student Ascending",
+                Id = (int)PersonEnum.StudentAscending,
                 Title = "學生身分排序"
             });
             SortConditions.Add(new SortCondition()
             {
-                Id = "Employee Ascending",
+                Id = (int)PersonEnum.EmployeeAscending,
                 Title = "職員身分排序"
             });
         }

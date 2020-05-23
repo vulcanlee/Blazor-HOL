@@ -22,10 +22,10 @@
         <Header>@DialogTitle</Header>
         <Content>
             <div>
-                <SfDropDownList TValue="string" TItem="SortCondition"
+                <SfDropDownList TValue="int" TItem="SortCondition"
                                 Placeholder="選擇排序條件" DataSource="@SortConditions">
                     <DropDownListFieldSettings Value="Id" Text="Title"></DropDownListFieldSettings>
-                    <DropDownListEvents TValue="string" ValueChange="@SortChanged"></DropDownListEvents>
+                    <DropDownListEvents TValue="int" ValueChange="@SortChanged"></DropDownListEvents>
                 </SfDropDownList>
             </div>
             <SfGrid @ref="GridDialog" TValue="DepartmentAdaptorModel"
@@ -107,7 +107,7 @@
     }
     #region 排序搜尋事件
 
-    public void SortChanged(Syncfusion.Blazor.DropDowns.ChangeEventArgs<string> args)
+    public void SortChanged(Syncfusion.Blazor.DropDowns.ChangeEventArgs<int> args)
     {
         if (GridDialog != null)
         {

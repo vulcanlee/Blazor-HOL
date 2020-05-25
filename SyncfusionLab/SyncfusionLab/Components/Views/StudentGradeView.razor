@@ -38,7 +38,7 @@
         <SfDropDownList TValue="int" TItem="SortCondition"
                         Placeholder="選擇排序條件" DataSource="@RazorModel.SortConditions">
             <DropDownListFieldSettings Value="Id" Text="Title"></DropDownListFieldSettings>
-            <DropDownListEvents TValue="string" ValueChange="@RazorModel.SortChanged"></DropDownListEvents>
+            <DropDownListEvents TValue="int" ValueChange="@RazorModel.SortChanged"></DropDownListEvents>
         </SfDropDownList>
     </div>
 

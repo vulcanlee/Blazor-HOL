@@ -21,6 +21,11 @@
 |最終成品|SyncfusionLab|使用 Syncfusion 元件來完成 Contoso University 的資料庫存取應用|
 |最終成品|MatBlazorLab|使用 MatBlazor 元件來完成 Contoso University 的資料庫存取應用|
 |練習情境|Labs/DBEntityFrameworkCore|使用 Entity Framework Core 來存取資料庫|
+|挑戰練習|DBEntityFrameworkCoreCRUD\Starter|用 Console 專案對 person 資料表做 CRUD 存取|
+||||
+||||
+||||
+||||
 ||||
 ||||
 

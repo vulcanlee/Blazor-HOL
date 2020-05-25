@@ -41,11 +41,11 @@ namespace SyncfusionLab
             services.AddDbContext<SchoolContext>(options =>
             options.UseSqlServer(Configuration.GetConnectionString("SchoolContext")));
 
-            RegisterInspectionService(services);
+            AddSyncfusionLab(services);
             services.AddAutoMapper(c => c.AddProfile<AutoMapping>(), typeof(Startup));
         }
 
-        private static void RegisterInspectionService(IServiceCollection services)
+        private static void AddSyncfusionLab(IServiceCollection services)
         {
             #region µù¥UªA°È
             services.AddScoped<IPersonService,PersonService>();
@@ -56,11 +56,11 @@ namespace SyncfusionLab
             #endregion
 
             #region µù¥U Razor Model
-            services.AddScoped<PersonRazorModel>();
-            services.AddScoped<DepartmentRazorModel>();
-            services.AddScoped<CourseRazorModel>();
-            services.AddScoped<OutlineRazorModel>();
-            services.AddScoped<StudentGradeRazorModel>();
+            services.AddTransient<PersonRazorModel>();
+            services.AddTransient<DepartmentRazorModel>();
+            services.AddTransient<CourseRazorModel>();
+            services.AddTransient<OutlineRazorModel>();
+            services.AddTransient<StudentGradeRazorModel>();
             #endregion
         }
 

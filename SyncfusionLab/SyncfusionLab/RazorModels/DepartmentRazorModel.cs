@@ -76,6 +76,7 @@ namespace SyncfusionLab.RazorModels
                 EditRecordDialogTitle = "新增紀錄";
                 isNewRecordMode = true;
                 IsShowEditRecord = true;
+                CurrentRecord.StartDate = DateTime.Now;
             }
         }
         #endregion
@@ -134,6 +135,7 @@ namespace SyncfusionLab.RazorModels
             {
                 if (isNewRecordMode == true)
                 {
+                    CurrentRecord.DepartmentId = new Random().Next(1000, 999999);
                     await CurrentService.AddAsync(mapper.Map<Department>(CurrentRecord));
                     Grid.Refresh();
                 }

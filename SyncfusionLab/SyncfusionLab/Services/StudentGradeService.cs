@@ -7,6 +7,7 @@ namespace SyncfusionLab.Services
 {
     using EFCoreModel.Models;
     using Microsoft.EntityFrameworkCore;
+    using SyncfusionLab.Extensions;
 
     public class StudentGradeService : IStudentGradeService
     {
@@ -20,16 +21,18 @@ namespace SyncfusionLab.Services
         public Task<IQueryable<StudentGrade>> GetAsync()
         {
             return Task.FromResult(context.StudentGrade
+                .AsNoTracking()
                 .Include(x => x.Student)
-                .AsNoTracking().AsQueryable());
+                .AsQueryable());
         }
 
         public Task<IQueryable<StudentGrade>> GetByHeaderIDAsync(int id)
         {
             return Task.FromResult(context.StudentGrade
+                .AsNoTracking()
                 .Include(x => x.Student)
                 .Where(x => x.CourseId == id)
-                .AsNoTracking().AsQueryable());
+                .AsQueryable());
         }
 
         public async Task<StudentGrade> GetAsync(int id)
@@ -42,6 +45,7 @@ namespace SyncfusionLab.Services
         public async Task<bool> BeforeAddCheckAsync(StudentGrade paraObject)
         {
             var checkedHasExistResult = await context.StudentGrade
+                .AsNoTracking()
                 .FirstOrDefaultAsync(x => x.CourseId == paraObject.CourseId
                 && x.StudentId == paraObject.StudentId);
             if (checkedHasExistResult == null)
@@ -64,6 +68,7 @@ namespace SyncfusionLab.Services
         public async Task<bool> BeforeUpdateCheckAsync(StudentGrade paraObject)
         {
             var checkedDuplicateStudentResult = await context.StudentGrade
+                .AsNoTracking()
                 .FirstOrDefaultAsync(x => x.CourseId == paraObject.CourseId
                 && x.StudentId == paraObject.StudentId
                 && x.EnrollmentId != paraObject.EnrollmentId);
@@ -80,6 +85,7 @@ namespace SyncfusionLab.Services
         public async Task<bool> UpdateAsync(StudentGrade paraObject)
         {
             StudentGrade item = await context.StudentGrade
+                .AsNoTracking()
                 .FirstOrDefaultAsync(x => x.EnrollmentId == paraObject.EnrollmentId);
             if (item == null)
             {
@@ -87,21 +93,7 @@ namespace SyncfusionLab.Services
             }
             else
             {
-                #region 在這裡需要設定需要更新的紀錄欄位值
-                //context.Entry(paraObject).State = EntityState.Modified;
-                #endregion
-                // 
-                var local = context.Set<StudentGrade>()
-                    .Local
-                    .FirstOrDefault(entry => entry.EnrollmentId.Equals(paraObject.EnrollmentId));
-
-                // check if local is not null 
-                if (local != null)
-                {
-                    // detach
-                    context.Entry(local).State = EntityState.Detached;
-                }
-                // set Modified flag in your entry
+                context.CleanAllEFCoreTracking<StudentGrade>();
                 context.Entry(paraObject).State = EntityState.Modified;
 
                 // save 
@@ -114,6 +106,7 @@ namespace SyncfusionLab.Services
         public async Task<bool> DeleteAsync(StudentGrade paraObject)
         {
             StudentGrade item = await context.StudentGrade
+                .AsNoTracking()
                 .FirstOrDefaultAsync(x => x.EnrollmentId == paraObject.EnrollmentId);
             if (item == null)
             {
@@ -121,6 +114,7 @@ namespace SyncfusionLab.Services
             }
             else
             {
+                context.CleanAllEFCoreTracking<StudentGrade>();
                 context.StudentGrade.Remove(item);
                 await context.SaveChangesAsync();
                 return true;

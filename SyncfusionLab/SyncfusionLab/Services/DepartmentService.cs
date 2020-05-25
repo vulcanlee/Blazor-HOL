@@ -7,6 +7,7 @@ namespace SyncfusionLab.Services
 {
     using EFCoreModel.Models;
     using Microsoft.EntityFrameworkCore;
+    using SyncfusionLab.Extensions;
 
     public class DepartmentService : IDepartmentService
     {
@@ -20,12 +21,14 @@ namespace SyncfusionLab.Services
         public Task<IQueryable<Department>> GetAsync()
         {
             return Task.FromResult(context.Department
-                .AsNoTracking().AsQueryable());
+                .AsNoTracking()
+                .AsQueryable());
         }
 
         public async Task<Department> GetAsync(int id)
         {
             Department item = await context.Department
+                .AsNoTracking()
                 .FirstOrDefaultAsync(x => x.DepartmentId == id);
             return item;
         }
@@ -40,6 +43,7 @@ namespace SyncfusionLab.Services
         public async Task<bool> UpdateAsync(Department paraObject)
         {
             Department item = await context.Department
+                .AsNoTracking()
                 .FirstOrDefaultAsync(x => x.DepartmentId == paraObject.DepartmentId);
             if (item == null)
             {
@@ -47,21 +51,7 @@ namespace SyncfusionLab.Services
             }
             else
             {
-                #region 在這裡需要設定需要更新的紀錄欄位值
-                //context.Entry(paraObject).State = EntityState.Modified;
-                #endregion
-                // 
-                var local = context.Set<Department>()
-                    .Local
-                    .FirstOrDefault(entry => entry.DepartmentId.Equals(paraObject.DepartmentId));
-
-                // check if local is not null 
-                if (local != null)
-                {
-                    // detach
-                    context.Entry(local).State = EntityState.Detached;
-                }
-                // set Modified flag in your entry
+                context.CleanAllEFCoreTracking<Department>();
                 context.Entry(paraObject).State = EntityState.Modified;
 
                 // save 
@@ -74,6 +64,7 @@ namespace SyncfusionLab.Services
         public async Task<bool> DeleteAsync(Department paraObject)
         {
             Department item = await context.Department
+                .AsNoTracking()
                 .FirstOrDefaultAsync(x => x.DepartmentId == paraObject.DepartmentId);
             if (item == null)
             {
@@ -81,6 +72,7 @@ namespace SyncfusionLab.Services
             }
             else
             {
+                context.CleanAllEFCoreTracking<Department>();
                 context.Department.Remove(item);
                 await context.SaveChangesAsync();
                 return true;

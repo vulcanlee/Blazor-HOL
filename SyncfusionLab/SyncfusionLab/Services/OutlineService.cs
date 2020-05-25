@@ -7,6 +7,7 @@ namespace SyncfusionLab.Services
 {
     using EFCoreModel.Models;
     using Microsoft.EntityFrameworkCore;
+    using SyncfusionLab.Extensions;
 
     public class OutlineService : IOutlineService
     {
@@ -20,22 +21,25 @@ namespace SyncfusionLab.Services
         public Task<IQueryable<Outline>> GetAsync()
         {
             return Task.FromResult(context.Outline
+                .AsNoTracking()
                 .Include(x=>x.Course)
-                .AsNoTracking().AsQueryable());
+                .AsQueryable());
         }
 
         public async Task<Outline> GetAsync(int id)
         {
             Outline item = await context.Outline
+                .AsNoTracking()
                 .FirstOrDefaultAsync(x => x.OutlineId == id);
             return item;
         }
         public Task<IQueryable<Outline>> GetByHeaderIDAsync(int paraObj)
         {
             return Task.FromResult(context.Outline
+                .AsNoTracking()
                 .Where(x => x.CourseId == paraObj)
                 .Include(x => x.Course)
-                .AsNoTracking().AsQueryable());
+                .AsQueryable());
         }
 
         public async Task<bool> AddAsync(Outline paraObject)
@@ -48,6 +52,7 @@ namespace SyncfusionLab.Services
         public async Task<bool> UpdateAsync(Outline paraObject)
         {
             Outline item = await context.Outline
+                .AsNoTracking()
                 .FirstOrDefaultAsync(x => x.OutlineId == paraObject.OutlineId);
             if (item == null)
             {
@@ -55,21 +60,7 @@ namespace SyncfusionLab.Services
             }
             else
             {
-                #region 在這裡需要設定需要更新的紀錄欄位值
-                //context.Entry(paraObject).State = EntityState.Modified;
-                #endregion
-                // 
-                var local = context.Set<Outline>()
-                    .Local
-                    .FirstOrDefault(entry => entry.OutlineId.Equals(paraObject.OutlineId));
-
-                // check if local is not null 
-                if (local != null)
-                {
-                    // detach
-                    context.Entry(local).State = EntityState.Detached;
-                }
-                // set Modified flag in your entry
+                context.CleanAllEFCoreTracking<Outline>();
                 context.Entry(paraObject).State = EntityState.Modified;
 
                 // save 
@@ -82,6 +73,7 @@ namespace SyncfusionLab.Services
         public async Task<bool> DeleteAsync(Outline paraObject)
         {
             Outline item = await context.Outline
+                .AsNoTracking()
                 .FirstOrDefaultAsync(x => x.OutlineId == paraObject.OutlineId);
             if (item == null)
             {
@@ -89,6 +81,7 @@ namespace SyncfusionLab.Services
             }
             else
             {
+                context.CleanAllEFCoreTracking<Outline>();
                 context.Outline.Remove(item);
                 await context.SaveChangesAsync();
                 return true;

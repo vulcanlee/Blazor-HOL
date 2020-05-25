@@ -21,7 +21,8 @@ namespace SyncfusionLab.Services
         public Task<IQueryable<Person>> GetAsync()
         {
             return Task.FromResult(context.Person
-                .AsNoTracking().AsQueryable());
+                .AsNoTracking()
+                .AsQueryable());
         }
 
         public async Task<Person> GetAsync(int id)
@@ -63,11 +64,8 @@ namespace SyncfusionLab.Services
             }
             else
             {
-                #region 在這裡需要設定需要更新的紀錄欄位值
+                #region 在這裡需要設定需要解除快取紀錄
                 context.CleanAllEFCoreTracking<Person>();
-
-                // 第一代的寫法，指定紀錄，從快取中清除
-                //DetachedRecord(paraObject);
                 #endregion
                 // set Modified flag in your entry
                 context.Entry(paraObject).State = EntityState.Modified;
@@ -90,26 +88,11 @@ namespace SyncfusionLab.Services
             }
             else
             {
+                context.CleanAllEFCoreTracking<Person>();
                 context.Person.Remove(item);
                 await context.SaveChangesAsync();
                 return true;
             }
-        }
-
-        private void DetachedRecord(Person paraObject)
-        {
-            #region 在這裡需要設定需要更新的紀錄欄位值(解除快取當前的紀錄)
-            var local = context.Set<Person>()
-                .Local
-                .FirstOrDefault(entry => entry.PersonId.Equals(paraObject.PersonId));
-
-            // check if local is not null 
-            if (local != null)
-            {
-                // detach
-                context.Entry(local).State = EntityState.Detached;
-            }
-            #endregion
         }
     }
 }

@@ -7,6 +7,7 @@ namespace SyncfusionLab.Services
 {
     using EFCoreModel.Models;
     using Microsoft.EntityFrameworkCore;
+    using SyncfusionLab.Extensions;
 
     public class PersonService : IPersonService
     {
@@ -63,8 +64,10 @@ namespace SyncfusionLab.Services
             else
             {
                 #region 在這裡需要設定需要更新的紀錄欄位值
+                context.CleanAllEFCoreTracking<Person>();
 
-                DetachedRecord(paraObject);
+                // 第一代的寫法，指定紀錄，從快取中清除
+                //DetachedRecord(paraObject);
                 #endregion
                 // set Modified flag in your entry
                 context.Entry(paraObject).State = EntityState.Modified;
@@ -78,6 +81,7 @@ namespace SyncfusionLab.Services
 
         public async Task<bool> DeleteAsync(Person paraObject)
         {
+            context.CleanAllEFCoreTracking<Person>();
             Person item = await context.Person
                 .AsNoTracking()
                 .FirstOrDefaultAsync(x => x.PersonId == paraObject.PersonId);

@@ -32,37 +32,44 @@
 * 在 [套件管理器主控台] 內輸入底下指令
 
 ```
-Scaffold-DbContext "Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=School;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False" Microsoft.EntityFrameworkCore.SqlServer -OutputDir Models
+Scaffold-DbContext "Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=School;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False" Microsoft.EntityFrameworkCore.SqlServer -OutputDir Models -f
 ```
 
 > 其中關於上述指定中雙引號內的內容，請打開 [SQL Server 物件總管] ，點選到 資料庫伺服器的節點，接著，查看 [屬性] 視窗內的 [連接字串]，將其屬性值複製起來，貼上到雙引號內
+>
+>  ![](Images/BHOL989.png)
 
 * 完成後，按下 [Enter] 按鍵，執行這個命令
 
-  ![](../Images/CS2020-9972.png)
-
 * 此時便可以在 Visual Studio 檔案總館內，看到有 Models 資料夾產生，而在該資料夾內也產生了許多檔案出來
 
-  ![](../Images/CS2020-9971.png)
+  ![](Images/BHOL988.png)
 
 ## 開始使用 Entity Framework Core 來讀取資料庫
 
 * 打開 Program.cs 檔案，輸入底下程式碼
 
 ```csharp
-using DBEntityFrameworkCore.Models;
+using DBEntityFrameworkCore.Model;
+using Microsoft.EntityFrameworkCore;
 using System;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace DBEntityFrameworkCore
 {
     class Program
     {
-        static void Main(string[] args)
+        static async Task Main(string[] args)
         {
-            ContosoUniversityContext ContosoUniversityContext = new ContosoUniversityContext();
-            foreach (var item in ContosoUniversityContext.Course)
+            SchoolContext context = new SchoolContext();
+            var people = await context.Person
+                .OrderBy(x=>x.LastName)
+                .ThenBy(x=>x.FirstName)
+                .ToListAsync();
+            foreach (var item in people)
             {
-                Console.WriteLine($"{item.Title}");
+                Console.WriteLine($"人員:{item.LastName} {item.FirstName}");
             }
         }
     }
@@ -71,12 +78,41 @@ namespace DBEntityFrameworkCore
 
 * 執行這個專案，將會看到底下的輸出內容，若有看到，就代表已經成功讀取資料庫紀錄了。
 
+![](Images/BHOL987.png)
+
 ```
-Calculus
-Chemistry
-Composition
-Literature
-Trigonometry
-Microeconomics
-Macroeconomics
+人員:Abercrombie Kim
+人員:Alexander Carson
+人員:Alonso Meredith
+人員:Anand Arturo
+人員:Barzdukas Gytis
+人員:Browning Meredith
+人員:Bryant Carson
+人員:Carlson Robyn
+人員:Fakhouri Fadi
+人員:Gao Erica
+人員:Griffin Rachel
+人員:Harui Roger
+人員:Holt Roger
+人員:Jai Damien
+人員:Justice Peggy
+人員:Kapoor Candace
+人員:Li Yan
+人員:Lopez Sophia
+人員:Martin Randall
+人員:Morgan Isaiah
+人員:Norman Laura
+人員:Olivotto Nino
+人員:Powell Carson
+人員:Rogers Cody
+人員:Serrano Stacy
+人員:Shan Alicia
+人員:Stewart Jasmine
+人員:Suarez Robyn
+人員:Tang Wayne
+人員:Van Houten Roger
+人員:Walker Alexandra
+人員:White Anthony
+人員:Xu Kristen
+人員:Zheng Roger
 ```

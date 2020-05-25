@@ -12,22 +12,15 @@
 ## 說明文件
 
 * [事前準備工作](Docs/chapter01.md)
+* [使用 Entity Framework Core 來存取資料庫](Docs/chapter02.md)
 
 # 專案資料夾
 
 |類型|專案名稱|專案說明|
 |-|-|-|
-||SyncfusionLab|使用 Syncfusion 元件來完成 Contoso University 的資料庫存取應用|
-||MatBlazorLab|使用 MatBlazor 元件來完成 Contoso University 的資料庫存取應用|
-||||
-||||
-||||
-||||
-||||
-||||
-||||
-||||
-||||
+|最終成品|SyncfusionLab|使用 Syncfusion 元件來完成 Contoso University 的資料庫存取應用|
+|最終成品|MatBlazorLab|使用 MatBlazor 元件來完成 Contoso University 的資料庫存取應用|
+|練習情境|Labs/DBEntityFrameworkCore|使用 Entity Framework Core 來存取資料庫|
 ||||
 ||||
 
@@ -48,9 +41,6 @@
 * 建立 StudentGrade CRUD 的 View 元件
 * 建立 StudentGrade CRUD 的 Page 頁面
 
-## 產生 Entity Framework Core 的 dbContext 與 相關 Model
-
-```
 Scaffold-DbContext "Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=School;Integrated Security=True;Connect Timeout=60;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False" Microsoft.EntityFrameworkCore.SqlServer -StartupProject DatabaseInit -Project EFCoreModel -OutputDir Models -f
 ```
 

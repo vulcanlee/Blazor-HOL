@@ -17,8 +17,8 @@ namespace SyncfusionLab.Extensions
                 .Local;
             foreach (var localItem in locals)
             {
-                //dbContext.Entry(localItem).State = EntityState.Detached;
-                dbContext.Set<T>().Local.Remove(localItem);
+                dbContext.Entry(localItem).State = EntityState.Detached;
+                //dbContext.Set<T>().Local.Remove(localItem);
             }
             #endregion
         }

@@ -81,7 +81,6 @@ namespace SyncfusionLab.Services
 
         public async Task<bool> DeleteAsync(Person paraObject)
         {
-            context.CleanAllEFCoreTracking<Person>();
             Person item = await context.Person
                 .AsNoTracking()
                 .FirstOrDefaultAsync(x => x.PersonId == paraObject.PersonId);
@@ -99,25 +98,17 @@ namespace SyncfusionLab.Services
 
         private void DetachedRecord(Person paraObject)
         {
-            #region 在這裡需要設定需要更新的紀錄欄位值(解除快取所有的紀錄)
-            var locals = context.Set<Person>()
-                .Local;
-            foreach (var localItem in locals)
-            {
-                context.Entry(localItem).State = EntityState.Detached;
-            }
-            #endregion
             #region 在這裡需要設定需要更新的紀錄欄位值(解除快取當前的紀錄)
-            //var local = context.Set<Person>()
-            //    .Local
-            //    .FirstOrDefault(entry => entry.PersonId.Equals(paraObject.PersonId));
+            var local = context.Set<Person>()
+                .Local
+                .FirstOrDefault(entry => entry.PersonId.Equals(paraObject.PersonId));
 
-            //// check if local is not null 
-            //if (local != null)
-            //{
-            //    // detach
-            //    context.Entry(local).State = EntityState.Detached;
-            //}
+            // check if local is not null 
+            if (local != null)
+            {
+                // detach
+                context.Entry(local).State = EntityState.Detached;
+            }
             #endregion
         }
     }

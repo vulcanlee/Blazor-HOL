@@ -22,15 +22,15 @@
 |最終成品|MatBlazorLab|使用 MatBlazor 元件來完成 Contoso University 的資料庫存取應用|
 |練習情境|Labs/DBEntityFrameworkCore|使用 Entity Framework Core 來存取資料庫|
 |挑戰練習|DBEntityFrameworkCoreCRUD/Starter|用 Console 專案對 person 資料表做 CRUD 存取|
+|範例體驗|DBUpdateRecord|逐一設定更新欄位來進行資料表紀錄更新|
+||||
+||||
 |練習情境|bzEntityFrameworkCore|使用 Blaozr 專案來顯示出 person 所有紀錄|
 |挑戰練習|bzEntityFrameworkCoreBS4\Starter|使用 table 標籤與 BS4 來格式化 person 所有紀錄|
-|挑戰練習|bzEntityFrameworkCoreComponent\Starter
-|將 bzEntityFrameworkCoreBS4 練習做成元件|
+|挑戰練習|bzEntityFrameworkCoreComponent\Starter|將 bzEntityFrameworkCoreBS4 練習做成元件|
 |範例體驗|bzBS4Dialog|使用 Syncfusion DataGrid 元件設計 CRUD|
-|範例體驗|bzSyncfusionCRUDMemory
-|使用 Syncfusion DataGrid 元件設計 CRUD|
-|挑戰練習|bzSyncfusionCRUDEFCore
-|Syncfusion DataGrid 元件結合資料庫之設計 CRUD|
+|範例體驗|bzSyncfusionCRUDMemory|使用 Syncfusion DataGrid 元件設計 CRUD|
+|挑戰練習|bzSyncfusionCRUDEFCore|Syncfusion DataGrid 元件結合資料庫之設計 CRUD|
 |挑戰練習|bzSyncfusionDialog|使用 Syncfusion Dialog 對話窗功能|
 |範例體驗|bzFormValidation|Blazor 的表單驗證設計練習|
 |挑戰練習|bzFormValidationDialog|使用對話窗來進行表單驗證設計練習(動態顯示與隱藏)|

@@ -25,7 +25,7 @@
 |範例體驗|DBUpdateRecord|逐一設定更新欄位來進行資料表紀錄更新|
 |範例體驗|DBUpdateDirectly|簡化更新，不需要逐一設定欄位|
 |範例體驗|DBUpdateChangeTrackingFail|使用實體狀態來做更新相關欄位 (會有什麼問題)|
-|範例體驗|DBUpdateChangeTracking|使用實體狀態來做更新相關欄位|
+|練習情境|DBUpdateChangeTracking|使用實體狀態來做更新相關欄位|
 |練習情境|bzEntityFrameworkCore|使用 Blaozr 專案來顯示出 person 所有紀錄|
 |挑戰練習|bzEntityFrameworkCoreBS4\Starter|使用 table 標籤與 BS4 來格式化 person 所有紀錄|
 |挑戰練習|bzEntityFrameworkCoreComponent\Starter|將 bzEntityFrameworkCoreBS4 練習做成元件|

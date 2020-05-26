@@ -23,6 +23,7 @@
 |練習情境|Labs/DBEntityFrameworkCore|使用 Entity Framework Core 來存取資料庫|
 |挑戰練習|DBEntityFrameworkCoreCRUD/Starter|用 Console 專案對 person 資料表做 CRUD 存取|
 |範例體驗|DBUpdateRecord|逐一設定更新欄位來進行資料表紀錄更新|
+|範例體驗|DBUpdateDirectly|簡化更新，不需要逐一設定欄位|
 ||||
 ||||
 |練習情境|bzEntityFrameworkCore|使用 Blaozr 專案來顯示出 person 所有紀錄|

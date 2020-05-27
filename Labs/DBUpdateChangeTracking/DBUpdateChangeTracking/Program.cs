@@ -26,6 +26,8 @@ namespace DBUpdateChangeTracking
 
             #region 修改 person (Last Name: Lee , First Name : Avatar)
             Person searchPerson = await context.Person.FirstOrDefaultAsync(x => x.FirstName == "Vulcan");
+            Console.WriteLine($"Vulcan Lee 已經查詢出來");
+            ShowChangeTracking();
             Person updatePerson = searchPerson.Clone();
             updatePerson.LastName = "Hu";
             updatePerson.FirstName = "Avatar";

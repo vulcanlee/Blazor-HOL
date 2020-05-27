@@ -243,3 +243,4 @@ ModelManifest.xml
 
 # FAKE - F# Make
 .fake/
+/SyncfusionLab/SyncfusionLab/Properties/PublishProfiles/ContosoSyncfusion - Web Deploy.pubxml

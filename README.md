@@ -30,6 +30,7 @@
 ||||
 |挑戰練習|bzEntityFrameworkCoreBS4\Starter|使用 table 標籤與 BS4 來格式化 person 所有紀錄|
 |練習情境|bzEntityFrameworkCoreComponent\Starter|將 bzEntityFrameworkCoreBS4 練習做成元件|
+|挑戰練習|BS4 的表格與對話窗綜合開發應用|bzBS4RecordsEdit|
 |練習情境|bzBS4Dialog|使用 Syncfusion DataGrid 元件設計 CRUD|
 |範例體驗|bzSyncfusionCRUDMemory|使用 Syncfusion DataGrid 元件設計 CRUD|
 |練習情境|bzSyncfusionCRUDEFCore|Syncfusion DataGrid 元件結合資料庫之設計 CRUD|

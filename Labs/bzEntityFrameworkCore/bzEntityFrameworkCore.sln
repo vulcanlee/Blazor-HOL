@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30114.105
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "bzEntityFrameworkCore", "bzEntityFrameworkCore\bzEntityFrameworkCore.csproj", "{D9FEA3E5-B019-42B3-BF29-745B3A5DBF1F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D9FEA3E5-B019-42B3-BF29-745B3A5DBF1F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D9FEA3E5-B019-42B3-BF29-745B3A5DBF1F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D9FEA3E5-B019-42B3-BF29-745B3A5DBF1F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D9FEA3E5-B019-42B3-BF29-745B3A5DBF1F}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {F4E1353A-FA22-4718-8385-1140F9419B2B}
+	EndGlobalSection
+EndGlobal

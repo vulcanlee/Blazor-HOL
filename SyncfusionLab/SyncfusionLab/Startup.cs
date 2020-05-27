@@ -38,6 +38,7 @@ namespace SyncfusionLab
             services.AddServerSideBlazor();
             services.AddSingleton<WeatherForecastService>();
 
+            var foo = Configuration.GetSection("Custom")["Value1"];
             services.AddDbContext<SchoolContext>(options =>
             options.UseSqlServer(Configuration.GetConnectionString("SchoolContext")));
 

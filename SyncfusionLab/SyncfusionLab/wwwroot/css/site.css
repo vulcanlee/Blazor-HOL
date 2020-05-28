@@ -24,6 +24,13 @@ app {
     height: 3.5rem;
     display: flex;
     align-items: center;
+/*    position: fixed;
+    z-index: 999;
+*/}
+
+.top-alwayse {
+    position: fixed;
+    z-index: 999;
 }
 
 .main {
@@ -48,7 +55,7 @@ app {
 
 .sidebar {
     background-image: linear-gradient(180deg, rgb(5, 39, 103) 0%, #3a0647 70%);
-    overflow: scroll;
+/*    overflow: scroll;*/
 }
 
     .sidebar .top-row {

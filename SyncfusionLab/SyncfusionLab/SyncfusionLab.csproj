@@ -13,5 +13,11 @@
   <ProjectReference Include="..\EFCoreModel\EFCoreModel.csproj" />
 </ItemGroup>
 
+<ItemGroup>
+  <None Update="Data\Init.sql">
+    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+  </None>
+</ItemGroup>
+
 <ProjectExtensions><VisualStudio><UserProperties appsettings_1json__JsonSchema="" /></VisualStudio></ProjectExtensions>
 </Project>

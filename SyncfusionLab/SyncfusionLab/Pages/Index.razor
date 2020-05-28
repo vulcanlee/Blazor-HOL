@@ -1,9 +1,40 @@
 @page "/"
 @using SyncfusionLab.Components.Views
+@using EFCoreModel.Models
+@using Microsoft.EntityFrameworkCore
+@inject SchoolContext SchoolContext
 
 <h1>Contoso 大學管理系統</h1>
 
 <img style="width:100%" src="Images/Home.png"/>
 
+<button class="btn btn-danger"
+        @onclick="DBInit">資料庫重置</button>
 
+@code{
+    async Task DBInit()
+    {
+        #region 清除現有資料
+        SchoolContext.Outline.RemoveRange(SchoolContext.Outline);
+        await SchoolContext.SaveChangesAsync();
+        SchoolContext.OnsiteCourse.RemoveRange(SchoolContext.OnsiteCourse);
+        await SchoolContext.SaveChangesAsync();
+        SchoolContext.OfficeAssignment.RemoveRange(SchoolContext.OfficeAssignment);
+        await SchoolContext.SaveChangesAsync();
+        SchoolContext.StudentGrade.RemoveRange(SchoolContext.StudentGrade);
+        await SchoolContext.SaveChangesAsync();
+        SchoolContext.CourseInstructor.RemoveRange(SchoolContext.CourseInstructor);
+        await SchoolContext.SaveChangesAsync();
+        SchoolContext.Course.RemoveRange(SchoolContext.Course);
+        await SchoolContext.SaveChangesAsync();
+        SchoolContext.Department.RemoveRange(SchoolContext.Department);
+        await SchoolContext.SaveChangesAsync();
+        SchoolContext.Person.RemoveRange(SchoolContext.Person);
+        await SchoolContext.SaveChangesAsync();
+
+        #endregion
+        var allSQL = await System.IO.File.ReadAllTextAsync("Data/Init.sql");
+        await SchoolContext.Database.ExecuteSqlRawAsync(allSQL);
+    }
+}
 

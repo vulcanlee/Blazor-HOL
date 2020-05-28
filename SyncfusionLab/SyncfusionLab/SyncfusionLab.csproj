@@ -2,10 +2,12 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
+    <UserSecretsId>f39471d1-f4e1-44f3-bdec-c9401c012308</UserSecretsId>
   </PropertyGroup>
 
 <ItemGroup>
       <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="7.0.0" />
+      <PackageReference Include="Microsoft.AspNetCore.AzureKeyVault.HostingStartup" Version="2.0.4" />
       <PackageReference Include="Syncfusion.Blazor" Version="18.1.0.44" />
 </ItemGroup>
 

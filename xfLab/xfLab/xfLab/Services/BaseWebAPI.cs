@@ -65,8 +65,12 @@ namespace xfLab.Services
         /// <summary>
         /// 透過Http取得的資料，也許是一個物件，也許是List
         /// </summary>
-        public T Items { get; set; }
+        public List<T> Items { get; set; }
+        public T Item { get; set; }
+        public bool IsCollection { get; set; } = false;
+        public bool NeedSaveToStorage { get; set; } = true;
         public StandardResponse<T> standardResponse { get; set; }
+        public StandardResponse<List<T>> standardResponseCollection { get; set; }
         /// <summary>
         /// 此次呼叫的處理結果
         /// </summary>
@@ -182,30 +186,60 @@ namespace xfLab.Services
                         {
                             case HttpStatusCode.OK:
                                 mr.Success = true;
-                                standardResponse = JsonConvert.DeserializeObject<StandardResponse<T>>(strResult,
-                                    new JsonSerializerSettings { MetadataPropertyHandling = MetadataPropertyHandling.Ignore });
-                                if (standardResponse == null)
+                                if (IsCollection == true)
                                 {
-                                    mr.Success = false;
-                                    mr.Message = "沒有得到正確的呼叫回傳格式內容";
-                                }
-                                else
-                                {
-                                    mr.Success = standardResponse.Success;
-                                    if (standardResponse.Success == true)
+                                    standardResponseCollection = JsonConvert
+                                        .DeserializeObject<StandardResponse<List<T>>>(strResult,
+                                        new JsonSerializerSettings { MetadataPropertyHandling = MetadataPropertyHandling.Ignore });
+
+                                    if (standardResponseCollection == null)
                                     {
-                                        Items = standardResponse.Payload;
-                                        if (Items == null)
-                                        {
-                                            Items = (T)Activator.CreateInstance(typeof(T));
-                                        }
+                                        mr.Success = false;
+                                        mr.Message = "沒有得到正確的呼叫回傳格式內容";
+                                        return mr;
+                                    }
+                                    mr.Success = standardResponseCollection.Success;
+                                    if (standardResponseCollection.Success == true)
+                                    {
+                                        Items = standardResponseCollection.Payload;
+                                        ResetItems();
                                     }
                                     else
                                     {
-                                        Items = (T)Activator.CreateInstance(typeof(T));
+                                        ResetItems();
                                         mr.Message = standardResponse.ErrorMessage;
                                     }
-                                    await this.WriteToFileAsync();
+                                    if (NeedSaveToStorage == true)
+                                    {
+                                        await this.WriteToFileAsync();
+                                    }
+                                }
+                                else
+                                {
+                                    standardResponse = JsonConvert.DeserializeObject<StandardResponse<T>>(strResult,
+                                        new JsonSerializerSettings { MetadataPropertyHandling = MetadataPropertyHandling.Ignore });
+
+                                    if (standardResponse == null)
+                                    {
+                                        mr.Success = false;
+                                        mr.Message = "沒有得到正確的呼叫回傳格式內容";
+                                        return mr;
+                                    }
+                                    mr.Success = standardResponse.Success;
+                                    if (standardResponse.Success == true)
+                                    {
+                                        Item = standardResponse.Payload;
+                                        ResetItems();
+                                    }
+                                    else
+                                    {
+                                        ResetItems();
+                                        mr.Message = standardResponse.ErrorMessage;
+                                    }
+                                    if (NeedSaveToStorage == true)
+                                    {
+                                        await this.WriteToFileAsync();
+                                    }
                                 }
                                 break;
 
@@ -234,15 +268,27 @@ namespace xfLab.Services
             return mr;
         }
 
+        private void ResetItems()
+        {
+            if (Items == null)
+            {
+                Items = (List<T>)Activator.CreateInstance(typeof(List<T>));
+            }
+            if (Item == null)
+            {
+                Item = (T)Activator.CreateInstance(typeof(T));
+            }
+        }
+
         /// <summary>
         /// 將物件資料從檔案中讀取出來
         /// </summary>
-        public virtual async Task ReadFromFileAsync(bool 需要加解密 = false)
+        public virtual async Task ReadFromFileAsync(bool ReadCollection)
         {
-            需要加解密 = 資料加密處理;
-            Items = (T)Activator.CreateInstance(typeof(T));
+            Items = (List<T>)Activator.CreateInstance(typeof(List<T>));
+            Item = (T)Activator.CreateInstance(typeof(T));
+            string data = await StorageUtility.ReadFromDataFileAsync("", this.現在資料夾名稱, this.資料檔案名稱, false);
 
-            string data = await StorageUtility.ReadFromDataFileAsync("", this.現在資料夾名稱, this.資料檔案名稱, 需要加解密);
             if (string.IsNullOrEmpty(data) == true)
             {
 
@@ -251,7 +297,18 @@ namespace xfLab.Services
             {
                 try
                 {
-                    this.Items = JsonConvert.DeserializeObject<T>(data, new JsonSerializerSettings { MetadataPropertyHandling = MetadataPropertyHandling.Ignore });
+                    if (ReadCollection == true)
+                    {
+                        this.Items = JsonConvert
+                            .DeserializeObject<List<T>>(data,
+                            new JsonSerializerSettings { MetadataPropertyHandling = MetadataPropertyHandling.Ignore });
+                    }
+                    else
+                    {
+                        this.Item = JsonConvert
+                            .DeserializeObject<T>(data,
+                            new JsonSerializerSettings { MetadataPropertyHandling = MetadataPropertyHandling.Ignore });
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -264,11 +321,18 @@ namespace xfLab.Services
         /// <summary>
         /// 將物件資料寫入到檔案中
         /// </summary>
-        public virtual async Task WriteToFileAsync(bool 需要加解密 = false)
+        public virtual async Task WriteToFileAsync()
         {
-            需要加解密 = 資料加密處理;
-            string data = JsonConvert.SerializeObject(this.Items);
-            await StorageUtility.WriteToDataFileAsync("", this.現在資料夾名稱, this.資料檔案名稱, data, 需要加解密);
+            string data = "";
+            if (IsCollection == true)
+            {
+                data = JsonConvert.SerializeObject(this.Items);
+            }
+            else
+            {
+                data = JsonConvert.SerializeObject(this.Item);
+            }
+            await StorageUtility.WriteToDataFileAsync("", this.現在資料夾名稱, this.資料檔案名稱, data, false);
         }
 
     }

@@ -44,6 +44,7 @@ namespace xfLab
         private void RegisterServices(IContainerRegistry containerRegistry)
         {
             containerRegistry.Register<LoginService>();
+            containerRegistry.Register<PersonService>();
         }
     }
 }

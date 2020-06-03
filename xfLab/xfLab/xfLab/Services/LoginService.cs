@@ -25,6 +25,8 @@ namespace xfLab.Services
 
         public async Task<ManagerResult> PostAsync(LoginQueryString LoginQueryString)
         {
+            IsCollection = false;
+            NeedSaveToStorage = true;
             EncodingType = EncodingMethod.JSON;
 
             #region 要傳遞的參數

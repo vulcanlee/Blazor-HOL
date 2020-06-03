@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 using EFCoreModel.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using SyncfusionLab.DataModels;
 using SyncfusionLab.Services;
 
 namespace SyncfusionLab.Controllers
@@ -20,9 +22,13 @@ namespace SyncfusionLab.Controllers
         }
 
         [HttpGet]
-        public async Task<IEnumerable<Person>> Get()
+        public async Task<StandardResponse<List<Person>>> Get()
         {
-            return await Service.GetAsync();
+            StandardResponse<List<Person>> standardResponse = new StandardResponse<List<Person>>();
+            var fooItems = await Service.GetAsync();
+            standardResponse.Payload = await fooItems.ToListAsync();
+            standardResponse.Success = true;
+            return standardResponse;
         }
 
         [HttpGet("{id}")]

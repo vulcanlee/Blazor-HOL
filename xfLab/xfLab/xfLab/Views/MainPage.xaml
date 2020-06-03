@@ -6,6 +6,13 @@
 
     <StackLayout HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand">
         <Label Text="Welcome to Xamarin Forms and Prism!" />
+        <Label Text="帳號"/>
+        <Entry Text="{Binding Account}"/>
+        <Label Text="密碼"/>
+        <Entry Text="{Binding Password}" IsPassword="True"/>
+        <Button Command="{Binding LoginCommand}" Text="登入"/>
+        <Label Text="{Binding Message}"
+               FontSize="20" TextColor="Red"/>
     </StackLayout>
 
 </ContentPage>

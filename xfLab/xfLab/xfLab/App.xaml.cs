@@ -6,6 +6,8 @@ using Xamarin.Essentials.Interfaces;
 using Xamarin.Essentials.Implementation;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using System;
+using xfLab.Services;
 
 [assembly: XamlCompilation(XamlCompilationOptions.Compile)]
 namespace xfLab
@@ -34,6 +36,13 @@ namespace xfLab
 
             containerRegistry.RegisterForNavigation<NavigationPage>();
             containerRegistry.RegisterForNavigation<MainPage, MainPageViewModel>();
+
+            RegisterServices(containerRegistry);
+        }
+
+        private void RegisterServices(IContainerRegistry containerRegistry)
+        {
+            containerRegistry.Register<LoginService>();
         }
     }
 }

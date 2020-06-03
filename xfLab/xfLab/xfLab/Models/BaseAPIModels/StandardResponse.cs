@@ -4,16 +4,15 @@ using System.Text;
 
 namespace xfLab.Models.BaseAPIModels
 {
-    public class StandardResponse
+    public class StandardResponse<T>
     {
-        /// <summary>
-        /// 0: 正常、其他: 異常代碼
-        /// </summary>
+        public bool Success { get; set; } = false;
         public string StatusCode { get; set; }
+        public string ErrorMessage { get; set; } = "";
 
         /// <summary>
         /// 從網路讀取到的資料的內容(JSON 格式的資料)
         /// </summary>
-        public string Data { get; set; }
+        public T Payload { get; set; } 
     }
 }

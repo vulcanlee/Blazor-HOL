@@ -37,6 +37,10 @@ namespace SyncfusionLab
             services.AddRazorPages();
             services.AddServerSideBlazor();
             services.AddSingleton<WeatherForecastService>();
+            services.AddControllers().AddJsonOptions(config =>
+            {
+                config.JsonSerializerOptions.PropertyNamingPolicy = null;
+            });
 
             var foo = Configuration.GetSection("Custom")["Value1"];
             services.AddDbContext<SchoolContext>(options =>

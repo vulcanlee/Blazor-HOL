@@ -19,13 +19,13 @@ namespace xfLab.Services
         {
             //資料檔案名稱 = "SampleRepository.txt";
             //this.url = "/webapplication/ntuhwebadminapi/webadministration/T0/searchDoctor";
-            this.url = "/api/v2/usrs/login";
-            this.host = ConstantHelper.APIHost;
+            this.url = "Login";
+            this.host = ConstantHelper.APIHostBase;
         }
 
-        public async Task<ManagerResult> GetAsync(LoginQueryString LoginQueryString)
+        public async Task<ManagerResult> PostAsync(LoginQueryString LoginQueryString)
         {
-            EncodingType = EnctypeMethod.JSON;
+            EncodingType = EncodingMethod.JSON;
 
             #region 要傳遞的參數
             //Dictionary<string, string> dic = new Dictionary<string, string>();
@@ -43,13 +43,6 @@ namespace xfLab.Services
             //mr.Success = false;
             //mr.Message = "測試用的錯誤訊息";
             return mr;
-        }
-
-        public void ParseLink(string InterpolatedDataLink)
-        {
-            Uri foo = new Uri(InterpolatedDataLink);
-            this.host = foo.AbsoluteUri.Replace(foo.LocalPath, "");
-            this.url = foo.LocalPath;
         }
     }
 }

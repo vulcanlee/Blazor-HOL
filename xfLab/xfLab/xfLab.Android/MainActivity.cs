@@ -4,6 +4,7 @@ using Android.OS;
 using Prism;
 using Prism.Ioc;
 
+[assembly: UsesPermission(Android.Manifest.Permission.AccessNetworkState)]
 namespace xfLab.Droid
 {
     [Activity(Label = "xfLab", Icon = "@mipmap/ic_launcher", Theme = "@style/MainTheme", MainLauncher = true, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]

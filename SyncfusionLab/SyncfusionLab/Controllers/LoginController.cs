@@ -22,9 +22,9 @@ namespace SyncfusionLab.Controllers
         }
 
         [HttpPost]
-        public StandardResponse Post([FromBody] LoginQueryString loginQueryString)
+        public StandardResponse<LoginQueryString> Post([FromBody] LoginQueryString loginQueryString)
         {
-            StandardResponse standardResponse = new StandardResponse();
+            StandardResponse<LoginQueryString> standardResponse = new StandardResponse<LoginQueryString>();
 
             if (loginQueryString != null)
             {
@@ -37,7 +37,7 @@ namespace SyncfusionLab.Controllers
                     loginQueryString.Password == "123")
                 {
                     standardResponse.Success = true;
-                    standardResponse.Result = loginQueryString;
+                    standardResponse.Payload = loginQueryString;
                 }
                 else
                 {

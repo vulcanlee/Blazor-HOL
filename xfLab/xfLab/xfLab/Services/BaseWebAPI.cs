@@ -25,13 +25,13 @@ namespace xfLab.Services
         /// <summary>
         /// WebAPI主機位置
         /// </summary>
-        public string host = ConstantHelper.APIHost;
+        public string host = ConstantHelper.APIHostBase;
 
         /// <summary>
         /// WebAPI方法網址
         /// </summary>
         public string url { get; set; }
-        public EnctypeMethod EncodingType { get; set; }
+        public EncodingMethod EncodingType { get; set; }
 
         /// <summary>
         /// 資料夾名稱
@@ -66,7 +66,7 @@ namespace xfLab.Services
         /// 透過Http取得的資料，也許是一個物件，也許是List
         /// </summary>
         public T Items { get; set; }
-        public StandardResponse standardResponse { get; set; }
+        public StandardResponse<T> standardResponse { get; set; }
         /// <summary>
         /// 此次呼叫的處理結果
         /// </summary>
@@ -84,7 +84,7 @@ namespace xfLab.Services
         public BaseWebAPI()
         {
             SetWebAccessCondition("/api/", this.GetType().Name, "Datas", this.GetType().Name);
-            EncodingType = EnctypeMethod.FORMURLENCODED;
+            EncodingType = EncodingMethod.FORMURLENCODED;
             現在資料夾名稱 = 最上層資料夾名稱;
             url = "";
             資料檔案名稱 = this.GetType().Name;
@@ -123,7 +123,7 @@ namespace xfLab.Services
             //檢查網路狀態
             var current = Connectivity.NetworkAccess;
 
-            if (current == NetworkAccess.Internet)
+            if (current != NetworkAccess.Internet)
             {
                 mr.Success = false;
                 mr.Message = "無網路連線可用，請檢查網路狀態";
@@ -152,16 +152,16 @@ namespace xfLab.Services
                     else if (httpMethod == HttpMethod.Post)
                     {
                         // 使用 Post 方式來呼叫
-                        if (EncodingType == EnctypeMethod.FORMURLENCODED)
+                        if (EncodingType == EncodingMethod.FORMURLENCODED)
                         {
                             // 使用 FormUrlEncoded 方式來進行傳遞資料的編碼
                             response = await client.PostAsync(ub.Uri, dic.ToFormUrlEncodedContent());
                         }
-                        else if (EncodingType == EnctypeMethod.XML)
+                        else if (EncodingType == EncodingMethod.XML)
                         {
                             response = await client.PostAsync(ub.Uri, new StringContent(dic["XML"], Encoding.UTF8, "application/xml"));
                         }
-                        else if (EncodingType == EnctypeMethod.JSON)
+                        else if (EncodingType == EncodingMethod.JSON)
                         {
                             client.DefaultRequestHeaders.Accept.TryParseAdd("application/json");
                             response = await client.PostAsync(ub.Uri, new StringContent(dic["JSON"], Encoding.UTF8, "application/json"));
@@ -182,12 +182,31 @@ namespace xfLab.Services
                         {
                             case HttpStatusCode.OK:
                                 mr.Success = true;
-                                Items = JsonConvert.DeserializeObject<T>(strResult, new JsonSerializerSettings { MetadataPropertyHandling = MetadataPropertyHandling.Ignore });
-                                if (Items == null)
+                                standardResponse = JsonConvert.DeserializeObject<StandardResponse<T>>(strResult,
+                                    new JsonSerializerSettings { MetadataPropertyHandling = MetadataPropertyHandling.Ignore });
+                                if (standardResponse == null)
                                 {
-                                    Items = (T)Activator.CreateInstance(typeof(T));
+                                    mr.Success = false;
+                                    mr.Message = "沒有得到正確的呼叫回傳格式內容";
                                 }
-                                await this.WriteToFileAsync();
+                                else
+                                {
+                                    mr.Success = standardResponse.Success;
+                                    if (standardResponse.Success == true)
+                                    {
+                                        Items = standardResponse.Payload;
+                                        if (Items == null)
+                                        {
+                                            Items = (T)Activator.CreateInstance(typeof(T));
+                                        }
+                                    }
+                                    else
+                                    {
+                                        Items = (T)Activator.CreateInstance(typeof(T));
+                                        mr.Message = standardResponse.ErrorMessage;
+                                    }
+                                    await this.WriteToFileAsync();
+                                }
                                 break;
 
                             default:
@@ -257,7 +276,7 @@ namespace xfLab.Services
     /// <summary>
     /// POST資料的時候，將要傳遞的參數，使用何種方式來進行編碼
     /// </summary>
-    public enum EnctypeMethod
+    public enum EncodingMethod
     {
         /// <summary>
         /// 使用 multipart/form-data 方式來進行傳遞參數的編碼

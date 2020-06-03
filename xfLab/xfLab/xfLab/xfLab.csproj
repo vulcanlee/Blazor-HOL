@@ -16,7 +16,6 @@
     <Folder Include="Behaviors\" />
     <Folder Include="Converters\" />
     <Folder Include="Events\" />
-    <Folder Include="Helpers\WebAPIs\" />
     <Folder Include="Models\" />
     <Folder Include="DataModels\" />
     <Folder Include="UserControls\" />

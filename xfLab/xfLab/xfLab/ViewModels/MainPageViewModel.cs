@@ -9,6 +9,7 @@ using System.Text;
 namespace xfLab.ViewModels
 {
     using System.ComponentModel;
+    using System.Threading.Tasks;
     using Prism.Events;
     using Prism.Navigation;
     using Prism.Services;
@@ -48,6 +49,8 @@ namespace xfLab.ViewModels
                 else
                 {
                     Message = "登入驗證程序成功";
+                    await Task.Delay(3000);
+                    await navigationService.NavigateAsync("PersonPage");
                 }
             });
 

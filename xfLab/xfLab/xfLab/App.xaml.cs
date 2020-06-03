@@ -38,6 +38,7 @@ namespace xfLab
             containerRegistry.RegisterForNavigation<MainPage, MainPageViewModel>();
 
             RegisterServices(containerRegistry);
+            containerRegistry.RegisterForNavigation<PersonPage, PersonPageViewModel>();
         }
 
         private void RegisterServices(IContainerRegistry containerRegistry)

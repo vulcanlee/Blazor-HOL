@@ -20,4 +20,10 @@
     <Folder Include="UserControls\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <EmbeddedResource Update="Views\PersonPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+
 </Project>

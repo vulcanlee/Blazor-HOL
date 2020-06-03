@@ -7,5 +7,6 @@ namespace xfLab.Helpers.Constants
     class ConstantHelper
     {
         public static string HTTPRequestPayload { get; set; } = "";
+        public static string APIHost { get; set; } = "";
     }
 }

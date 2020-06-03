@@ -16,10 +16,8 @@
     <Folder Include="Behaviors\" />
     <Folder Include="Converters\" />
     <Folder Include="Events\" />
-    <Folder Include="Models\" />
     <Folder Include="DataModels\" />
     <Folder Include="UserControls\" />
-    <Folder Include="Services\" />
   </ItemGroup>
 
 </Project>

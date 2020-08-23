@@ -14,6 +14,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using School.WebApp.Data;
 using School.WebApp.Helpers;
+using School.WebApp.Services;
 using ShareBusiness.Helpers;
 using Syncfusion.Blazor;
 
@@ -51,6 +52,7 @@ namespace School.WebApp
         private static void AddOtherServices(IServiceCollection services)
         {
             #region µù¥UªA°È
+            services.AddTransient<IDepartmentService, DepartmentService>();
             #endregion
 
             #region µù¥U Razor Model

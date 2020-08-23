@@ -5,7 +5,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="DataModels\" />
     <Folder Include="Enums\" />
     <Folder Include="Interfaces\" />
   </ItemGroup>

@@ -16,7 +16,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Components\Views\" />
     <Folder Include="Components\ReadOnlys\" />
     <Folder Include="Components\Pickers\" />
     <Folder Include="DataModels\" />

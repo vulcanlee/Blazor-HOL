@@ -16,8 +16,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="AdapterModels\" />
-    <Folder Include="Adapters\" />
     <Folder Include="Components\Views\" />
     <Folder Include="Components\ReadOnlys\" />
     <Folder Include="Components\Pickers\" />

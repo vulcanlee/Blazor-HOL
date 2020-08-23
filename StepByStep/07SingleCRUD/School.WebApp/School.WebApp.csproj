@@ -22,7 +22,6 @@
     <Folder Include="DataModels\" />
     <Folder Include="DTOs\" />
     <Folder Include="Extensions\" />
-    <Folder Include="RazorModels\" />
   </ItemGroup>
 
 </Project>

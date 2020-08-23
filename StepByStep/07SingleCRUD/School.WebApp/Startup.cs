@@ -14,6 +14,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using School.WebApp.Data;
 using School.WebApp.Helpers;
+using School.WebApp.RazorModels;
 using School.WebApp.Services;
 using ShareBusiness.Helpers;
 using Syncfusion.Blazor;
@@ -56,6 +57,7 @@ namespace School.WebApp
             #endregion
 
             #region 註冊 Razor Model
+            services.AddTransient<DepartmentRazorModel>();
             #endregion
 
             #region 其他服務註冊

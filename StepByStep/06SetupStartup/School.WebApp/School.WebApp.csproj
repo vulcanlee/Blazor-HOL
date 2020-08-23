@@ -26,7 +26,6 @@
     <Folder Include="Extensions\" />
     <Folder Include="SortModels\" />
     <Folder Include="Services\" />
-    <Folder Include="RazorModels\" />
   </ItemGroup>
 
 </Project>

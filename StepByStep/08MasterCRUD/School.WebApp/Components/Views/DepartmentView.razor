@@ -1,0 +1,151 @@
+﻿@using System.Threading
+@using Syncfusion.Blazor
+@using Syncfusion.Blazor.Buttons
+@using Syncfusion.Blazor.Data
+@using Syncfusion.Blazor.Grids
+@using Syncfusion.Blazor.Popups
+@using Syncfusion.Blazor.Inputs
+@using Syncfusion.Blazor.Calendars
+@using Syncfusion.Blazor.DropDowns
+@using EFCore.Models
+@using AutoMapper
+@using School.WebApp.Adapters
+@using School.WebApp.Services
+@using School.WebApp.AdapterModels
+@using School.WebApp.RazorModels
+@using School.WebApp.Interfaces
+@using School.WebApp.Components.Commons
+@using School.WebApp.SortModels
+@using ShareDomain.DataModels
+@inject DepartmentRazorModel RazorModel
+@implements IRazorPage
+
+<div>
+    <div class="d-inline-block pr-2">排序條件 : </div>
+    <div class="d-inline-block">
+        <SfDropDownList TValue="int" TItem="SortCondition"
+                        Placeholder="選擇排序條件" DataSource="@RazorModel.SortConditions">
+            <DropDownListFieldSettings Value="Id" Text="Title"></DropDownListFieldSettings>
+            <DropDownListEvents TValue="int" ValueChange="@RazorModel.SortChanged"></DropDownListEvents>
+        </SfDropDownList>
+    </div>
+</div>
+
+<SfGrid @ref="Grid" TValue="DepartmentAdapterModel"
+        AllowPaging="true"
+        Toolbar="@(new List<string>() { "新增","重新整理","Search" })">
+    <SfDataManager Adaptor="Adaptors.CustomAdaptor">
+        <DepartmentAdapter CurrentSortCondition="@RazorModel.CurrentSortCondition"></DepartmentAdapter>
+    </SfDataManager>
+    <GridEvents CommandClicked="RazorModel.OnCommandClicked" TValue="DepartmentAdapterModel"
+                OnToolbarClick="RazorModel.ToolbarClickHandler" />
+    <GridPageSettings PageSize="@PageSize" />
+    <GridSearchSettings Fields="@(new string[] { "Name","Code","TaxNumber","Owner"})"
+                        Operator=Syncfusion.Blazor.Operator.Contains IgnoreCase="true" />
+    <GridColumns>
+        <GridColumn Field=@nameof(DepartmentAdapterModel.Name) HeaderText="名稱" Width="150"></GridColumn>
+        <GridColumn Field=@nameof(DepartmentAdapterModel.Budget) HeaderText="預算" Width="70"></GridColumn>
+        <GridColumn Field=@nameof(DepartmentAdapterModel.StartDate) HeaderText="開始時間" Width="100" Format="yyyy-MM-dd"></GridColumn>
+        <GridColumn Field=@nameof(DepartmentAdapterModel.AdministratorName) HeaderText="管理者" Width="100" Format="yyyy-MM-dd"></GridColumn>
+        <GridColumn HeaderText="命令" Width="150" TextAlign="@TextAlign.Center">
+            <GridCommandColumns>
+                <GridCommandColumn ButtonOption="@(new CommandButtonOptions() { Content = "修改", CssClass = "e-flat" })"></GridCommandColumn>
+                <GridCommandColumn ButtonOption="@(new CommandButtonOptions() { Content = "刪除", CssClass = "e-flat e-danger" })"></GridCommandColumn>
+            </GridCommandColumns>
+        </GridColumn>
+    </GridColumns>
+</SfGrid>
+
+<SfDialog @bind-Visible="@RazorModel.IsShowEditRecord" IsModal="true"
+          Width="600px" Height="600px">
+    <DialogTemplates>
+        <Header>@RazorModel.EditRecordDialogTitle</Header>
+        <Content>
+            <EditForm Model="@RazorModel.CurrentRecord">
+                <DataAnnotationsValidator />
+                <ValidationSummary />
+                <InputWatcher EditContextActionChanged="@RazorModel.OnEditContestChanged" />
+
+                <div>
+                    <div class="form-row">
+                        <div class="form-group col">
+                            <label class="control-label">名稱</label>
+                            <SfTextBox @bind-Value="RazorModel.CurrentRecord.Name"></SfTextBox>
+                            <ValidationMessage For="@(() => RazorModel.CurrentRecord.Name)" />
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group col">
+                            <label class="control-label">預算</label>
+                            <SfNumericTextBox @bind-Value="RazorModel.CurrentRecord.Budget"></SfNumericTextBox>
+                            <ValidationMessage For="@(() => RazorModel.CurrentRecord.Budget)" />
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group col">
+                            <label class="control-label">開始日期</label>
+                            <SfDateTimePicker TValue="DateTime"
+                                              @bind-Value="RazorModel.CurrentRecord.StartDate"
+                                              Format="yyyy-MM-dd HH:mm:ss"></SfDateTimePicker>
+                            <ValidationMessage For="@(() => RazorModel.CurrentRecord.StartDate)" />
+                        </div>
+                    </div>
+
+                    @*<div class="form-row">
+                        <div class="form-group col">
+                            <label class="control-label">管理者 <span class="oi oi-question-mark" @onclick="RazorModel.OnOpenPicker"></span></label>
+                            <SfTextBox Value="@RazorModel.CurrentRecord.FullName" Enabled="false"></SfTextBox>
+                        </div>
+                    </div>*@
+                </div>
+            </EditForm>
+        </Content>
+        <FooterTemplate>
+            <div>
+                <button type="submit" class="btn btn-primary" @onclick="RazorModel.OnRecordEditConfirm">儲存</button>
+                <button class="btn btn-secondary" @onclick="RazorModel.OnRecordEditCancel">取消</button>
+            </div>
+        </FooterTemplate>
+    </DialogTemplates>
+    <DialogPositionData X="center" Y="center"></DialogPositionData>
+</SfDialog>
+
+<MessageBox Height="@RazorModel.MessageBox.Height" Width="@RazorModel.MessageBox.Width"
+            IsVisible="@RazorModel.MessageBox.IsVisible"
+            Title="@RazorModel.MessageBox.Title" Message="@RazorModel.MessageBox.Body"
+            Callback="x=>RazorModel.MessageBox.Hidden()" />
+
+<ConfirmBox Height="@RazorModel.ConfirmMessageBox.Height" Width="@RazorModel.ConfirmMessageBox.Width"
+            IsVisible="@RazorModel.ConfirmMessageBox.IsVisible"
+            Title="@RazorModel.ConfirmMessageBox.Title" Message="@RazorModel.ConfirmMessageBox.Body"
+            Callback="x=>RazorModel.RemoveThisRecord(x)" />
+
+<DialogBackground />
+
+@code{
+    SfGrid<DepartmentAdapterModel> Grid;
+    [Parameter]
+    public int PageSize { get; set; } = 15;
+
+    protected override void OnInitialized()
+    {
+        RazorModel.Setup(this, Grid);
+    }
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if (firstRender == true)
+        {
+            RazorModel.Setup(this, Grid);
+        }
+    }
+    public void NeedRefresh()
+    {
+        StateHasChanged();
+    }
+    public async Task NeedInvokeAsync(System.Action action)
+    {
+        await InvokeAsync(action);
+    }
+}

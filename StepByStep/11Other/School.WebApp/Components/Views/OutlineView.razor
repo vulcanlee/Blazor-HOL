@@ -24,12 +24,12 @@
 @inject OutlineRazorModel RazorModel
 @implements IRazorPage
 
-<div>
-    <h1 class="text-success">@RazorModel.HeaderTitle</h1>
-</div>
 
 @if (RazorModel.Header.IsExist() == true || CombineWithHeaderMode == false)
 {
+    <div>
+        <h1 class="text-success">@RazorModel.HeaderTitle</h1>
+    </div>
     <div>
         <div class="d-inline-block pr-2">排序條件 : </div>
         <div class="d-inline-block">

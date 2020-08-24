@@ -24,12 +24,12 @@
 @inject StudentGradeRazorModel RazorModel
 @implements IRazorPage
 
-<div>
-    <h1 class="text-success">@RazorModel.HeaderTitle</h1>
-</div>
 
 @if (RazorModel.Header.IsExist() == true || CombineWithHeaderMode == false)
 {
+    <div>
+        <h1 class="text-success">@RazorModel.HeaderTitle</h1>
+    </div>
     <div>
         <div class="d-inline-block pr-2">排序條件 : </div>
         <div class="d-inline-block">
@@ -105,8 +105,8 @@
     <DialogPositionData X="center" Y="center"></DialogPositionData>
 </SfDialog>
 
-<CoursePicker OpenPicker="RazorModel.ShowAontherRecordPicker" 
-              OnConfirmCallback="x=>RazorModel.OnPickerCompletion(x)"/>
+<CoursePicker OpenPicker="RazorModel.ShowAontherRecordPicker"
+              OnConfirmCallback="x=>RazorModel.OnPickerCompletion(x)" />
 
 
 <MessageBox Height="@RazorModel.MessageBox.Height" Width="@RazorModel.MessageBox.Width"

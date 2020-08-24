@@ -38,7 +38,8 @@
         <DepartmentAdapter CurrentSortCondition="@RazorModel.CurrentSortCondition"></DepartmentAdapter>
     </SfDataManager>
     <GridEvents CommandClicked="RazorModel.OnCommandClicked" TValue="DepartmentAdapterModel"
-                OnToolbarClick="RazorModel.ToolbarClickHandler" />
+                OnToolbarClick="RazorModel.ToolbarClickHandler"
+                RowSelected="RowSelectHandler" RowDeselected="RowDeselectHandler" />
     <GridPageSettings PageSize="@PageSize" />
     <GridSearchSettings Fields="@(new string[] { "Name","Code","TaxNumber","Owner"})"
                         Operator=Syncfusion.Blazor.Operator.Contains IgnoreCase="true" />
@@ -128,6 +129,8 @@
     SfGrid<DepartmentAdapterModel> Grid;
     [Parameter]
     public int PageSize { get; set; } = 15;
+    [Parameter]
+    public EventCallback<DepartmentAdapterModel> OnRecordChanged { get; set; }
 
     protected override void OnInitialized()
     {
@@ -148,4 +151,26 @@
     {
         await InvokeAsync(action);
     }
+
+
+    #region 選取紀錄異動的事件處理
+    public async Task RowSelectHandler(RowSelectEventArgs<DepartmentAdapterModel> args)
+    {
+        if (OnRecordChanged.HasDelegate)
+        {
+            await OnRecordChanged.InvokeAsync(args.Data);
+        }
+    }
+    public async Task RowDeselectHandler(RowDeselectEventArgs<DepartmentAdapterModel> args)
+    {
+        if (OnRecordChanged.HasDelegate)
+        {
+            await OnRecordChanged.InvokeAsync(new DepartmentAdapterModel()
+            {
+                DepartmentId = -2,
+                Name = "",
+            });
+        }
+    }
+    #endregion
 }

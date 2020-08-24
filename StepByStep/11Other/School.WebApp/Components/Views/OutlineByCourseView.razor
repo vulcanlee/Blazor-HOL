@@ -1,0 +1,48 @@
+﻿@using School.WebApp.AdapterModels
+@using School.WebApp.Components.Views
+@using Syncfusion.Blazor.Navigations
+
+<div>
+    <SfTab @bind-SelectedItem="SelectedTab" HeaderPlacement="@HeaderPosition.Top">
+        <TabItems>
+            <TabItem>
+                <ChildContent>
+                    <TabHeader Text="課程清單" />
+                </ChildContent>
+                <ContentTemplate>
+                    <CourseView OnRecordChanged="RecordChanged" PageSize="PageSize"
+                                   />
+                </ContentTemplate>
+            </TabItem>
+            <TabItem>
+                <ChildContent>
+                    <TabHeader Text="課程大綱" />
+                </ChildContent>
+                <ContentTemplate>
+                    <OutlineView @ref="DetailView" CombineWithHeaderMode="true"
+                                  Header="@Header" PageSize="PageSize" />
+                </ContentTemplate>
+            </TabItem>
+        </TabItems>
+    </SfTab>
+    @*<h1 class="text-success">功能表群組</h1>
+        <MenuGroupView OnRecordChanged="RecordChanged" PageSize="15"
+                       OnViewRender="OnViewRender" />
+        <MenuItemView @ref="DetailView" CombineWithHeaderMode="true"
+                      Header="@Header" PageSize="15" />*@
+</div>
+<div style="height:100px"></div>
+
+@code{
+    public CourseAdapterModel Header { get; set; } = new CourseAdapterModel() {  CourseId = -2 };
+    public string HeaderDescription { get; set; } = "";
+    OutlineView DetailView;
+    [Parameter]
+    public int PageSize { get; set; } = 15;
+    public int SelectedTab = 0;
+    void RecordChanged(CourseAdapterModel header)
+    {
+        Header = header;
+
+    }
+}

@@ -132,7 +132,7 @@
 @code{
     SfGrid<PersonAdapterModel> Grid;
     [Parameter]
-    public EventCallback<PersonAdapterModel> OnRecordChanged { get; set; }
+    public EventCallback<MasterRecord> OnRecordChanged { get; set; }
     [Parameter]
     public int PageSize { get; set; } = 15;
     [Parameter]
@@ -167,17 +167,21 @@
     {
         if (OnRecordChanged.HasDelegate)
         {
-            await OnRecordChanged.InvokeAsync(args.Data);
+            await OnRecordChanged.InvokeAsync(new MasterRecord()
+            {
+                Id = args.Data.PersonId,
+                Title = args.Data.FullName
+            });
         }
     }
     public async Task RowDeselectHandler(RowDeselectEventArgs<PersonAdapterModel> args)
     {
         if (OnRecordChanged.HasDelegate)
         {
-            await OnRecordChanged.InvokeAsync(new PersonAdapterModel()
+            await OnRecordChanged.InvokeAsync(new MasterRecord()
             {
-                PersonId = -2,
-                FirstName = "",
+                Id = -2,
+                Title = "",
             });
         }
     }

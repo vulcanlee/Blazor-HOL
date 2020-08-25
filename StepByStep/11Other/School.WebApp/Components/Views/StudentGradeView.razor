@@ -25,7 +25,7 @@
 @implements IRazorPage
 
 
-@if (RazorModel.Header.IsExist() == true || CombineWithHeaderMode == false)
+@if (RazorModel.Header.IsExist == true || CombineWithHeaderMode == false)
 {
     <div>
         <h1 class="text-success">@RazorModel.HeaderTitle</h1>
@@ -45,7 +45,7 @@
             AllowPaging="true"
             Toolbar="@(new List<string>() { "新增","重新整理", "Search" })">
         <SfDataManager Adaptor="Adaptors.CustomAdaptor">
-            <StudentGradeAdapter HeaderID="RazorModel.Header.PersonId"
+            <StudentGradeAdapter HeaderID="RazorModel.Header.Id"
                                  CurrentSortCondition="@RazorModel.CurrentSortCondition"></StudentGradeAdapter>
         </SfDataManager>
         <GridEvents CommandClicked="RazorModel.OnCommandClicked" TValue="StudentGradeAdapterModel"
@@ -122,7 +122,7 @@
 @code{
     SfGrid<StudentGradeAdapterModel> Grid;
     [Parameter]
-    public PersonAdapterModel Header { get; set; }
+    public MasterRecord Header { get; set; }
     [Parameter]
     public bool CombineWithHeaderMode { get; set; } = false;
     [Parameter]
@@ -133,7 +133,7 @@
         RazorModel.Setup(this, Grid);
         if (Header is null)
         {
-            RazorModel.Header = new PersonAdapterModel() { PersonId = -1 };
+            RazorModel.Header = new MasterRecord() { Id = -1 };
         }
         else
         {
@@ -152,7 +152,7 @@
     {
         await InvokeAsync(action);
     }
-    public void RefreshNewMaster(PersonAdapterModel header)
+    public void RefreshNewMaster(MasterRecord header)
     {
         RazorModel.UpdateMasterHeader(header);
     }

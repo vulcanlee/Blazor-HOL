@@ -1,18 +1,17 @@
 ﻿@using School.WebApp.AdapterModels
 @using School.WebApp.Components.Views
+@using ShareDomain.DataModels
 @using Syncfusion.Blazor.Navigations
 
 <div>
-    <SfTab @bind-SelectedItem="SelectedTab" HeaderPlacement="@HeaderPosition.Top"
-           >
+    <SfTab @bind-SelectedItem="SelectedTab" HeaderPlacement="@HeaderPosition.Top">
         <TabItems>
             <TabItem>
                 <ChildContent>
                     <TabHeader Text="課程清單" />
                 </ChildContent>
                 <ContentTemplate>
-                    <CourseView OnRecordChanged="RecordChanged" PageSize="PageSize"
-                                   />
+                    <CourseView OnRecordChanged="RecordChanged" PageSize="PageSize" />
                 </ContentTemplate>
             </TabItem>
             <TabItem>
@@ -21,7 +20,7 @@
                 </ChildContent>
                 <ContentTemplate>
                     <OutlineView @ref="DetailView" CombineWithHeaderMode="true"
-                                  Header="@Header" PageSize="PageSize" />
+                                 Header="@Header" PageSize="PageSize" />
                 </ContentTemplate>
             </TabItem>
         </TabItems>
@@ -35,13 +34,13 @@
 <div style="height:100px"></div>
 
 @code{
-    public CourseAdapterModel Header { get; set; } = new CourseAdapterModel() {  CourseId = -2 };
+    public MasterRecord Header { get; set; } = new MasterRecord() { Id = -2 };
     public string HeaderDescription { get; set; } = "";
     OutlineView DetailView;
     [Parameter]
     public int PageSize { get; set; } = 15;
     public int SelectedTab = 0;
-    void RecordChanged(CourseAdapterModel header)
+    void RecordChanged(MasterRecord header)
     {
         Header = header;
 

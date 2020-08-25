@@ -37,18 +37,18 @@ namespace School.WebApp.RazorModels
         public StudentGradeAdapterModel CurrentNeedDeleteRecord { get; set; } = new StudentGradeAdapterModel();
         public EditContext LocalEditContext { get; set; }
         public bool ShowAontherRecordPicker { get; set; } = false;
-        public PersonAdapterModel Header { get; set; } = new PersonAdapterModel();
+        public MasterRecord Header { get; set; } = new MasterRecord();
         public string HeaderTitle
         {
             get
             {
-                if (Header == null || string.IsNullOrEmpty(Header.FullName))
+                if (Header == null || string.IsNullOrEmpty(Header.Title))
                 {
                     return "";
                 }
                 else
                 {
-                    return $"{Header.FullName} 的 課程成績";
+                    return $"{Header.Title} 的 課程成績";
                 }
             }
         }
@@ -92,8 +92,8 @@ namespace School.WebApp.RazorModels
                 EditRecordDialogTitle = "新增紀錄";
                 isNewRecordMode = true;
                 IsShowEditRecord = true;
-                CurrentRecord.StudentId = Header.PersonId;
-                CurrentRecord.StudentName = Header.FullName;
+                CurrentRecord.StudentId = Header.Id;
+                CurrentRecord.StudentName = Header.Title;
             }
             else if (args.Item.Text == "重新整理")
             {
@@ -213,7 +213,7 @@ namespace School.WebApp.RazorModels
         #endregion
 
         #region 資料表關聯的方法
-        public void UpdateMasterHeader(PersonAdapterModel header)
+        public void UpdateMasterHeader(MasterRecord header)
         {
             Header = header;
             Grid?.Refresh();

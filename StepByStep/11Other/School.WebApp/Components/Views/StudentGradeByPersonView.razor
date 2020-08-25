@@ -1,5 +1,6 @@
 ﻿@using School.WebApp.AdapterModels
 @using School.WebApp.Components.Views
+@using ShareDomain.DataModels
 @using Syncfusion.Blazor.Navigations
 
 <div>
@@ -19,7 +20,7 @@
                 </ChildContent>
                 <ContentTemplate>
                     <StudentGradeView @ref="DetailView" CombineWithHeaderMode="true"
-                                 Header="@Header" PageSize="PageSize" />
+                                      Header="@Header" PageSize="PageSize" />
                 </ContentTemplate>
             </TabItem>
         </TabItems>
@@ -33,13 +34,13 @@
 <div style="height:100px"></div>
 
 @code{
-    public PersonAdapterModel Header { get; set; } = new PersonAdapterModel() { PersonId = -2 };
+    public MasterRecord Header { get; set; } = new MasterRecord() { Id = -2 };
     public string HeaderDescription { get; set; } = "";
     StudentGradeView DetailView;
     [Parameter]
     public int PageSize { get; set; } = 15;
     public int SelectedTab = 0;
-    void RecordChanged(PersonAdapterModel header)
+    void RecordChanged(MasterRecord header)
     {
         Header = header;
     }

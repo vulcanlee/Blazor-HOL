@@ -121,7 +121,7 @@
 @code{
     SfGrid<CourseAdapterModel> Grid;
     [Parameter]
-    public EventCallback<CourseAdapterModel> OnRecordChanged { get; set; }
+    public EventCallback<MasterRecord> OnRecordChanged { get; set; }
     [Parameter]
     public int PageSize { get; set; } = 15;
     [Parameter]
@@ -156,16 +156,20 @@
     {
         if (OnRecordChanged.HasDelegate)
         {
-            await OnRecordChanged.InvokeAsync(args.Data);
+            await OnRecordChanged.InvokeAsync(new MasterRecord()
+            {
+                Id = args.Data.CourseId,
+                Title = args.Data.Title
+            });
         }
     }
     public async Task RowDeselectHandler(RowDeselectEventArgs<CourseAdapterModel> args)
     {
         if (OnRecordChanged.HasDelegate)
         {
-            await OnRecordChanged.InvokeAsync(new CourseAdapterModel()
+            await OnRecordChanged.InvokeAsync(new MasterRecord()
             {
-                CourseId = -2,
+                Id = -2,
                 Title = "",
             });
         }

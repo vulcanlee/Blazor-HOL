@@ -37,7 +37,7 @@ namespace School.WebApp.RazorModels
         public OutlineAdapterModel CurrentNeedDeleteRecord { get; set; } = new OutlineAdapterModel();
         public EditContext LocalEditContext { get; set; }
         public bool ShowAontherRecordPicker { get; set; } = false;
-        public CourseAdapterModel Header { get; set; } = new CourseAdapterModel();
+        public MasterRecord Header { get; set; } = new MasterRecord();
         public string HeaderTitle
         {
             get
@@ -92,7 +92,7 @@ namespace School.WebApp.RazorModels
                 EditRecordDialogTitle = "新增紀錄";
                 isNewRecordMode = true;
                 IsShowEditRecord = true;
-                CurrentRecord.CourseId = Header.CourseId;
+                CurrentRecord.CourseId = Header.Id;
                 CurrentRecord.CourseName = Header.Title;
             }
             else if (args.Item.Text == "重新整理")
@@ -213,7 +213,7 @@ namespace School.WebApp.RazorModels
         #endregion
 
         #region 資料表關聯的方法
-        public void UpdateMasterHeader(CourseAdapterModel header)
+        public void UpdateMasterHeader(MasterRecord header)
         {
             Header = header;
             Grid?.Refresh();

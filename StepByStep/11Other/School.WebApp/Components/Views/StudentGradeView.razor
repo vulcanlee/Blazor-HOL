@@ -51,8 +51,6 @@
         <GridEvents CommandClicked="RazorModel.OnCommandClicked" TValue="StudentGradeAdapterModel"
                     OnToolbarClick="RazorModel.ToolbarClickHandler" />
         <GridPageSettings PageSize="@PageSize" />
-        <GridSearchSettings Fields="@(new string[] { "Name" })"
-                            Operator=Syncfusion.Blazor.Operator.Contains IgnoreCase="true" />
         <GridColumns>
             <GridColumn Field=@nameof(StudentGradeAdapterModel.Grade) HeaderText="分數" Width="150"></GridColumn>
             <GridColumn Field=@nameof(StudentGradeAdapterModel.StudentName) HeaderText="學生" />

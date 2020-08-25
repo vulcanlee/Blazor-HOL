@@ -44,8 +44,6 @@
                 OnToolbarClick="RazorModel.ToolbarClickHandler"
                 RowSelected="RowSelectHandler" RowDeselected="RowDeselectHandler" />
     <GridPageSettings PageSize="@PageSize" />
-    <GridSearchSettings Fields="@(new string[] { "Name","Description"})"
-                        Operator=Syncfusion.Blazor.Operator.Contains IgnoreCase="true" />
     <GridColumns>
         <GridColumn Field=@nameof(CourseAdapterModel.Title) HeaderText="課程名稱" Width="150"></GridColumn>
         <GridColumn Field=@nameof(CourseAdapterModel.Credits) HeaderText="學分" Width="70"></GridColumn>

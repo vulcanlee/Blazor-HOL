@@ -35,9 +35,16 @@
         IQueryable<Person> DataSource = await Service.GetAsync();
         if (dataManagerRequest.Search != null && dataManagerRequest.Search.Count > 0)
         {
-            // 進行搜尋動作
-            DataSource = DataOperations.PerformSearching(DataSource, dataManagerRequest.Search);
+            var keyword = dataManagerRequest.Search[0].Key;
+            DataSource = DataSource
+                .Where(x => x.FirstName.Contains(keyword) ||
+                x.LastName.Contains(keyword) );
         }
+        //if (dataManagerRequest.Search != null && dataManagerRequest.Search.Count > 0)
+        //{
+        //    // 進行搜尋動作
+        //    DataSource = DataOperations.PerformSearching(DataSource, dataManagerRequest.Search);
+        //}
 
         #region 進行排序動作
         if (CurrentSortCondition != null)
@@ -55,6 +62,18 @@
                     break;
                 case (int)PersonSortEnum.FirstNameAscending:
                     DataSource = DataSource.OrderBy(x => x.FirstName);
+                    break;
+                case (int)PersonSortEnum.EnrollmentDateDescending:
+                    DataSource = DataSource.OrderByDescending(x => x.EnrollmentDate);
+                    break;
+                case (int)PersonSortEnum.EnrollmentDateAscending:
+                    DataSource = DataSource.OrderBy(x => x.EnrollmentDate);
+                    break;
+                case (int)PersonSortEnum.HireDateDescending:
+                    DataSource = DataSource.OrderByDescending(x => x.HireDate);
+                    break;
+                case (int)PersonSortEnum.HireDateAscending:
+                    DataSource = DataSource.OrderBy(x => x.HireDate);
                     break;
                 default:
                     DataSource = DataSource.OrderBy(x => x.LastName);

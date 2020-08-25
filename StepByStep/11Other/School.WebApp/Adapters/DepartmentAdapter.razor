@@ -32,11 +32,20 @@
     public override async Task<object> ReadAsync(DataManagerRequest dataManagerRequest, string key = null)
     {
         IQueryable<Department> DataSource = await Service.GetAsync();
+
+        #region 進行搜尋動作
         if (dataManagerRequest.Search != null && dataManagerRequest.Search.Count > 0)
         {
-            // 進行搜尋動作
-            DataSource = DataOperations.PerformSearching(DataSource, dataManagerRequest.Search);
+            var keyword = dataManagerRequest.Search[0].Key;
+            DataSource = DataSource
+                .Where(x => x.Name.Contains(keyword));
         }
+        #endregion
+        //if (dataManagerRequest.Search != null && dataManagerRequest.Search.Count > 0)
+        //{
+        //    // 進行搜尋動作
+        //    DataSource = DataOperations.PerformSearching(DataSource, dataManagerRequest.Search);
+        //}
 
         #region 進行排序動作
         if (CurrentSortCondition != null)

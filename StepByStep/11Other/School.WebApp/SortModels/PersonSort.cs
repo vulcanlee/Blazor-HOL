@@ -12,6 +12,10 @@ namespace School.WebApp.SortModels
         LastNameDescending,
         FirstNameAscending,
         FirstNameDescending,
+        HireDateAscending,
+        HireDateDescending,
+        EnrollmentDateAscending,
+        EnrollmentDateDescending,
     }
     public class PersonSort
     {
@@ -37,6 +41,26 @@ namespace School.WebApp.SortModels
             {
                 Id = (int)PersonSortEnum.FirstNameDescending,
                 Title = "名稱 遞減"
+            });
+            SortConditions.Add(new SortCondition()
+            {
+                Id = (int)PersonSortEnum.HireDateAscending,
+                Title = "到職日 遞增"
+            });
+            SortConditions.Add(new SortCondition()
+            {
+                Id = (int)PersonSortEnum.HireDateDescending,
+                Title = "到職日 遞減"
+            });
+            SortConditions.Add(new SortCondition()
+            {
+                Id = (int)PersonSortEnum.EnrollmentDateAscending,
+                Title = "入學註冊日 遞增"
+            });
+            SortConditions.Add(new SortCondition()
+            {
+                Id = (int)PersonSortEnum.EnrollmentDateDescending,
+                Title = "入學註冊日 遞減"
             });
         }
     }

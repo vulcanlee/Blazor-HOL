@@ -51,8 +51,8 @@
         <GridEvents CommandClicked="RazorModel.OnCommandClicked" TValue="OutlineAdapterModel"
                     OnToolbarClick="RazorModel.ToolbarClickHandler" />
         <GridPageSettings PageSize="@PageSize" />
-        <GridSearchSettings Fields="@(new string[] { "Name" })"
-                            Operator=Syncfusion.Blazor.Operator.Contains IgnoreCase="true" />
+        @*<GridSearchSettings Fields="@(new string[] { "Name" })"
+                            Operator=Syncfusion.Blazor.Operator.Contains IgnoreCase="true" />*@
         <GridColumns>
             <GridColumn Field=@nameof(OutlineAdapterModel.Title) HeaderText="大綱名稱" Width="150"></GridColumn>
             <GridColumn Field=@nameof(OutlineAdapterModel.CourseName) HeaderText="課程" Width="100"></GridColumn>

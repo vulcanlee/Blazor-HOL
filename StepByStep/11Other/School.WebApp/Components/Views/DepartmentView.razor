@@ -41,8 +41,6 @@
                 OnToolbarClick="RazorModel.ToolbarClickHandler"
                 RowSelected="RowSelectHandler" RowDeselected="RowDeselectHandler" />
     <GridPageSettings PageSize="@PageSize" />
-    <GridSearchSettings Fields="@(new string[] { "Name","Code","TaxNumber","Owner"})"
-                        Operator=Syncfusion.Blazor.Operator.Contains IgnoreCase="true" />
     <GridColumns>
         <GridColumn Field=@nameof(DepartmentAdapterModel.Name) HeaderText="名稱" Width="150"></GridColumn>
         <GridColumn Field=@nameof(DepartmentAdapterModel.Budget) HeaderText="預算" Width="70"></GridColumn>

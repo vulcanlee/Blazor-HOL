@@ -1,0 +1,28 @@
+﻿@using School.WebApp.AdapterModels
+@using School.WebApp.Components.Views
+@using School.WebApp.Components.Commons
+@using ShareDomain.DataModels
+@using Syncfusion.Blazor.Navigations
+
+<TabControl>
+    <TabView Text="課程清單">
+        <CourseView OnRecordChanged="RecordChanged" PageSize="PageSize" />
+    </TabView>
+    <TabView Text="課程大綱">
+        <OutlineView @ref="DetailView" CombineWithHeaderMode="true"
+                     Header="@Header" PageSize="PageSize" />
+    </TabView>
+</TabControl>
+@code{
+    public MasterRecord Header { get; set; } = new MasterRecord() { Id = -2 };
+    public string HeaderDescription { get; set; } = "";
+    OutlineView DetailView;
+    [Parameter]
+    public int PageSize { get; set; } = 15;
+    public int SelectedTab = 0;
+    void RecordChanged(MasterRecord header)
+    {
+        Header = header;
+
+    }
+}

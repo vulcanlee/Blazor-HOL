@@ -1,0 +1,39 @@
+﻿<div class="btn-group" role="group">
+    @foreach (TabView tabView in Views)
+    {
+        <button type="button"
+                class="btn @GetButtonClass(tabView)"
+                @onclick=@( () => ActivatePage(tabView) )>
+            @tabView.Text
+        </button>
+    }
+</div>
+<CascadingValue Value="this">
+    @ChildContent
+</CascadingValue>
+
+
+@code {
+    // Next line is needed so we are able to add <TabPage> components inside
+    [Parameter]
+    public RenderFragment ChildContent { get; set; }
+
+    public TabView ActivePage { get; set; }
+    List<TabView> Views = new List<TabView>();
+    internal void AddView(TabView tabPage)
+    {
+        Views.Add(tabPage);
+        if (Views.Count == 1)
+            ActivePage = tabPage;
+        StateHasChanged();
+    }
+    string GetButtonClass(TabView page)
+    {
+        return page == ActivePage ? "btn-primary" : "btn-secondary";
+    }
+
+    void ActivatePage(TabView page)
+    {
+        ActivePage = page;
+    }
+}

@@ -1,0 +1,137 @@
+﻿@using Syncfusion.Blazor;
+@using Syncfusion.Blazor.Data;
+@using Newtonsoft.Json
+@using School.WebApp.SortModels
+@using School.WebApp.Services
+@using School.WebApp.AdapterModels
+@using School.WebApp.Helpers
+@using EFCore.Models
+@using ShareDomain.DataModels
+@using ShareBusiness.Helpers
+@using AutoMapper
+@inherits DataAdaptor<IPersonService>
+@inject IMapper Mapper
+
+<CascadingValue Value="@this">
+    @ChildContent
+</CascadingValue>
+
+@code {
+    [Parameter]
+    [JsonIgnore]
+    public RenderFragment ChildContent { get; set; }
+
+    [Parameter]
+    public SortCondition CurrentSortCondition { get; set; }
+
+    /// <summary>
+    /// 透過 Service 使用 Entity Framework Core 來讀取資料庫內的紀錄出來
+    /// </summary>
+    /// <param name="dataManagerRequest"></param>
+    /// <param name="key"></param>
+    /// <returns></returns>
+    public override async Task<object> ReadAsync(DataManagerRequest dataManagerRequest, string key = null)
+    {
+        IQueryable<Person> DataSource = await Service.GetAsync();
+        if (dataManagerRequest.Search != null && dataManagerRequest.Search.Count > 0)
+        {
+            var keyword = dataManagerRequest.Search[0].Key;
+            DataSource = DataSource
+                .Where(x => x.FirstName.Contains(keyword) ||
+                x.LastName.Contains(keyword) );
+        }
+        //if (dataManagerRequest.Search != null && dataManagerRequest.Search.Count > 0)
+        //{
+        //    // 進行搜尋動作
+        //    DataSource = DataOperations.PerformSearching(DataSource, dataManagerRequest.Search);
+        //}
+
+        #region 進行排序動作
+        if (CurrentSortCondition != null)
+        {
+            switch (CurrentSortCondition.Id)
+            {
+                case (int)PersonSortEnum.LastNameDescending:
+                    DataSource = DataSource.OrderByDescending(x => x.LastName);
+                    break;
+                case (int)PersonSortEnum.LastNameAscending:
+                    DataSource = DataSource.OrderBy(x => x.LastName);
+                    break;
+                case (int)PersonSortEnum.FirstNameDescending:
+                    DataSource = DataSource.OrderByDescending(x => x.FirstName);
+                    break;
+                case (int)PersonSortEnum.FirstNameAscending:
+                    DataSource = DataSource.OrderBy(x => x.FirstName);
+                    break;
+                case (int)PersonSortEnum.EnrollmentDateDescending:
+                    DataSource = DataSource.OrderByDescending(x => x.EnrollmentDate);
+                    break;
+                case (int)PersonSortEnum.EnrollmentDateAscending:
+                    DataSource = DataSource.OrderBy(x => x.EnrollmentDate);
+                    break;
+                case (int)PersonSortEnum.HireDateDescending:
+                    DataSource = DataSource.OrderByDescending(x => x.HireDate);
+                    break;
+                case (int)PersonSortEnum.HireDateAscending:
+                    DataSource = DataSource.OrderBy(x => x.HireDate);
+                    break;
+                default:
+                    DataSource = DataSource.OrderBy(x => x.LastName);
+                    break;
+            }
+        }
+        #endregion
+
+        //if (dataManagerRequest.Sorted != null && dataManagerRequest.Sorted.Count > 0)
+        //{
+        //    // 進行排序動作
+        //    DataSource = DataOperations.PerformSorting(DataSource, dataManagerRequest.Sorted);
+        //}
+        //else
+        //{
+        //    // 進行預設排序
+        //    DataSource = DataSource.OrderBy(x => x.LastName).ThenBy(x => x.FirstName);
+        //}
+        if (dataManagerRequest.Where != null && dataManagerRequest.Where.Count > 0)
+        {
+            // 進行過濾動作
+            DataSource = DataOperations.PerformFiltering(DataSource, dataManagerRequest.Where, dataManagerRequest.Where[0].Operator);
+        }
+
+        // 取得記錄總數量，將要用於分頁元件面板使用
+        int count = DataSource.Cast<Person>().Count();
+
+        #region 進行分頁處理
+        if (dataManagerRequest.Skip != 0)
+        {
+            //分頁
+            DataSource = DataOperations.PerformSkip(DataSource, dataManagerRequest.Skip);
+        }
+        if (dataManagerRequest.Take != 0)
+        {
+            DataSource = DataOperations.PerformTake(DataSource, dataManagerRequest.Take);
+        }
+        #endregion
+
+        #region 想要做 Table Join 的查詢，也可以在這裡進行呼叫
+
+        #endregion
+
+        List<PersonAdapterModel> adaptorModelObjects =
+        Mapper.Map<List<PersonAdapterModel>>(DataSource);
+
+
+        #region 在這裡進行 轉接器 資料模型 的額外屬性初始化
+        foreach (var adaptorModelItem in adaptorModelObjects)
+        {
+            adaptorModelItem.PersonTypeAnother = MagicHelper.GetPersonTypeName(adaptorModelItem.HireDate);
+        }
+        #endregion
+
+        var item = dataManagerRequest.RequiresCounts
+        ? new DataResult() { Result = adaptorModelObjects, Count = count }
+        : (object)adaptorModelObjects;
+        await Task.Yield();
+        return item;
+    }
+}

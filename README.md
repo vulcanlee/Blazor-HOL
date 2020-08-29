@@ -30,19 +30,16 @@
 |範例體驗|Labs/DBUpdateChangeTrackingFail|使用實體狀態來做更新相關欄位 (會有什麼問題)|
 |練習情境|Labs/DBUpdateChangeTracking|使用實體狀態來做更新相關欄位|
 |練習情境|Labs/bzEntityFrameworkCore|使用 Blaozr 專案來顯示出 person 所有紀錄|
-|挑戰練習|bzEntityFrameworkCoreBS4\Starter|使用 table 標籤與 BS4 來格式化 person 所有紀錄|
-||Labs/||
+|挑戰練習|Labs/bzEntityFrameworkCoreBS4\Starter|使用 table 標籤與 BS4 來格式化 person 所有紀錄|
+|挑戰練習|Labs/bzBS4Dialog|使用 BootStrap 4 的對話窗功能|
+|挑戰練習|Labs/bzBS4RecordsEdit|BS4 的表格與對話窗綜合開發應用|
+|範例體驗|Labs/bzSyncfusionCRUDMemory|使用 Syncfusion DataGrid 元件設計 CRUD|
+|挑戰練習|Labs/bzSyncfusionDialog|使用 Syncfusion Dialog 對話窗功能|
+|範例體驗|Labs/bzFormValidation|Blazor 的表單驗證設計練習|
 ||Labs/||
 ||Labs/||
 ||Labs/||
 ||||
-|練習情境|bzEntityFrameworkCoreComponent\Starter|將 bzEntityFrameworkCoreBS4 練習做成元件|
-|挑戰練習|BS4 的表格與對話窗綜合開發應用|bzBS4RecordsEdit|
-|練習情境|bzBS4Dialog|使用 Syncfusion DataGrid 元件設計 CRUD|
-|範例體驗|bzSyncfusionCRUDMemory|使用 Syncfusion DataGrid 元件設計 CRUD|
-|練習情境|bzSyncfusionCRUDEFCore|Syncfusion DataGrid 元件結合資料庫之設計 CRUD|
-|練習情境|bzSyncfusionDialog|使用 Syncfusion Dialog 對話窗功能|
-|範例體驗|bzFormValidation|Blazor 的表單驗證設計練習|
 |練習情境|bzFormValidationDialog|使用對話窗來進行表單驗證設計練習(動態顯示與隱藏)|
 |挑戰練習|bzEditContextValidation|使用 EditContext 來手動執行表單資料驗證|
 ||||

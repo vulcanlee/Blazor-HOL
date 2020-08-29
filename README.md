@@ -23,7 +23,7 @@
 |練習情境|Labs/EFCoreReverseEngineering|使用資料庫反向工程，取得 EF Core 的資料模型|
 |練習情境|Labs/DBEntityFrameworkCore|Console 專案與 EF Core 讀取已經存在的資料庫|
 |練習情境|Labs/CodeFirstEntityFrameworkCore|Console 專案與 EF Core Code First 讀取資料庫|
-||Labs/||
+|練習情境|Labs/EFRelation|一對多的資料讀取 - 讀取關聯式資料表的紀錄操作方式|
 ||Labs/||
 ||Labs/||
 ||Labs/||

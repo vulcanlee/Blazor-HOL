@@ -42,7 +42,7 @@
 |範例體驗|Labs/bzFormValidation|Blazor 的表單驗證設計練習|
 |挑戰練習|Labs/bzFormValidationDialog|使用對話窗來進行表單驗證設計練習(動態顯示與隱藏)|
 |練習情境|Labs/WhyAutoMapper|AutoMapper 使用範例|
-||Labs/||
+|範例體驗|Labs/bzBuildRenderTree|了解 Render Tree 渲染樹的執行過程 |
 ||Labs/||
 ||Labs/||
 ||Labs/||

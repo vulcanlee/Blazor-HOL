@@ -20,6 +20,13 @@
 |-|-|-|
 |最終成品|SyncfusionLab|使用 Syncfusion 元件來完成 Contoso University 的資料庫存取應用|
 |最終成品|MatBlazorLab|使用 MatBlazor 元件來完成 Contoso University 的資料庫存取應用|
+|練習情境|Labs/EFCoreReverseEngineering|使用資料庫反向工程，取得 EF Core 的資料模型|
+||Labs/||
+||Labs/||
+||Labs/||
+||Labs/||
+||Labs/||
+||Labs/||
 |練習情境|Labs/DBEntityFrameworkCore|Console 專案與 EF Core 讀取已經存在的資料庫|
 |挑戰練習|DBEntityFrameworkCoreCRUD/Starter|用 Console 專案對 person 資料表做 CRUD 存取|
 |範例體驗|DBUpdateRecord|逐一設定更新欄位來進行資料表紀錄更新|
@@ -42,25 +49,5 @@
 ||||
 ||||
 ||||
-||||
 
-# 單一資料表的 CRUD 開發步驟說明
-
-* StudentGrade
-* StudentGradeService
-* StudentGradeAdaptorModel
-* StudentGradeAdaptor
-* StudentGradeRazorModel
-* StudentGradeView
-* StudentGradePage
-
-* 建立 StudentGrade 的服務
-* 建立 StudentGrade 轉接器 資料模型 Adaptor Data Model
-* 建立 StudentGrade 服務與 Grid 元件要用到的 轉接器元件 Adaptor Component
-* 建立 StudentGrade 頁面要用到的 Razor 資料模型 Razor Data Model
-* 建立 StudentGrade CRUD 的 View 元件
-* 建立 StudentGrade CRUD 的 Page 頁面
-
-Scaffold-DbContext "Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=School;Integrated Security=True;Connect Timeout=60;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False" Microsoft.EntityFrameworkCore.SqlServer -StartupProject DatabaseInit -Project EFCoreModel -OutputDir Models -f
-```
 

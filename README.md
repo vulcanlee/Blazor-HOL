@@ -41,7 +41,15 @@
 |挑戰練習|Labs/bzSyncfusionDialog|使用 Syncfusion Dialog 對話窗功能|
 |範例體驗|Labs/bzFormValidation|Blazor 的表單驗證設計練習|
 |挑戰練習|Labs/bzFormValidationDialog|使用對話窗來進行表單驗證設計練習(動態顯示與隱藏)|
-||||
+|練習情境|Labs/WhyAutoMapper|AutoMapper 使用範例|
+||Labs/||
+||Labs/||
+||Labs/||
+||Labs/||
+||Labs/||
+||Labs/||
+||Labs/||
+||Labs/||
 ||||
 ||||
 ||||

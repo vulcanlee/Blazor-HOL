@@ -1,0 +1,33 @@
+﻿@page "/"
+@using bzEntityFrameworkCore.Model
+@using Microsoft.EntityFrameworkCore
+
+<h1>Hello, Entity Framework Core!</h1>
+
+@if (isLoading == true)
+{
+    <h2 class="text-info">請稍待，資料載入中</h2>
+}
+else
+{
+    foreach (var item in people)
+    {
+        <div>@($"{item.FirstName} {item.LastName}")</div>
+    }
+}
+
+@code{
+    SchoolContext context = new SchoolContext();
+    bool isLoading = true;
+    List<Person> people;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await Task.Delay(3000);
+        people = await context.Person
+            .OrderBy(x=>x.FirstName)
+            .ThenBy(x=>x.LastName)
+            .ToListAsync();
+        isLoading = false;
+    }
+}

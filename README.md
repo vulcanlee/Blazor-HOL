@@ -24,18 +24,18 @@
 |練習情境|Labs/DBEntityFrameworkCore|Console 專案與 EF Core 讀取已經存在的資料庫|
 |練習情境|Labs/CodeFirstEntityFrameworkCore|Console 專案與 EF Core Code First 讀取資料庫|
 |練習情境|Labs/EFRelation|一對多的資料讀取 - 讀取關聯式資料表的紀錄操作方式|
-||Labs/||
-||Labs/||
-||Labs/||
-||Labs/||
-|挑戰練習|DBEntityFrameworkCoreCRUD/Starter|用 Console 專案對 person 資料表做 CRUD 存取|
-|範例體驗|DBUpdateRecord|逐一設定更新欄位來進行資料表紀錄更新|
-|範例體驗|DBUpdateDirectly|簡化更新，不需要逐一設定欄位|
-|範例體驗|DBUpdateChangeTrackingFail|使用實體狀態來做更新相關欄位 (會有什麼問題)|
-|練習情境|DBUpdateChangeTracking|使用實體狀態來做更新相關欄位|
-|練習情境|bzEntityFrameworkCore|使用 Blaozr 專案來顯示出 person 所有紀錄|
-||||
+|挑戰練習|Labs/DBEntityFrameworkCoreCRUD/Starter|用 Console 專案對 person 資料表做 CRUD 存取|
+|範例體驗|Labs/DBUpdateRecord|逐一設定更新欄位來進行資料表紀錄更新|
+|範例體驗|Labs/DBUpdateDirectly|簡化更新，不需要逐一設定欄位|
+|範例體驗|Labs/DBUpdateChangeTrackingFail|使用實體狀態來做更新相關欄位 (會有什麼問題)|
+|練習情境|Labs/DBUpdateChangeTracking|使用實體狀態來做更新相關欄位|
+|練習情境|Labs/bzEntityFrameworkCore|使用 Blaozr 專案來顯示出 person 所有紀錄|
 |挑戰練習|bzEntityFrameworkCoreBS4\Starter|使用 table 標籤與 BS4 來格式化 person 所有紀錄|
+||Labs/||
+||Labs/||
+||Labs/||
+||Labs/||
+||||
 |練習情境|bzEntityFrameworkCoreComponent\Starter|將 bzEntityFrameworkCoreBS4 練習做成元件|
 |挑戰練習|BS4 的表格與對話窗綜合開發應用|bzBS4RecordsEdit|
 |練習情境|bzBS4Dialog|使用 Syncfusion DataGrid 元件設計 CRUD|

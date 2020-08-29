@@ -44,7 +44,7 @@
 |練習情境|Labs/WhyAutoMapper|AutoMapper 使用範例|
 |範例體驗|Labs/bzBuildRenderTree|了解 Render Tree 渲染樹的執行過程 |
 |練習情境|Labs/bzFromEmpty|從 空白專案 建立 Blazor|
-||Labs/||
+|練習情境|Labs/PureDI|Hello DI - 原先類別相依於抽象、具體類別要實作該介面|
 ||Labs/||
 ||Labs/||
 ||Labs/||

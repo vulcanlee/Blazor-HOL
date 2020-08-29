@@ -1,0 +1,98 @@
+﻿@page "/"
+
+@using Syncfusion.Blazor.Grids
+@using Syncfusion.Blazor.Calendars
+@using Syncfusion.Blazor.DropDowns
+@using Syncfusion.Blazor.Inputs
+@using System.ComponentModel.DataAnnotations
+
+<EditForm Model="@fooA" OnValidSubmit="HandleValidSubmit">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div>
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label for="OrderID" class="control-label">訂單編號</label>
+                <SfTextBox ID="OrderID" Value="@Order.OrderID.ToString()" Enabled="false"></SfTextBox>
+            </div>
+            <div class="form-group col-md-6">
+                <label for="CustomerID" class="control-label">客戶</label>
+                <SfTextBox ID="CustomerID" @bind-Value="Order.CustomerID"></SfTextBox>
+                @*<InputText @bind-Value="Order.CustomerID" />*@
+                <ValidationMessage For="@(() => Order.CustomerID)" />
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label for="Freight" class="control-label">Freight</label>
+                <SfNumericTextBox ID="Freight" CssClass="form-control" @bind-Value="Order.Freight" TValue="double"></SfNumericTextBox>
+                <ValidationMessage For="@(() => Order.Freight)" />
+            </div>
+            <div class="form-group col-md-6">
+                <label for="OrderDate" class="control-label">訂單日期</label>
+                <SfDatePicker ID="OrderDate" CssClass="form-control" @bind-Value="Order.OrderDate"></SfDatePicker>
+                <ValidationMessage For="@(() => Order.OrderDate)" />
+
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label for="ShipCountry" class="control-label">送貨國家</label>
+                <SfTextBox ID="ShipCountry" @bind-Value="Order.ShipCountry"></SfTextBox>
+                <ValidationMessage For="@(() => Order.ShipCountry)" />
+            </div>
+            <div class="form-group col-md-6">
+                <label for="ShipCity" class="control-label">送貨城市</label>
+                <SfTextBox ID="ShipCity" @bind-Value="Order.ShipCity"></SfTextBox>
+                <ValidationMessage For="@(() => Order.ShipCity)" />
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-12">
+                <label class="e-float-text e-label-top">Ship Address</label>
+                <SfTextBox ID="ShipAddress" CssClass="form-control" @bind-Value="@(Order.ShipAddress)"></SfTextBox>
+                <ValidationMessage For="@(() => Order.ShipAddress)" />
+            </div>
+        </div>
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+</EditForm>
+
+@code{
+    OrdersDetails Order = new OrdersDetails();
+    classA fooA = new classA();
+    class classA
+    {
+        public int MyProperty { get; set; }
+    }
+
+    protected override void OnInitialized()
+    {
+        //Order.CustomerID = "Customer";
+    }
+
+    private void HandleValidSubmit()
+    {
+        Console.WriteLine("OnValidSubmit");
+    }
+    public class OrdersDetails
+    {
+        public int? OrderID { get; set; }
+        [Required(ErrorMessage = "客戶編號不可為空白")]
+        public string CustomerID { get; set; }
+        [Range(1, 100, ErrorMessage = "請輸入 1-100 間的數值")]
+        public double Freight { get; set; }
+        [StringLength(20, ErrorMessage = "送貨城市字數過長")]
+        public string ShipCity { get; set; }
+        [Range(typeof(DateTime), "1/1/2020", "4/20/2020",
+        ErrorMessage = "輸入日期 {0} 必須介於 {1:yyyy-MM-dd} - {2:yyyy-MM-dd}")]
+        public DateTime OrderDate { get; set; }
+        [StringLength(140, ErrorMessage = "送貨名稱字數過長")]
+        public string ShipName { get; set; }
+        [StringLength(10, ErrorMessage = "送貨國家字數過長")]
+        public string ShipCountry { get; set; }
+        [Required(ErrorMessage = "地址不可為空白")]
+        public string ShipAddress { get; set; }
+    }
+}

@@ -46,7 +46,7 @@
 |練習情境|Labs/bzFromEmpty|從 空白專案 建立 Blazor|
 |練習情境|Labs/PureDI|Hello DI - 原先類別相依於抽象、具體類別要實作該介面|
 |範例體驗|Labs/ASPNETCoreDefaultService|查看 ASP.NET Core 預設產生的服務|
-||Labs/||
+|挑戰練習|Labs/bzDefaultService|查看 Blazor 預設產生的服務|
 ||Labs/||
 ||Labs/||
 ||Labs/||

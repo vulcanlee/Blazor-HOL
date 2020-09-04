@@ -4,7 +4,9 @@
 @using Syncfusion.Blazor.Navigations
 
 <div>
-    <SfTab @bind-SelectedItem="SelectedTab" HeaderPlacement="@HeaderPosition.Top">
+    <SfTab @bind-SelectedItem="SelectedTab" HeaderPlacement="@HeaderPosition.Top"
+           LoadOn="ContentLoad.Init">
+        <TabEvents Selected="OnTabSelected" />
         <TabItems>
             <TabItem>
                 <ChildContent>
@@ -43,5 +45,12 @@
     void RecordChanged(MasterRecord header)
     {
         Header = header;
+    }
+    public async Task OnTabSelected(SelectEventArgs args)
+    {
+        if (args.SelectedIndex == 1)
+        {
+            await DetailView?.RefreshNewMasterAsync(Header);
+        }
     }
 }

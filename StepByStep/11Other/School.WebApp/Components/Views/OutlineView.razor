@@ -52,7 +52,7 @@
                     OnToolbarClick="RazorModel.ToolbarClickHandler" />
         <GridPageSettings PageSize="@PageSize" />
         @*<GridSearchSettings Fields="@(new string[] { "Name" })"
-                            Operator=Syncfusion.Blazor.Operator.Contains IgnoreCase="true" />*@
+            Operator=Syncfusion.Blazor.Operator.Contains IgnoreCase="true" />*@
         <GridColumns>
             <GridColumn Field=@nameof(OutlineAdapterModel.Title) HeaderText="大綱名稱" Width="150"></GridColumn>
             <GridColumn Field=@nameof(OutlineAdapterModel.CourseName) HeaderText="課程" Width="100"></GridColumn>
@@ -121,7 +121,7 @@
 <DialogBackground />
 
 @code{
-    SfGrid<OutlineAdapterModel> Grid;
+    public SfGrid<OutlineAdapterModel> Grid;
     [Parameter]
     public MasterRecord Header { get; set; }
     [Parameter]
@@ -134,7 +134,7 @@
         RazorModel.Setup(this, Grid);
         if (Header is null)
         {
-            RazorModel.Header = new MasterRecord() { Id = -1, Title="" };
+            RazorModel.Header = new MasterRecord() { Id = -1, Title = "" };
         }
         else
         {
@@ -153,8 +153,8 @@
     {
         await InvokeAsync(action);
     }
-    public void RefreshNewMaster(MasterRecord header)
+    public async Task RefreshNewMasterAsync(MasterRecord header)
     {
-        RazorModel.UpdateMasterHeader(header);
+       await RazorModel.UpdateMasterHeaderAsync(header);
     }
 }

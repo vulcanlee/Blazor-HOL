@@ -213,9 +213,10 @@ namespace School.WebApp.RazorModels
         #endregion
 
         #region 資料表關聯的方法
-        public void UpdateMasterHeader(MasterRecord header)
+        public async Task UpdateMasterHeaderAsync(MasterRecord header)
         {
             Header = header;
+            await Task.Delay(100);
             Grid?.Refresh();
         }
         #endregion

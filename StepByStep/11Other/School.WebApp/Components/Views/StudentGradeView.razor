@@ -152,8 +152,8 @@
     {
         await InvokeAsync(action);
     }
-    public void RefreshNewMaster(MasterRecord header)
+    public async Task RefreshNewMasterAsync(MasterRecord header)
     {
-        RazorModel.UpdateMasterHeader(header);
+        await RazorModel.UpdateMasterHeaderAsync(header);
     }
 }

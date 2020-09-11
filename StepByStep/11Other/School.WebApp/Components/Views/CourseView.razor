@@ -22,6 +22,7 @@
 @using ShareDomain.DataModels
 @inject CourseRazorModel RazorModel
 @implements IRazorPage
+@implements IDataGrid
 
 <div>
     <div class="d-inline-block pr-2">排序條件 : </div>
@@ -103,7 +104,7 @@
     <DialogPositionData X="center" Y="center"></DialogPositionData>
 </SfDialog>
 
-<DepartmentPicker OpenPicker="RazorModel.ShowAontherRecordPicker" OnConfirmCallback="x=>RazorModel.OnPickerCompletion(x)"/>
+<DepartmentPicker OpenPicker="RazorModel.ShowAontherRecordPicker" OnConfirmCallback="x=>RazorModel.OnPickerCompletion(x)" />
 
 
 <MessageBox Height="@RazorModel.MessageBox.Height" Width="@RazorModel.MessageBox.Width"
@@ -129,13 +130,13 @@
 
     protected override void OnInitialized()
     {
-        RazorModel.Setup(this, Grid);
+        RazorModel.Setup(this, this);
     }
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender == true)
         {
-            RazorModel.Setup(this, Grid);
+            RazorModel.Setup(this, this);
         }
         if (OnViewRender.HasDelegate)
         {
@@ -149,6 +150,18 @@
     public async Task NeedInvokeAsync(System.Action action)
     {
         await InvokeAsync(action);
+    }
+    public void RefreshGrid()
+    {
+        Grid.Refresh();
+    }
+    public bool GridIsExist()
+    {
+        return Grid == null ? false : true;
+    }
+    public Task InvokeGridAsync(string actionName)
+    {
+        return Task.CompletedTask;
     }
 
     #region 選取紀錄異動的事件處理

@@ -31,7 +31,6 @@ namespace School.WebApp.RazorModels
         #endregion
 
         #region Property
-        public SfGrid<CourseAdapterModel> Grid { get; set; }
         public bool IsShowEditRecord { get; set; } = false;
         public CourseAdapterModel CurrentRecord { get; set; } = new CourseAdapterModel();
         public CourseAdapterModel CurrentNeedDeleteRecord { get; set; } = new CourseAdapterModel();
@@ -55,17 +54,16 @@ namespace School.WebApp.RazorModels
         private readonly SchoolContext context;
         private readonly IMapper mapper;
         IRazorPage thisRazorComponent;
+        IDataGrid dataGrid;
         private bool isShowConfirm { get; set; } = false;
         #endregion
 
         #region Method
         #region DataGrid 初始化
-        public void Setup(IRazorPage componentBase,
-            SfGrid<CourseAdapterModel> grid)
+        public void Setup(IRazorPage razorPage, IDataGrid dataGrid)
         {
-            thisRazorComponent = componentBase;
-            Grid = grid;
-            //RazorModel
+            thisRazorComponent = razorPage;
+            this.dataGrid = dataGrid;
         }
         #endregion
 
@@ -81,7 +79,7 @@ namespace School.WebApp.RazorModels
             }
             else if (args.Item.Text == "重新整理")
             {
-                Grid.Refresh();
+                dataGrid.RefreshGrid();
             }
         }
         #endregion
@@ -112,7 +110,7 @@ namespace School.WebApp.RazorModels
             if (NeedDelete == true)
             {
                 await CurrentService.DeleteAsync(mapper.Map<Course>(CurrentNeedDeleteRecord));
-                Grid.Refresh();
+                dataGrid.RefreshGrid();
             }
             ConfirmMessageBox.Hidden();
         }
@@ -146,12 +144,12 @@ namespace School.WebApp.RazorModels
                 if (isNewRecordMode == true)
                 {
                     await CurrentService.AddAsync(mapper.Map<Course>(CurrentRecord));
-                    Grid.Refresh();
+                    dataGrid.RefreshGrid();
                 }
                 else
                 {
                     await CurrentService.UpdateAsync(mapper.Map<Course>(CurrentRecord));
-                    Grid.Refresh();
+                    dataGrid.RefreshGrid();
                 }
                 IsShowEditRecord = false;
             }
@@ -179,10 +177,10 @@ namespace School.WebApp.RazorModels
 
         public void SortChanged(Syncfusion.Blazor.DropDowns.ChangeEventArgs<int> args)
         {
-            if (Grid != null)
+            if (dataGrid.GridIsExist() == true)
             {
                 CurrentSortCondition.Id = args.Value;
-                Grid.Refresh();
+                dataGrid.RefreshGrid();
             }
         }
 

@@ -8,8 +8,10 @@ namespace efCodeFirst.Models
     public class DataContext : DbContext
     {
         public virtual DbSet<Student> Student { get; set; }
-        public virtual DbSet<StudentGrade> Grade { get; set; }
+        public virtual DbSet<StudentGrade> StudentGrade { get; set; }
         public virtual DbSet<StudentAddress> StudentAddress { get; set; }
+        public virtual DbSet<Course> Course { get; set; }
+        public virtual DbSet<Department> Department { get; set; }
 
         public DataContext()
         {

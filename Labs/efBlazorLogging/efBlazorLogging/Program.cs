@@ -20,17 +20,17 @@ namespace efBlazorLogging
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
-            //.ConfigureLogging((context, logging) =>
-            //{
-            //    // Console
-            //    logging.AddConsole();
-            //    // Debug
-            //    logging.AddDebug();
-            //    // Event Source
-            //    logging.AddEventSourceLogger();
-            //    // Event Log
-            //    logging.AddEventLog();
-            //})
+            .ConfigureLogging((context, logging) =>
+            {
+                // Console
+                logging.AddConsole();
+                // Debug
+                logging.AddDebug();
+                // Event Source
+                logging.AddEventSourceLogger();
+                // Event Log
+                logging.AddEventLog();
+            })
             .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();

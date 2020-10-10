@@ -1,0 +1,38 @@
+﻿@page "/"
+@using efBlazorLogging.Models
+@using Microsoft.EntityFrameworkCore
+@using Microsoft.Extensions.Logging
+@inject ILogger<Index> logger
+@inject SchoolContext context
+
+<h1>Hello, Entity Framework Logging!</h1>
+
+<div>
+    <button class="btn btn-primary" @onclick="ReadAsync">開始讀取資料庫</button>
+</div>
+
+@if (people != null)
+{
+    <div>
+        @foreach (var item in people)
+        {
+            <div class="text-success">@item.FirstName</div>
+        }
+    </div>
+}
+
+@code{
+    List<Person> people = new List<Person>();
+
+    async Task ReadAsync()
+    {
+        logger.LogInformation("開始讀取資料庫", null);
+        people = await context.Person.ToListAsync();
+
+        // SchoolContext 一定要由相依注入取得，才會自動擁有 Log 能力
+        //using (var context = new SchoolContext())
+        //{
+        //    people = await context.Person.ToListAsync();
+        //}
+    }
+}

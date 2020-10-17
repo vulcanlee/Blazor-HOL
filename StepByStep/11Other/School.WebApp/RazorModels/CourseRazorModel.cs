@@ -45,7 +45,7 @@ namespace School.WebApp.RazorModels
         public MessageBoxModel MessageBox { get; set; } = new MessageBoxModel();
         #endregion
 
-        public string EditRecordDialogTitle { get; set; } = "";
+        public string EditRecordDialogTitle { get; set; } = ""; 
         #endregion
 
         #region Field
@@ -54,7 +54,7 @@ namespace School.WebApp.RazorModels
         private readonly SchoolContext context;
         private readonly IMapper mapper;
         IRazorPage thisRazorComponent;
-        IDataGrid dataGrid;
+        IDataGrid dataGrid; 
         private bool isShowConfirm { get; set; } = false;
         #endregion
 

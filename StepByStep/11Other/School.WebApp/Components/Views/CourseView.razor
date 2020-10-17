@@ -122,12 +122,13 @@
 @code{
     SfGrid<CourseAdapterModel> Grid;
     [Parameter]
-    public EventCallback<MasterRecord> OnRecordChanged { get; set; }
-    [Parameter]
     public int PageSize { get; set; } = 15;
+    [Parameter]
+    public EventCallback<MasterRecord> OnRecordChanged { get; set; }
     [Parameter]
     public EventCallback<object> OnViewRender { get; set; }
 
+    #region 生命週期事件
     protected override void OnInitialized()
     {
         RazorModel.Setup(this, this);
@@ -143,6 +144,9 @@
             await OnViewRender.InvokeAsync(null);
         }
     }
+    #endregion
+
+    #region 頁面需要介面實作
     public void NeedRefresh()
     {
         StateHasChanged();
@@ -153,7 +157,7 @@
     }
     public void RefreshGrid()
     {
-        Grid.Refresh();
+        Grid?.Refresh();
     }
     public bool GridIsExist()
     {
@@ -163,6 +167,7 @@
     {
         return Task.CompletedTask;
     }
+    #endregion
 
     #region 選取紀錄異動的事件處理
     public async Task RowSelectHandler(RowSelectEventArgs<CourseAdapterModel> args)

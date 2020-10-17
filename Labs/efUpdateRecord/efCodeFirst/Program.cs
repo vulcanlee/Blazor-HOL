@@ -25,7 +25,8 @@ namespace efCodeFirst
                 Id = department1.Id,
                 Name = "使用狀態來修改的科系名稱",
             };
-            context.Entry(department3).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+            context.Department.Update(department3);
+            //context.Entry(department3).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
             context.SaveChanges();
             foreach (var item in context.Department.ToList())
             {

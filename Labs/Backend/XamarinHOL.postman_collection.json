@@ -1,0 +1,99 @@
+{
+	"info": {
+		"_postman_id": "7f31f1c1-7def-431b-8a40-29e8b0d9c0cb",
+		"name": "XamarinHOL",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Login 使用者登入",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"Account\" :\"admin\",\r\n    \"Password\" :\"123\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:5001/api/Login",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"api",
+						"Login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "OnlyAdministrator",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJzaWQiOiJhZG1pbiIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL25hbWUiOiJhZG1pbiIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6WyJVc2VyIiwiQWRtaW5pc3RyYXRvciJdLCJleHAiOjE2MDM1NDY1NTgsImlzcyI6IkNvcmVKV1QudnVsY2FuLm5ldCIsImF1ZCI6IlhhbWFyaW4gUkVTVGZ1bCBBUEkifQ.vV8j4d9BPIHDaH8_uIvOtba6OgbS0akCuaoa9kFUcwLZetp3MF4Yi2Vv9MG75u000Ds_pImMwJXJBkApqKA8JA",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:5001/api/OnlyAdministrator",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"api",
+						"OnlyAdministrator"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "OnlyUser",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJzaWQiOiJhZG1pbiIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL25hbWUiOiJhZG1pbiIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6WyJVc2VyIiwiQWRtaW5pc3RyYXRvciJdLCJleHAiOjE2MDM1NDY1NTgsImlzcyI6IkNvcmVKV1QudnVsY2FuLm5ldCIsImF1ZCI6IlhhbWFyaW4gUkVTVGZ1bCBBUEkifQ.vV8j4d9BPIHDaH8_uIvOtba6OgbS0akCuaoa9kFUcwLZetp3MF4Yi2Vv9MG75u000Ds_pImMwJXJBkApqKA8JA",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:5001/api/OnlyUser",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"api",
+						"OnlyUser"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}

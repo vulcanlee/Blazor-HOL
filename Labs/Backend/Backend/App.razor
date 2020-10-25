@@ -1,0 +1,19 @@
+﻿
+<Router AppAssembly="@typeof(Program).Assembly">
+    <Found Context="routeData">
+        <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)">
+            <NotAuthorized>
+                <p class="text-danger">你沒有授權可以存取該服務</p>
+            </NotAuthorized>
+        </AuthorizeRouteView>
+    </Found>
+    <NotFound>
+        <CascadingAuthenticationState>
+            <LayoutView Layout="@typeof(MainLayout)">
+                <h2 class="text-danger">找不到此頁面</h2><br>
+                <h3 class="text-danger">對不起，未能找到您要的網頁。</h3>
+                <h3 class="text-danger">可能該網頁已被移除或被移到其他的網址。</h3>
+            </LayoutView>
+        </CascadingAuthenticationState>
+    </NotFound>
+</Router>

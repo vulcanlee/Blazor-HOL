@@ -16,7 +16,8 @@ namespace efChangeTracker
                 Console.WriteLine($"執行任何資料庫存取動作前的 ChangeTracker");
                 DisplayStates(context.ChangeTracker.Entries());
                 Console.WriteLine($"查詢第一筆 Person 紀錄，但使用 AsNoTracking");
-                var person = context.Person.AsNoTracking().FirstOrDefault();
+                var person = context.Person.FirstOrDefault();
+                var people = context.Person.ToList();
                 DisplayStates(context.ChangeTracker.Entries());
                 Console.WriteLine($"查詢第一筆 Person 紀錄 ");
                 person = context.Person.FirstOrDefault();

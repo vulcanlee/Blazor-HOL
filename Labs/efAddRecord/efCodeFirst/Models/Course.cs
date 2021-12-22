@@ -12,6 +12,8 @@ namespace efCodeFirst.Models
         }
         public int Id { get; set; }
         public string Name { get; set; }
+        public string AliasName { get; set; }
+        public DateTime MyDatetime { get; set; }
         public int DepartmentId { get; set; }
         public virtual Department Department { get; set; }
         public virtual ICollection<StudentGrade> StudentGrades { get; set; }

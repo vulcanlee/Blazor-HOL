@@ -10,19 +10,35 @@ namespace EFRelation
     {
         static async Task Main(string[] args)
         {
-            SchoolContext SchoolContext = new SchoolContext();
-            var allCourse = await SchoolContext.Course
-                .AsNoTracking()
-                .Include(x=>x.Department)
-                .ToListAsync();
-            foreach (var itemCourse in allCourse)
+            var task1 = Task.Run(async () =>
             {
-                Console.WriteLine($"Course : {itemCourse.Title}");
-                if(itemCourse.Department!= null)
+                SchoolContext context = new SchoolContext();
+                for (int i = 0; i < 100; i++)
                 {
-                    Console.WriteLine($"Department : {itemCourse.Department.Name}");
+                    var people = await context.Person
+                    .AsNoTracking()
+                    .OrderBy(x => x.LastName).ToListAsync();
+                    foreach (var item in people)
+                    {
+                        Console.Write($"{item.LastName} ");
+                    }
                 }
-            }
+            });
+            var task2 = Task.Run(async () =>
+            {
+                SchoolContext context = new SchoolContext();
+                for (int i = 0; i < 100; i++)
+                {
+                    var courses = await context.Course
+                    .AsNoTracking()
+                    .OrderBy(x => x.Title).ToListAsync();
+                    foreach (var item in courses)
+                    {
+                        Console.Write($"{item.Title} ");
+                    }
+                }
+            });
+            await Task.WhenAll(task1, task2);
         }
     }
 }

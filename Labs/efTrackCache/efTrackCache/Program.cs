@@ -17,6 +17,7 @@ namespace efTrackCache
                 var studentGrade = context.StudentGrade.FirstOrDefault();
                 studentGrade.Grade = 3.2m;
                 context.Entry(studentGrade).State = EntityState.Modified;
+                context.SaveChanges();
                 DisplayStates(context.ChangeTracker.Entries());
                 Console.WriteLine($"EnrollmentId={studentGrade.EnrollmentId}" +
                     $" 成績為 :{studentGrade.Grade}");
